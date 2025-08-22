@@ -3,26 +3,37 @@ package tools.redstone.redstonetools.features.commands;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.ItemStackArgument;
 import net.minecraft.command.argument.ItemStackArgumentType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import tools.redstone.redstonetools.features.AbstractFeature;
-import tools.redstone.redstonetools.utils.FeatureUtils;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
+import static net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback.EVENT;
 
-public class GiveMeFeature extends AbstractFeature {
-	public static void registerCommand() {
-		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(literal("g")
+public class GiveMeFeature {
+	public static final GiveMeFeature INSTANCE = new GiveMeFeature();
+
+	protected GiveMeFeature() {
+	}
+
+	public void registerCommand() {
+		EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(
+			literal("g")
+				.requires(source -> source.hasPermissionLevel(2))
 				.then(argument("item", ItemStackArgumentType.itemStack(registryAccess))
-						.executes(context -> FeatureUtils.getFeature(GiveMeFeature.class).execute(context, ItemStackArgumentType.getItemStackArgument(context, "item"), 1))
-						.then(argument("count", IntegerArgumentType.integer(0, 99))
-								.executes(context -> FeatureUtils.getFeature(GiveMeFeature.class).execute(context, ItemStackArgumentType.getItemStackArgument(context, "item"), IntegerArgumentType.getInteger(context, "count")))))));
+					.executes(context -> this.execute(
+						context,
+						ItemStackArgumentType.getItemStackArgument(context, "item"),
+						1))
+					.then(argument("count", IntegerArgumentType.integer(1))
+						.executes(context -> this.execute(
+							context,
+							ItemStackArgumentType.getItemStackArgument(context, "item"),
+							IntegerArgumentType.getInteger(context, "count")))))));
 	}
 
 	private int execute(CommandContext<ServerCommandSource> context, ItemStackArgument itemArgument, int count) throws CommandSyntaxException {
@@ -31,9 +42,9 @@ public class GiveMeFeature extends AbstractFeature {
 		stack.setCount(count);
 		if (player != null && player.getServer() != null) {
 			player.getServer().getCommandManager().executeWithPrefix(player.getServer().getCommandSource()
-					, "/give " +
-							player.getName().getString() + " " +
-							itemArgument.asString(player.getServer().getRegistryManager()) + " " + count);
+				, "/give " +
+					player.getName().getString() + " " +
+					itemArgument.asString(player.getServer().getRegistryManager()) + " " + count);
 		} else
 			context.getSource().sendMessage(Text.of("Player not found."));
 		return 0;

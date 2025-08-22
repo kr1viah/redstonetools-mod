@@ -17,21 +17,27 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import tools.redstone.redstonetools.RedstoneTools;
 import tools.redstone.redstonetools.malilib.config.Configs;
 import tools.redstone.redstonetools.mixin.features.WorldRendererInvoker;
 import tools.redstone.redstonetools.utils.BlockUtils;
-import tools.redstone.redstonetools.utils.ClientFeatureUtils;
 import tools.redstone.redstonetools.utils.ItemUtils;
 import tools.redstone.redstonetools.utils.RaycastUtils;
 
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 
 public class AirPlaceFeature extends ClientToggleableFeature {
-	public static void registerCommand() {
-		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(literal("airplace")
-						.executes(context -> ClientFeatureUtils.getFeature(AirPlaceFeature.class).toggle(context))));
+	public static final AirPlaceFeature INSTANCE = new AirPlaceFeature();
+
+	protected AirPlaceFeature() {
+		super(Configs.Toggles.AIRPLACE);
 	}
+
+	public void registerCommand() {
+		ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(literal("airplace")
+			.requires(source -> source.getPlayer().hasPermissionLevel(2))
+			.executes(this::toggle)));
+	}
+
 	public static float reach;
 
 	public static boolean canAirPlace(PlayerEntity player) {
@@ -44,7 +50,7 @@ public class AirPlaceFeature extends ClientToggleableFeature {
 			return false;
 
 		// itembind in hand
-		if (itemStack.contains(RedstoneTools.COMMAND_COMPONENT)) return false;
+		if (ItemUtils.containsCommand(itemStack)) return false;
 
 		// TODO: shouldn't offhand also be checked?
 		// rocket boost for elytra
@@ -87,7 +93,7 @@ public class AirPlaceFeature extends ClientToggleableFeature {
 			BlockState blockState = ItemUtils.getUseState(client.player,
 					ItemUtils.getMainItem(client.player),
 					reach);
-			if (AutoRotateClient.isEnabled) {
+			if (AutoRotateClient.isEnabled.getBooleanValue()) {
 				blockState = BlockUtils.rotate(blockState);
 			}
 			if (blockState == null)
