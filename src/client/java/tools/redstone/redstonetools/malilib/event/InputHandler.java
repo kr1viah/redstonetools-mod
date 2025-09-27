@@ -28,6 +28,10 @@ public class InputHandler implements IKeybindProvider, IKeyboardInputHandler, IM
 			if (config instanceof IHotkey hotkey)
 				manager.addKeybindToMap(hotkey.getKeybind());
 		}
+		for (IConfigBase config : Configs.Kr1v.OPTIONS) {
+			if (config instanceof IHotkey hotkey)
+				manager.addKeybindToMap(hotkey.getKeybind());
+		}
 	}
 
 	@Override
@@ -42,5 +46,10 @@ public class InputHandler implements IKeybindProvider, IKeyboardInputHandler, IM
 			.map(IHotkey.class::cast)
 			.toList();
 		manager.addHotkeysForCategory(RedstoneTools.MOD_NAME, "Toggles", hotkeysToggles);
+		List<IHotkey> hotkeysKr1v = Configs.Kr1v.OPTIONS.stream()
+			.filter(IHotkey.class::isInstance)
+			.map(IHotkey.class::cast)
+			.toList();
+		manager.addHotkeysForCategory(RedstoneTools.MOD_NAME, "Kr1v", hotkeysKr1v);
 	}
 }

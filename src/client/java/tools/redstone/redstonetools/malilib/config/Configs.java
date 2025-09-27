@@ -9,6 +9,7 @@ import fi.dy.masa.malilib.config.options.*;
 import fi.dy.masa.malilib.util.JsonUtils;
 import net.minecraft.client.MinecraftClient;
 import tools.redstone.redstonetools.RedstoneTools;
+import tools.redstone.redstonetools.screen.DummyScreen;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,6 +17,21 @@ import java.util.List;
 
 public class Configs implements IConfigHandler {
 	private static final String CONFIG_FILE_NAME = RedstoneTools.MOD_ID + ".json";
+
+	public static class Kr1v {
+		public static final ConfigHotkey SHOW_CURSOR = new ConfigHotkey("Show cursor", "", "");
+
+		public static final List<? extends IConfigBase> OPTIONS = List.of(
+			SHOW_CURSOR
+		);
+
+		static {
+			SHOW_CURSOR.getKeybind().setCallback((button, keybind) -> {
+				MinecraftClient.getInstance().setScreen(new DummyScreen());
+				return true;
+			});
+		}
+	}
 
 	public static class Toggles {
 		public static final ConfigBooleanHotkeyed AIRPLACE = new ConfigBooleanHotkeyed("Airplace", false, "", "Whether or not airplace should be enabled");
@@ -116,6 +132,7 @@ public class Configs implements IConfigHandler {
 				ConfigUtils.readConfigBase(root, "Generic", General.OPTIONS);
 				ConfigUtils.readConfigBase(root, "Toggles", Toggles.TOGGLES);
 				ConfigUtils.readConfigBase(root, "ClientData", ClientData.OPTIONS);
+				ConfigUtils.readConfigBase(root, "Kr1v", Kr1v.OPTIONS);
 			}
 		}
 	}
@@ -129,6 +146,7 @@ public class Configs implements IConfigHandler {
 			ConfigUtils.writeConfigBase(root, "Generic", General.OPTIONS);
 			ConfigUtils.writeConfigBase(root, "Toggles", Toggles.TOGGLES);
 			ConfigUtils.writeConfigBase(root, "ClientData", ClientData.OPTIONS);
+			ConfigUtils.writeConfigBase(root, "Kr1v", Kr1v.OPTIONS);
 
 			JsonUtils.writeJsonToFile(root, new File(dir, CONFIG_FILE_NAME));
 		}

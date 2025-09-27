@@ -69,6 +69,8 @@ public class GuiConfigs extends GuiConfigsBase {
 			configs = Configs.Toggles.TOGGLES;
 		} else if (tab == ConfigGuiTab.CLIENTDATA) {
 			configs = Configs.ClientData.OPTIONS;
+		} else if (tab == ConfigGuiTab.KR1V) {
+			configs = Configs.Kr1v.OPTIONS;
 		} else {
 			return Collections.emptyList();
 		}
@@ -123,7 +125,8 @@ public class GuiConfigs extends GuiConfigsBase {
 		GENERAL("General"),
 		TOGGLES("Toggles"),
 		CLIENTDATA("Chat"),
-		MACROS("Macros");
+		MACROS("Macros"),
+		KR1V("KR1V");
 
 		private final String translationKey;
 
