@@ -6,6 +6,7 @@ import net.minecraft.client.network.ClientCommandSource;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.CommandSource;
+import net.minecraft.network.packet.s2c.play.CloseScreenS2CPacket;
 import net.minecraft.network.packet.s2c.play.CommandTreeS2CPacket;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.resource.featuretoggle.FeatureSet;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tools.redstone.redstonetools.ClientCommands;
+import tools.redstone.redstonetools.malilib.config.Configs;
 import tools.redstone.redstonetools.utils.DependencyLookup;
 import tools.redstone.redstonetools.utils.StringUtils;
 
@@ -46,5 +48,10 @@ public class ClientPlayNetworkHandlerMixin {
 	@ModifyVariable(method = "sendChatCommand", at = @At("HEAD"), argsOnly = true, order = 750)
 	public String sendChatCommand(String command) {
 		return StringUtils.insertVariablesAndMath(command);
+	}
+
+	@Inject(method = "onCloseScreen", at = @At("HEAD"), cancellable = true)
+	public void preventScreenClosing(CloseScreenS2CPacket packet, CallbackInfo ci) {
+		if (Configs.Kr1v.DISABLED_SERVER_SCREEN_CLOSING.getBooleanValue()) ci.cancel();
 	}
 }

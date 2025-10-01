@@ -126,7 +126,7 @@ public class GuiConfigs extends GuiConfigsBase {
 		TOGGLES("Toggles"),
 		CLIENTDATA("Chat"),
 		MACROS("Macros"),
-		KR1V("KR1V");
+		KR1V("kr1v");
 
 		private final String translationKey;
 

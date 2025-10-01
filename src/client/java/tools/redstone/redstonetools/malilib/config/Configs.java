@@ -19,10 +19,12 @@ public class Configs implements IConfigHandler {
 	private static final String CONFIG_FILE_NAME = RedstoneTools.MOD_ID + ".json";
 
 	public static class Kr1v {
+		public static final ConfigBoolean DISABLED_SERVER_SCREEN_CLOSING = new ConfigBooleanHotkeyed("Prevent servers from closing the screen", false, "", "");
 		public static final ConfigHotkey SHOW_CURSOR = new ConfigHotkey("Show cursor", "", "");
 
 		public static final List<? extends IConfigBase> OPTIONS = List.of(
-			SHOW_CURSOR
+			SHOW_CURSOR,
+			DISABLED_SERVER_SCREEN_CLOSING
 		);
 
 		static {
