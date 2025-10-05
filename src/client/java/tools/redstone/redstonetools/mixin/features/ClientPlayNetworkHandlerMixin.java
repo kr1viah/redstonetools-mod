@@ -57,18 +57,17 @@ public class ClientPlayNetworkHandlerMixin {
 		if (Configs.Kr1v.DISABLED_SERVER_SCREEN_CLOSING.getBooleanValue()) {
 			if (MinecraftClient.getInstance().currentScreen != null) {
 				String currentScreenClass = MinecraftClient.getInstance().currentScreen.getClass().getSimpleName();
-				boolean shouldPrevent = true;
+				boolean shouldPrevent = false;
 				for (String s : Configs.Kr1v.DISABLED_SCREEN_CLOSING_EXCEPTIONS.getStrings()) {
 					if (s.equals(currentScreenClass)) {
-						shouldPrevent = false;
+						shouldPrevent = true;
 						break;
 					}
 				}
 				if (shouldPrevent) {
 					ci.cancel();
-					if (Configs.Kr1v.DISABLED_SERVER_SCREEN_CLOSING_PRINT.getBooleanValue()) {
-						MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Prevented closing of screen class: " + currentScreenClass));
-					}
+				} else if (Configs.Kr1v.DISABLED_SERVER_SCREEN_CLOSING_PRINT.getBooleanValue()) {
+					MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Allowed closing of screen class: " + currentScreenClass));
 				}
 			}
 		}

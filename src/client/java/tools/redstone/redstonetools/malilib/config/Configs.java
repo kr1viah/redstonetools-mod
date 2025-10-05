@@ -20,16 +20,23 @@ public class Configs implements IConfigHandler {
 	private static final String CONFIG_FILE_NAME = RedstoneTools.MOD_ID + ".json";
 
 	public static class Kr1v {
+		public static boolean preventClosingOnce = false;
 		public static final ConfigHotkey SHOW_CURSOR = new ConfigHotkey("Show cursor", "", "");
 		public static final ConfigBoolean DISABLED_SERVER_SCREEN_CLOSING = new ConfigBooleanHotkeyed("Prevent servers from closing the screen", false, "", "");
-		public static final ConfigStringList DISABLED_SCREEN_CLOSING_EXCEPTIONS = new ConfigStringList("Except for these", ImmutableList.of(), "");
+		public static final ConfigStringList DISABLED_SCREEN_CLOSING_EXCEPTIONS = new ConfigStringList("Only these", ImmutableList.of("ChatScreen"), "");
 		public static final ConfigBoolean DISABLED_SERVER_SCREEN_CLOSING_PRINT = new ConfigBooleanHotkeyed("Print prevented screen closings", false, "", "");
+		public static final ConfigStringList PREVENT_OPENING_OF_SCREEN = new ConfigStringList("Prevent these screens from opening", ImmutableList.of(), "");
+		public static final ConfigBoolean PREVENT_OPENING_OF_SCREEN_PRINT = new ConfigBooleanHotkeyed("Print screen openings that aren't prevented", false, "", "");
+		public static final ConfigBoolean ALWAYS_CLOSE_ON_ESC = new ConfigBooleanHotkeyed("Always close screens upon pressing escape", false, "", "");
 
 		public static final List<? extends IConfigBase> OPTIONS = List.of(
 			SHOW_CURSOR,
 			DISABLED_SERVER_SCREEN_CLOSING,
 			DISABLED_SCREEN_CLOSING_EXCEPTIONS,
-			DISABLED_SERVER_SCREEN_CLOSING_PRINT
+			DISABLED_SERVER_SCREEN_CLOSING_PRINT,
+			PREVENT_OPENING_OF_SCREEN,
+			PREVENT_OPENING_OF_SCREEN_PRINT,
+			ALWAYS_CLOSE_ON_ESC
 		);
 
 		static {
