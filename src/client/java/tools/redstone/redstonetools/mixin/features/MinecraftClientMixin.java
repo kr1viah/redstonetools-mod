@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import tools.redstone.redstonetools.features.commands.OpenScreenFeature;
 import tools.redstone.redstonetools.malilib.config.Configs;
 
 @Mixin(MinecraftClient.class)
@@ -38,5 +39,7 @@ public class MinecraftClientMixin {
 		}
 		if (Configs.Kr1v.PREVENT_OPENING_OF_SCREEN_PRINT.getBooleanValue())
 			this.inGameHud.getChatHud().addMessage(Text.of("Allowed screen opening of class: " + currentScreenClass));
+		if (screen == null) return;
+		OpenScreenFeature.INSTANCE.savedScreens.put(currentScreenClass, screen);
 	}
 }

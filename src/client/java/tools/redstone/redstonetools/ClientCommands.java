@@ -20,6 +20,7 @@ public class ClientCommands {
 		PrintFeature.INSTANCE.registerCommand(dispatcher, registryAccess);
 		EditMacroFeature.INSTANCE.registerCommand(dispatcher, registryAccess);
 		MacroFeature.INSTANCE.registerCommand(dispatcher, registryAccess);
+		OpenScreenFeature.INSTANCE.registerCommand(dispatcher, registryAccess);
 		AirPlaceFeature.INSTANCE.registerCommand(dispatcher, registryAccess);
 		RstFeature.INSTANCE.registerCommand(dispatcher, registryAccess);
 		BigDustFeature.INSTANCE.registerCommand(dispatcher, registryAccess);
