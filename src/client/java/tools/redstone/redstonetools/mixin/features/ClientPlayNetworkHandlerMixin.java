@@ -2,6 +2,7 @@ package tools.redstone.redstonetools.mixin.features;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.fabricmc.fabric.impl.command.client.ClientCommandInternals;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommandSource;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.command.CommandRegistryAccess;
@@ -10,6 +11,7 @@ import net.minecraft.network.packet.s2c.play.CloseScreenS2CPacket;
 import net.minecraft.network.packet.s2c.play.CommandTreeS2CPacket;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.resource.featuretoggle.FeatureSet;
+import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -52,6 +54,23 @@ public class ClientPlayNetworkHandlerMixin {
 
 	@Inject(method = "onCloseScreen", at = @At("HEAD"), cancellable = true)
 	public void preventScreenClosing(CloseScreenS2CPacket packet, CallbackInfo ci) {
-		if (Configs.Kr1v.DISABLED_SERVER_SCREEN_CLOSING.getBooleanValue()) ci.cancel();
+		if (Configs.Kr1v.DISABLED_SERVER_SCREEN_CLOSING.getBooleanValue()) {
+			if (MinecraftClient.getInstance().currentScreen != null) {
+				String currentScreenClass = MinecraftClient.getInstance().currentScreen.getClass().getSimpleName();
+				boolean shouldPrevent = true;
+				for (String s : Configs.Kr1v.DISABLED_SCREEN_CLOSING_EXCEPTIONS.getStrings()) {
+					if (s.equals(currentScreenClass)) {
+						shouldPrevent = false;
+						break;
+					}
+				}
+				if (shouldPrevent) {
+					ci.cancel();
+					if (Configs.Kr1v.DISABLED_SERVER_SCREEN_CLOSING_PRINT.getBooleanValue()) {
+						MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Prevented closing of screen class: " + currentScreenClass));
+					}
+				}
+			}
+		}
 	}
 }

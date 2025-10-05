@@ -1,5 +1,6 @@
 package tools.redstone.redstonetools.malilib.config;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import fi.dy.masa.malilib.config.ConfigUtils;
@@ -19,12 +20,16 @@ public class Configs implements IConfigHandler {
 	private static final String CONFIG_FILE_NAME = RedstoneTools.MOD_ID + ".json";
 
 	public static class Kr1v {
-		public static final ConfigBoolean DISABLED_SERVER_SCREEN_CLOSING = new ConfigBooleanHotkeyed("Prevent servers from closing the screen", false, "", "");
 		public static final ConfigHotkey SHOW_CURSOR = new ConfigHotkey("Show cursor", "", "");
+		public static final ConfigBoolean DISABLED_SERVER_SCREEN_CLOSING = new ConfigBooleanHotkeyed("Prevent servers from closing the screen", false, "", "");
+		public static final ConfigStringList DISABLED_SCREEN_CLOSING_EXCEPTIONS = new ConfigStringList("Except for these", ImmutableList.of(), "");
+		public static final ConfigBoolean DISABLED_SERVER_SCREEN_CLOSING_PRINT = new ConfigBooleanHotkeyed("Print prevented screen closings", false, "", "");
 
 		public static final List<? extends IConfigBase> OPTIONS = List.of(
 			SHOW_CURSOR,
-			DISABLED_SERVER_SCREEN_CLOSING
+			DISABLED_SERVER_SCREEN_CLOSING,
+			DISABLED_SCREEN_CLOSING_EXCEPTIONS,
+			DISABLED_SERVER_SCREEN_CLOSING_PRINT
 		);
 
 		static {
