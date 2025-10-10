@@ -29,6 +29,13 @@ public class Configs implements IConfigHandler {
 		public static final ConfigStringList PREVENT_OPENING_OF_SCREEN = new ConfigStringList("Prevent these screens from opening", ImmutableList.of(), "");
 		public static final ConfigBoolean PREVENT_OPENING_OF_SCREEN_PRINT = new ConfigBooleanHotkeyed("Print screen openings that aren't prevented", false, "", "");
 		public static final ConfigBoolean ALWAYS_CLOSE_ON_ESC = new ConfigBooleanHotkeyed("Always close screens upon pressing escape", false, "", "");
+		public static final ConfigBoolean PERCENTAGE_DROPPED_PACKETS_C2S = new ConfigBooleanHotkeyed("Prevent C2S packets", false, "", "");
+		public static final ConfigBoolean PERCENTAGE_DROPPED_PACKETS_S2C = new ConfigBooleanHotkeyed("Prevent S2C packets", false, "", "");
+		public static final ConfigDouble  PERCENTAGE_DROPPED_PACKETS = new ConfigDouble("Amount of packets to drop (0 = none, 1 = all)", 0, 0, 1, true, "");
+		public static final ConfigDouble  PERCENTAGE_DELAYED_PACKETS = new ConfigDouble("Amount of packets to lag (0 = none, 1 = all)", 0, 0, 1, true, "");
+		public static final ConfigDouble  PERCENTAGE_DELAYED_PACKETS_TIME = new ConfigDouble("Lag (in seconds)", 0, 0, 1, true, "");
+		public static final ConfigStringList PERCENTAGE_DROPPED_PACKETS_IGNORE = new ConfigStringList("Prevent these packets from getting prevented", ImmutableList.of("HandshakeC2SPacket", "LoginHelloC2SPacket", "LoginSuccessS2CPacket", "EnterConfigurationC2SPacket", "CustomPayloadC2SPacket", "CustomPayloadS2CPacket", "ClientOptionsC2SPacket", "CommonPingS2CPacket", "CommonPongC2SPacket", "FeaturesS2CPacket", "SelectKnownPacksS2CPacket", "SelectKnownPacksC2SPacket"), "");
+		public static final ConfigBoolean PERCENTAGE_DROPPED_PACKETS_PRINT = new ConfigBooleanHotkeyed("Print prevented packets", false, "", "");
 
 		public static final List<? extends IConfigBase> OPTIONS = List.of(
 			SHOW_CURSOR,
@@ -37,6 +44,11 @@ public class Configs implements IConfigHandler {
 			DISABLED_SERVER_SCREEN_CLOSING_PRINT,
 			PREVENT_OPENING_OF_SCREEN,
 			PREVENT_OPENING_OF_SCREEN_PRINT,
+			PERCENTAGE_DROPPED_PACKETS_C2S,
+			PERCENTAGE_DROPPED_PACKETS_S2C,
+			PERCENTAGE_DROPPED_PACKETS,
+			PERCENTAGE_DROPPED_PACKETS_IGNORE,
+			PERCENTAGE_DROPPED_PACKETS_PRINT,
 			ALWAYS_CLOSE_ON_ESC
 		);
 

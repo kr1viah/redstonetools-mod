@@ -6,7 +6,7 @@ import tools.redstone.redstonetools.features.toggleable.AutoRotateClient;
 import tools.redstone.redstonetools.features.toggleable.ClickContainerClient;
 
 public class RedstoneToolsClientPackets {
-	public static void registerPackets() {
+public static void registerPackets() {
 		AutoDustClient.registerHandler();
 		AutoRotateClient.registerHandler();
 		ClickContainerClient.registerHandler();
