@@ -16,7 +16,7 @@ public class AutoDustFeature extends ToggleableFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-			dispatcher.register(literal("autodust").executes(this::execute));
+		dispatcher.register(literal("autodust").executes(this::execute));
 	}
 
 	private int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {

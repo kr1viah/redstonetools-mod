@@ -19,10 +19,10 @@ public class ItemUtils {
 		if (!(type instanceof BlockItem blockItem))
 			return null;
 		return blockItem.getBlock().getPlacementState(new ItemPlacementContext(
-				player,
-				player.getActiveHand(),
-				stack,
-				RaycastUtils.rayCastFromEye(player, reach)
+			player,
+			player.getActiveHand(),
+			stack,
+			RaycastUtils.rayCastFromEye(player, reach)
 		));
 	}
 

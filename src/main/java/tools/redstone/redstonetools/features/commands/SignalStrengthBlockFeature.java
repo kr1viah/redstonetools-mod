@@ -28,13 +28,13 @@ public class SignalStrengthBlockFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-			dispatcher.register(literal("ssb")
-				.requires(source -> source.hasPermissionLevel(2))
+		dispatcher.register(literal("ssb")
+			.requires(source -> source.hasPermissionLevel(2))
+			.executes(this::parseArguments)
+			.then(argument("signalStrength", IntegerArgumentType.integer())
 				.executes(this::parseArguments)
-				.then(argument("signalStrength", IntegerArgumentType.integer())
-						.executes(this::parseArguments)
-						.then(argument("block", StringArgumentType.string()).suggests(ArgumentUtils.SIGNAL_BLOCK_SUGGESTION_PROVIDER)
-								.executes(this::parseArguments))));
+				.then(argument("block", StringArgumentType.string()).suggests(ArgumentUtils.SIGNAL_BLOCK_SUGGESTION_PROVIDER)
+					.executes(this::parseArguments))));
 	}
 
 	protected int parseArguments(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
@@ -67,11 +67,11 @@ public class SignalStrengthBlockFeature {
 		//funny
 		if (signalStrength == 0) {
 			String[] funny = {
-					"Why would you want this??", "Wtf are you going to use this for?", "What for?",
-					"... Ok, if you're sure.", "I'm 99% sure you could just use any other block.",
-					"This seems unnecessary.", "Is that a typo?", "Do you just like the glint?",
-					"Wow, what a fancy but otherwise useless " + block.name().toLowerCase(Locale.ROOT).replace("_", " ") + "."
-					, "For decoration?"};
+				"Why would you want this??", "Wtf are you going to use this for?", "What for?",
+				"... Ok, if you're sure.", "I'm 99% sure you could just use any other block.",
+				"This seems unnecessary.", "Is that a typo?", "Do you just like the glint?",
+				"Wow, what a fancy but otherwise useless " + block.name().toLowerCase(Locale.ROOT).replace("_", " ") + "."
+				, "For decoration?"};
 			context.getSource().sendMessage(Text.literal(funny[new Random().nextInt(funny.length)]));
 			return 1;
 		}

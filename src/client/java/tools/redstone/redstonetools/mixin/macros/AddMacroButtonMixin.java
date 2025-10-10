@@ -26,7 +26,7 @@ public abstract class AddMacroButtonMixin extends GameOptionsScreen {
 
 			GuiConfigs.tab = GuiConfigs.ConfigGuiTab.MACROS;
 			MinecraftClient.getInstance().setScreen(
-					new GuiMacroManager());
+				new GuiMacroManager());
 		}).build(), null);
 	}
 }

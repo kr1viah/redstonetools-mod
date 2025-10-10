@@ -14,7 +14,7 @@ public class AutoRotateFeature extends ToggleableFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-			dispatcher.register(literal("autorotate").executes(this::toggle));
+		dispatcher.register(literal("autorotate").executes(this::toggle));
 	}
 
 	@Override

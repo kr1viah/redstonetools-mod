@@ -13,14 +13,14 @@ public class PrintFeature {
 	public static final PrintFeature INSTANCE = new PrintFeature();
 
 	public void registerCommand(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
-			dispatcher.register(literal("print")
-				.then(argument("text", StringArgumentType.greedyString())
-					.executes((context -> {
-							context.getSource().sendFeedback(Text.of(StringArgumentType.getString(context, "text")));
-							return 1;
-						})
-					)
+		dispatcher.register(literal("print")
+			.then(argument("text", StringArgumentType.greedyString())
+				.executes((context -> {
+						context.getSource().sendFeedback(Text.of(StringArgumentType.getString(context, "text")));
+						return 1;
+					})
 				)
+			)
 		);
 	}
 }

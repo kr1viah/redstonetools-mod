@@ -41,18 +41,18 @@ public class RStackFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-			dispatcher.register(
-				literal("/rstack")
-					.requires(source -> source.hasPermissionLevel(2))
-					.executes(getCommandForArgumentCount(0))
-					.then(argument("count", IntegerArgumentType.integer())
-						.executes(getCommandForArgumentCount(1))
-						.then(argument("direction", StringArgumentType.string()).suggests(ArgumentUtils.DIRECTION_SUGGESTION_PROVIDER)
-							.executes(getCommandForArgumentCount(2))
-							.then(argument("offset", IntegerArgumentType.integer())
-								.executes(getCommandForArgumentCount(3))
-								.then(argument("moveSelection", BoolArgumentType.bool())
-									.executes(getCommandForArgumentCount(4)))))));
+		dispatcher.register(
+			literal("/rstack")
+				.requires(source -> source.hasPermissionLevel(2))
+				.executes(getCommandForArgumentCount(0))
+				.then(argument("count", IntegerArgumentType.integer())
+					.executes(getCommandForArgumentCount(1))
+					.then(argument("direction", StringArgumentType.string()).suggests(ArgumentUtils.DIRECTION_SUGGESTION_PROVIDER)
+						.executes(getCommandForArgumentCount(2))
+						.then(argument("offset", IntegerArgumentType.integer())
+							.executes(getCommandForArgumentCount(3))
+							.then(argument("moveSelection", BoolArgumentType.bool())
+								.executes(getCommandForArgumentCount(4)))))));
 	}
 
 	protected Command<ServerCommandSource> getCommandForArgumentCount(int argNum) {
@@ -71,8 +71,8 @@ public class RStackFeature {
 		var actor = FabricAdapter.adaptPlayer(Objects.requireNonNull(context.getSource().getPlayer()));
 
 		var localSession = WorldEdit.getInstance()
-				.getSessionManager()
-				.get(actor);
+			.getSessionManager()
+			.get(actor);
 
 		final var selectionWorld = localSession.getSelectionWorld();
 		assert selectionWorld != null;
@@ -111,10 +111,10 @@ public class RStackFeature {
 			for (var i = 1; i <= count; i++) {
 				BlockVector3 offsetVector = Objects.requireNonNull(stackVector).multiply(i * offset);
 				var copy = new ForwardExtentCopy(
-						editSession,
-						selection,
-						editSession,
-						selection.getMinimumPoint().add(offsetVector)
+					editSession,
+					selection,
+					editSession,
+					selection.getMinimumPoint().add(offsetVector)
 				);
 				copy.setSourceMask(airFilter);
 				copy.setSourceFunction(position -> false);

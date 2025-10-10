@@ -6,9 +6,10 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import org.jetbrains.annotations.Nullable;
 
 public class ConfigLabel implements IConfigBase {
-	String comment;
-	public ConfigLabel(String comment) {
-		this.comment = comment;
+	String label;
+
+	public ConfigLabel(String label) {
+		this.label = label;
 	}
 
 	@Override
@@ -18,33 +19,38 @@ public class ConfigLabel implements IConfigBase {
 
 	@Override
 	public String getName() {
-		return comment;
+		return label;
 	}
 
 	@Override
 	public @Nullable String getComment() {
-		return comment;
+		return label;
 	}
 
 	@Override
 	public String getTranslatedName() {
-		return comment;
+		return label;
 	}
 
 	@Override
-	public void setPrettyName(String s) {}
+	public void setPrettyName(String s) {
+	}
 
 	@Override
-	public void setTranslatedName(String s) {}
+	public void setTranslatedName(String s) {
+	}
 
 	@Override
 	public void setComment(String s) {
-		comment = s;
+		label = s;
 	}
 
 	@Override
-	public void setValueFromJsonElement(JsonElement jsonElement) {}
+	public void setValueFromJsonElement(JsonElement jsonElement) {
+	}
 
 	@Override
-	public JsonElement getAsJsonElement() {return null;}
+	public JsonElement getAsJsonElement() {
+		return null;
+	}
 }

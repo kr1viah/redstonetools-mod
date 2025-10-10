@@ -15,12 +15,12 @@ public class RstFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
-			dispatcher.register(ClientCommandManager.literal("rst")
-				.executes(commandContext -> {
-					MinecraftClient.getInstance().send(() -> MinecraftClient.getInstance().setScreen(new GuiConfigs()));
-					if (GuiConfigs.tab == GuiConfigs.ConfigGuiTab.MACROS)
-						GuiConfigs.tab = GuiConfigs.ConfigGuiTab.GENERAL;
-					return 1;
-				}));
+		dispatcher.register(ClientCommandManager.literal("rst")
+			.executes(commandContext -> {
+				MinecraftClient.getInstance().send(() -> MinecraftClient.getInstance().setScreen(new GuiConfigs()));
+				if (GuiConfigs.tab == GuiConfigs.ConfigGuiTab.MACROS)
+					GuiConfigs.tab = GuiConfigs.ConfigGuiTab.GENERAL;
+				return 1;
+			}));
 	}
 }

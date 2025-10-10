@@ -19,11 +19,11 @@ public abstract class AutoRotateMixin {
 
 	@ModifyReturnValue(method = "getPlacementState", at = @At("RETURN"))
 	private BlockState changeRotation(BlockState original, @Local(argsOnly = true) ItemPlacementContext context) {
-		if (!(context.getPlayer() instanceof ServerPlayerEntity player))         return original;
-		if (player.getServer() == null)                                          return original;
-		if (!player.getServer().isDedicated())                                   return original;
+		if (!(context.getPlayer() instanceof ServerPlayerEntity player)) return original;
+		if (player.getServer() == null) return original;
+		if (!player.getServer().isDedicated()) return original;
 		if (!AutoRotateFeature.INSTANCE.isEnabled(player)) return original;
-		if (original == null)                                                    return null;
+		if (original == null) return null;
 
 		BlockState backup = original;
 		original = BlockUtils.rotate(original);

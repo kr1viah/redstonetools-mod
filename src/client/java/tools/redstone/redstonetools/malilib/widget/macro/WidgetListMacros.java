@@ -10,6 +10,7 @@ import java.util.Collection;
 
 public class WidgetListMacros extends WidgetListBase<MacroBase, WidgetMacroEntry> {
 	public GuiMacroManager parent;
+
 	public WidgetListMacros(int x, int y, int width, int height, GuiMacroManager parent,
 							@Nullable ISelectionListener<MacroBase> selectionListener) {
 		super(x, y, width, height, selectionListener);
@@ -27,10 +28,10 @@ public class WidgetListMacros extends WidgetListBase<MacroBase, WidgetMacroEntry
 		WidgetMacroEntry temp;
 		try {
 			temp = new WidgetMacroEntry8(x, y, this.browserEntryWidth,
-					this.getBrowserEntryHeightFor(entry), isOdd, entry, listIndex, this);
+				this.getBrowserEntryHeightFor(entry), isOdd, entry, listIndex, this);
 		} catch (NoSuchMethodError ignored) {
 			temp = new WidgetMacroEntry4(x, y, this.browserEntryWidth,
-					this.getBrowserEntryHeightFor(entry), isOdd, entry, listIndex, this);
+				this.getBrowserEntryHeightFor(entry), isOdd, entry, listIndex, this);
 		}
 		return temp;
 	}

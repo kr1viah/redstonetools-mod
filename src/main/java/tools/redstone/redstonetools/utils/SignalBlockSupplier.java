@@ -51,8 +51,8 @@ public interface SignalBlockSupplier {
 
 	private static int getItemsNeeded(int slots, int signalStrength, Item item) {
 		int itemsNeeded = Math.max(0, signalStrength == 1
-				? 1
-				: (int) Math.ceil(slots * (signalStrength - 1) / 14D * item.getMaxCount()));
+			? 1
+			: (int) Math.ceil(slots * (signalStrength - 1) / 14D * item.getMaxCount()));
 
 		// Check that the calculated number of items is correct.
 		// This is to prevent problems with items that have a maximum stack size of 1 but stackSize > 1.

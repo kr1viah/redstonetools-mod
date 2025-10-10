@@ -22,14 +22,14 @@ public class RedstoneToolsClient implements ClientModInitializer {
 				String dimensionChange = Configs.ClientData.AUTORUN_DIMENSION_CHANGE.getStringValue();
 				if (dimensionChange.startsWith("/")) {
 					client.getNetworkHandler().sendChatCommand(dimensionChange.substring(1));
-				} else if (!dimensionChange.isEmpty()){
+				} else if (!dimensionChange.isEmpty()) {
 					client.getNetworkHandler().sendChatMessage(dimensionChange);
 				}
 			} else { // world entry
 				String worldEntry = Configs.ClientData.AUTORUN_WORLD_ENTRY.getStringValue();
 				if (worldEntry.startsWith("/")) {
 					client.send(() -> client.getNetworkHandler().sendChatCommand(worldEntry.substring(1)));
-				} else if (!worldEntry.isEmpty()){
+				} else if (!worldEntry.isEmpty()) {
 					client.send(() -> client.getNetworkHandler().sendChatMessage(worldEntry));
 				}
 				if (hasRanCommands) return;

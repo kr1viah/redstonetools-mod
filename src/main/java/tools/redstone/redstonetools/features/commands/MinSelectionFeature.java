@@ -31,9 +31,9 @@ public class MinSelectionFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-			dispatcher.register(literal("/minsel")
-				.requires(source -> source.hasPermissionLevel(2))
-				.executes(this::execute));
+		dispatcher.register(literal("/minsel")
+			.requires(source -> source.hasPermissionLevel(2))
+			.executes(this::execute));
 	}
 
 	protected int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
@@ -43,8 +43,8 @@ public class MinSelectionFeature {
 		var actor = FabricAdapter.adaptPlayer(Objects.requireNonNull(context.getSource().getPlayer()));
 
 		var localSession = WorldEdit.getInstance()
-				.getSessionManager()
-				.get(actor);
+			.getSessionManager()
+			.get(actor);
 
 		var selector = localSession.getRegionSelector(selectionWorld);
 
@@ -70,7 +70,7 @@ public class MinSelectionFeature {
 	}
 
 	private void minimiseSelection(World selectionWorld, Region selection)
-			throws CommandSyntaxException {
+		throws CommandSyntaxException {
 		List<BlockVector3> changes = new ArrayList<>();
 		var faces = getFaces(selection);
 		var finished = true;
@@ -81,7 +81,7 @@ public class MinSelectionFeature {
 			for (BlockVector3 point : face) {
 				assert BlockTypes.AIR != null;
 				if (selectionWorld.getBlock(point).getBlockType().getDefaultState() != BlockTypes.AIR
-						.getDefaultState()) {
+					.getDefaultState()) {
 					isOnlyAir = false;
 					break;
 				}

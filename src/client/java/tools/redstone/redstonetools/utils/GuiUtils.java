@@ -90,6 +90,7 @@ public class GuiUtils {
 			return x1 == x && y1 == y && height1 == height && width1 == width;
 		}
 	}
+
 	// if any of these are -1, assume they aren't bound in that direction
 	public record MinMaxLayout(int minWidth, int maxWidth, int minHeight, int maxHeight) {
 		@Override

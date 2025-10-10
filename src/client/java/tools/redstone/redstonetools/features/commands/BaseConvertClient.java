@@ -13,15 +13,16 @@ public class BaseConvertClient {
 
 	protected BaseConvertClient() {
 	}
+
 	public void registerCommand(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
-			dispatcher.register(
+		dispatcher.register(
 			ClientCommandManager.literal("base")
 				.then(ClientCommandManager.argument("inputNum", StringArgumentType.word())
-						.then(ClientCommandManager.argument("toBase", IntegerArgumentType.integer(2, 16))
-								.executes(context -> BaseConvertFeature.INSTANCE.execute(
-									StringArgumentType.getString(context, "inputNum"),
-									IntegerArgumentType.getInteger(context, "toBase"),
-									(t) -> context.getSource().sendFeedback(t)
-									)))));
+					.then(ClientCommandManager.argument("toBase", IntegerArgumentType.integer(2, 16))
+						.executes(context -> BaseConvertFeature.INSTANCE.execute(
+							StringArgumentType.getString(context, "inputNum"),
+							IntegerArgumentType.getInteger(context, "toBase"),
+							(t) -> context.getSource().sendFeedback(t)
+						)))));
 	}
 }

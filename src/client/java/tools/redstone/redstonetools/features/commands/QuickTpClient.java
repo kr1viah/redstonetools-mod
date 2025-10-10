@@ -16,7 +16,7 @@ public class QuickTpClient {
 	}
 
 	public void registerCommand(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
-			dispatcher.register(
+		dispatcher.register(
 			literal("quicktp")
 				.requires(source -> source.getPlayer().hasPermissionLevel(2))
 				.executes(context -> this.execute(

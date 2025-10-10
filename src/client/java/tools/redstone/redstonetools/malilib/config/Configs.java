@@ -41,7 +41,7 @@ public class Configs implements IConfigHandler {
 		public static final ConfigLabel 			MISC_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			MISC_LABEL = new ConfigLabel("Miscellaneous  related configs");
 		public static final ConfigHotkey 			SHOW_CURSOR = new ConfigHotkey("Show cursor", "", "");
-		public static final ConfigBooleanHotkeyed ALWAYS_CLOSE_BUTTON = new ConfigBooleanHotkeyed("Always close screens upon pressing escape", false, "", "");
+		public static final ConfigBooleanHotkeyed 	ALWAYS_CLOSE_BUTTON = new ConfigBooleanHotkeyed("Always close screens upon pressing escape", false, "", "");
 
 		public static final ConfigLabel 			DEBUG_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			DEBUG_LABEL = new ConfigLabel("Debug related configs");
@@ -84,7 +84,7 @@ public class Configs implements IConfigHandler {
 
 			for (IConfigBase config : OPTIONS) {
 				if (config instanceof ConfigBooleanHotkeyed cbh) {
-					if (((KeybindMulti)cbh.getKeybind()).getCallback() == null) {
+					if (((KeybindMulti) cbh.getKeybind()).getCallback() == null) {
 						cbh.getKeybind().setCallback((keyAction, keybind) -> {
 							cbh.setBooleanValue(!cbh.getBooleanValue());
 							return true;

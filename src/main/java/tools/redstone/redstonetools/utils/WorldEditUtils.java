@@ -18,8 +18,8 @@ public class WorldEditUtils {
 		var actor = FabricAdapter.adaptPlayer(player);
 
 		var localSession = WorldEdit.getInstance()
-				.getSessionManager()
-				.get(actor);
+			.getSessionManager()
+			.get(actor);
 
 		var selectionWorld = localSession.getSelectionWorld();
 

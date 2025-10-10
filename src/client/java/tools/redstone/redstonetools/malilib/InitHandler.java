@@ -16,7 +16,7 @@ public class InitHandler implements IInitializationHandler {
 		ConfigManager.getInstance().registerConfigHandler(RedstoneTools.MOD_ID, new Configs());
 
 		Registry.CONFIG_SCREEN.registerConfigScreenFactory(
-				new ModInfo(RedstoneTools.MOD_ID, RedstoneTools.MOD_NAME, GuiConfigs::new)
+			new ModInfo(RedstoneTools.MOD_ID, RedstoneTools.MOD_NAME, GuiConfigs::new)
 		);
 		InputEventHandler.getKeybindManager().registerKeybindProvider(InputHandler.getInstance());
 		InputEventHandler.getInputManager().registerKeyboardInputHandler(InputHandler.getInstance());

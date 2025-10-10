@@ -22,7 +22,7 @@ public class BaseConvertFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-			dispatcher.register(CommandManager.literal("base")
+		dispatcher.register(CommandManager.literal("base")
 			.then(CommandManager.argument("inputNum", StringArgumentType.word())
 				.then(CommandManager.argument("toBase", IntegerArgumentType.integer(2, 16))
 					.executes(context -> BaseConvertFeature.INSTANCE.execute(

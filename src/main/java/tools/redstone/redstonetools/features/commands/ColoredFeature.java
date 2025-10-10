@@ -12,6 +12,7 @@ import tools.redstone.redstonetools.utils.ArgumentUtils;
 import tools.redstone.redstonetools.utils.BlockColor;
 import tools.redstone.redstonetools.utils.BlockInfo;
 import tools.redstone.redstonetools.utils.ColoredBlockType;
+
 import javax.annotation.Nullable;
 
 public class ColoredFeature extends PickBlockFeature {
@@ -21,11 +22,11 @@ public class ColoredFeature extends PickBlockFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-			dispatcher.register(CommandManager.literal("colored")
-				.requires(source -> source.hasPermissionLevel(2))
-				.executes(this::execute)
-				.then(CommandManager.argument("blockType", StringArgumentType.string()).suggests(ArgumentUtils.COLORED_BLOCK_TYPE_SUGGESTION_PROVIDER)
-					.executes(this::execute)));
+		dispatcher.register(CommandManager.literal("colored")
+			.requires(source -> source.hasPermissionLevel(2))
+			.executes(this::execute)
+			.then(CommandManager.argument("blockType", StringArgumentType.string()).suggests(ArgumentUtils.COLORED_BLOCK_TYPE_SUGGESTION_PROVIDER)
+				.executes(this::execute)));
 	}
 
 	public static ColoredBlockType blockType;
@@ -36,8 +37,8 @@ public class ColoredFeature extends PickBlockFeature {
 
 	protected ItemStack getItemStack(CommandContext<ServerCommandSource> context, @Nullable BlockInfo blockInfo) {
 		var color = blockInfo == null
-				? BlockColor.WHITE
-				: BlockColor.fromBlock(blockInfo.block);
+			? BlockColor.WHITE
+			: BlockColor.fromBlock(blockInfo.block);
 
 		var coloredBlock = blockType.withColor(color);
 

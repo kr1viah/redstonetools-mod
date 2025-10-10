@@ -35,7 +35,7 @@ public class ClickContainerFeature extends ToggleableFeature {
 
 			ItemStack stack = player.getStackInHand(hand);
 			if (!stack.isEmpty() ||
-			stack.getItem() instanceof BlockItem) return ActionResult.PASS;
+				stack.getItem() instanceof BlockItem) return ActionResult.PASS;
 
 			BlockPos pos = hitResult.getBlockPos();
 			BlockState state = world.getBlockState(pos);
@@ -92,7 +92,7 @@ public class ClickContainerFeature extends ToggleableFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-			dispatcher.register(literal("clickcontainers").executes(this::toggle));
+		dispatcher.register(literal("clickcontainers").executes(this::toggle));
 	}
 
 	@Override

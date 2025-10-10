@@ -15,10 +15,10 @@ public class EditMacroFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
-			dispatcher.register(ClientCommandManager.literal("edit-macros")
-				.executes(commandContext -> {
-					MinecraftClient.getInstance().send(() -> MinecraftClient.getInstance().setScreen(new GuiMacroManager()));
-					return 1;
-				}));
+		dispatcher.register(ClientCommandManager.literal("edit-macros")
+			.executes(commandContext -> {
+				MinecraftClient.getInstance().send(() -> MinecraftClient.getInstance().setScreen(new GuiMacroManager()));
+				return 1;
+			}));
 	}
 }

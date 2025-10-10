@@ -73,7 +73,7 @@ public class WidgetMacroEntry4 extends WidgetMacroEntry {
 		}
 	}
 
-//  @Override
+	//  @Override
 	public void render(int mouseX, int mouseY, boolean selected, DrawContext context) {
 		if (selected || this.isMouseOver(mouseX, mouseY)) {
 			invokedrawRect(this.x, this.y, this.width, this.height, 0x70FFFFFF);
@@ -87,7 +87,7 @@ public class WidgetMacroEntry4 extends WidgetMacroEntry {
 		invokerender(mouseX, mouseY, selected, context);
 	}
 
-//  @Override
+	//  @Override
 	public void postRenderHovered(int mouseX, int mouseY, boolean selected, DrawContext context) {
 		invokepostRenderHovered(mouseX, mouseY, selected, context);
 	}

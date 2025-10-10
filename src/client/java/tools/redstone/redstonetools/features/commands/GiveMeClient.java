@@ -18,7 +18,7 @@ public class GiveMeClient {
 	}
 
 	public void registerCommand(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
-			dispatcher.register(
+		dispatcher.register(
 			literal("g")
 				.requires(source -> source.getPlayer().hasPermissionLevel(2))
 				.then(argument("item", ItemStackArgumentType.itemStack(registryAccess))

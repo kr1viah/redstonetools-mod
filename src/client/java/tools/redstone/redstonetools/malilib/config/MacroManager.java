@@ -119,13 +119,13 @@ public class MacroManager {
 				"/time set noon",
 				"/weather clear"
 			}),
-			createCommandMacro("copystate", new String[]{"/copystate" }),
-			createCommandMacro("itembind", new String[]{"/itembind" }),
-			createCommandMacro("minsel", new String[]{"//minsel" }),
-			createCommandMacro("quicktp", new String[]{"/quicktp" }),
-			createCommandMacro("binaryblockread", new String[]{"//binaryblockread" }),
-			createCommandMacro("rstack", new String[]{"//rstack" }),
-			createCommandMacro("update", new String[]{"//update" })
+			createCommandMacro("copystate", new String[]{"/copystate"}),
+			createCommandMacro("itembind", new String[]{"/itembind"}),
+			createCommandMacro("minsel", new String[]{"//minsel"}),
+			createCommandMacro("quicktp", new String[]{"/quicktp"}),
+			createCommandMacro("binaryblockread", new String[]{"//binaryblockread"}),
+			createCommandMacro("rstack", new String[]{"//rstack"}),
+			createCommandMacro("update", new String[]{"//update"})
 		));
 	}
 

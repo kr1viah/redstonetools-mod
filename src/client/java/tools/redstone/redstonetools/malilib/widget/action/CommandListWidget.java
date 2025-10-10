@@ -89,7 +89,7 @@ public class CommandListWidget extends EntryListWidget<CommandListWidget.Command
 	@Override
 	public boolean mouseReleased(double mouseX, double mouseY, int button) {
 		if (this.getSelectedOrNull() != null) {
-			return this.getSelectedOrNull().mouseReleased(mouseX, mouseY ,button);
+			return this.getSelectedOrNull().mouseReleased(mouseX, mouseY, button);
 		}
 		return super.mouseReleased(mouseX, mouseY, button);
 	}
@@ -221,12 +221,12 @@ public class CommandListWidget extends EntryListWidget<CommandListWidget.Command
 		@Override
 		public boolean mouseClicked(double mouseX, double mouseY, int button) {
 			if (commandWidget.mouseClicked(mouseX, mouseY, button)) return true;
-			else return removeButton.onMouseClicked((int)mouseX, (int)mouseY, button);
+			else return removeButton.onMouseClicked((int) mouseX, (int) mouseY, button);
 		}
 
 		@Override
 		public boolean mouseReleased(double mouseX, double mouseY, int button) {
-			return commandWidget.mouseReleased(mouseX, mouseY ,button);
+			return commandWidget.mouseReleased(mouseX, mouseY, button);
 		}
 
 		@Override

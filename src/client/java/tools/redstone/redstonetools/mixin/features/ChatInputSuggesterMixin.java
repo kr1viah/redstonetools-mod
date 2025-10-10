@@ -28,13 +28,13 @@ public class ChatInputSuggesterMixin {
 		shouldReturn = !Configs.ClientData.ENABLE_MATH_VARIABLES.getBooleanValue() || StringUtils.insertVariablesAndMath(textField.getText()).length() < textField.getText().length();
 		if (shouldReturn) return;
 		unmodifiedCommand.add(textField.getText());
-		((TextFieldAccessor)textField).setText2(StringUtils.insertVariablesAndMath(textField.getText()));
+		((TextFieldAccessor) textField).setText2(StringUtils.insertVariablesAndMath(textField.getText()));
 	}
 
 	@Inject(method = "refresh", at = @At("RETURN"))
 	private void mrawww(CallbackInfo ci) {
 		if (shouldReturn) return;
-		((TextFieldAccessor)textField).setText2(unmodifiedCommand.getLast());
+		((TextFieldAccessor) textField).setText2(unmodifiedCommand.getLast());
 		unmodifiedCommand.removeLast();
 	}
 }

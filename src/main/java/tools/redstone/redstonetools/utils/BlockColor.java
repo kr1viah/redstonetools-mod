@@ -30,17 +30,17 @@ public enum BlockColor {
 
 	public static BlockColor fromString(String name) {
 		return Arrays.stream(BlockColor.values())
-				.filter(color -> color.name.equals(name))
-				.findFirst()
-				.orElseThrow();
+			.filter(color -> color.name.equals(name))
+			.findFirst()
+			.orElseThrow();
 	}
 
 	public static BlockColor fromBlock(Block block) {
 		var coloredBlock = ColoredBlock.fromBlock(block);
 
 		return coloredBlock == null
-				? BlockColor.WHITE
-				: coloredBlock.color;
+			? BlockColor.WHITE
+			: coloredBlock.color;
 	}
 
 	@Override

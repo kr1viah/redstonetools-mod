@@ -127,6 +127,7 @@ public class GuiMacroEditor extends Screen {
 					return super.onMouseClicked(mx, my, mb);
 				}
 			}
+
 			@Override
 			public void onClearSelection() {
 				this.firstKey = true;
@@ -187,26 +188,22 @@ public class GuiMacroEditor extends Screen {
 				this.getFocused().setFocused(false);
 			}
 			return true;
-		}
-		else if (buttonEnabled.onMouseClicked((int) mouseX, (int) mouseY, button)) {
+		} else if (buttonEnabled.onMouseClicked((int) mouseX, (int) mouseY, button)) {
 			if (this.getFocused() != null) {
 				this.getFocused().setFocused(false);
 			}
 			return true;
-		}
-		else if (buttonMuted.onMouseClicked((int) mouseX, (int) mouseY, button)) {
+		} else if (buttonMuted.onMouseClicked((int) mouseX, (int) mouseY, button)) {
 			if (this.getFocused() != null) {
 				this.getFocused().setFocused(false);
 			}
 			return true;
-		}
-		else if (widgetAdvancedKeybindSettings.onMouseClicked((int) mouseX, (int) mouseY, button)) {
+		} else if (widgetAdvancedKeybindSettings.onMouseClicked((int) mouseX, (int) mouseY, button)) {
 			if (this.getFocused() != null) {
 				this.getFocused().setFocused(false);
 			}
 			return true;
-		}
-		else if (super.mouseClicked(mouseX, mouseY, button)) return true;
+		} else if (super.mouseClicked(mouseX, mouseY, button)) return true;
 		else return commandList.mouseClicked(mouseX, mouseY, button);
 	}
 

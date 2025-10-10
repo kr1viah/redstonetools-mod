@@ -32,6 +32,7 @@ public class ClientPlayNetworkHandlerMixin {
 		DependencyLookup.REDSTONE_TOOLS_SERVER_PRESENT = !parse.getReader().canRead();
 		ClientCommands.registerCommands(ClientCommandInternals.getActiveDispatcher(), CommandRegistryAccess.of(this.combinedDynamicRegistries, this.enabledFeatures));
 	}
+
 	@Shadow
 	private CommandDispatcher<CommandSource> commandDispatcher;
 

@@ -26,7 +26,7 @@ public enum ColoredBlockType {
 
 	public ColoredBlock withColor(BlockColor color) {
 		return ColoredBlock.fromBlock(toBlock())
-				.withColor(color);
+			.withColor(color);
 	}
 
 	public String toBlockId() {

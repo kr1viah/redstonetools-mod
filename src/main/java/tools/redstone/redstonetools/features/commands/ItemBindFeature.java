@@ -25,11 +25,11 @@ public class ItemBindFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-			dispatcher.register(literal("itembind")
-				.requires(source -> source.hasPermissionLevel(2))
-				.executes(this::execute)
-				.then(literal("reset")
-					.executes(ItemBindFeature::executeReset)));
+		dispatcher.register(literal("itembind")
+			.requires(source -> source.hasPermissionLevel(2))
+			.executes(this::execute)
+			.then(literal("reset")
+				.executes(ItemBindFeature::executeReset)));
 	}
 
 	private static int executeReset(CommandContext<ServerCommandSource> context) {

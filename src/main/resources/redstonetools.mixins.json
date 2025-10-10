@@ -1,18 +1,18 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "tools.redstone.redstonetools.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "mixins": [
-    "AbstractBlockMixin",
-    "features.AutoDustMixin",
-    "features.AutoRotateMixin",
-    "features.CommandManagerMixin",
-    "features.PlayerInventoryAccessor",
-    "features.ServerPlayNetworkHandlerAccessor",
-    "gamerules.DoContainerDropsMixin"
-  ]
+	"required": true,
+	"minVersion": "0.8",
+	"package": "tools.redstone.redstonetools.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"mixins": [
+		"AbstractBlockMixin",
+		"features.AutoDustMixin",
+		"features.AutoRotateMixin",
+		"features.CommandManagerMixin",
+		"features.PlayerInventoryAccessor",
+		"features.ServerPlayNetworkHandlerAccessor",
+		"gamerules.DoContainerDropsMixin"
+	]
 }

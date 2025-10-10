@@ -31,8 +31,8 @@ public enum SignalBlock {
 
 	public static SignalBlock getBestBlock(int signal) {
 		return signal < 1780
-				? BARREL
-				: COMMAND_BLOCK;
+			? BARREL
+			: COMMAND_BLOCK;
 	}
 
 	public ItemStack getItemStack(int signal) {

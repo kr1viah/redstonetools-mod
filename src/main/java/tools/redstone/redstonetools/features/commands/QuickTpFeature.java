@@ -30,21 +30,22 @@ public class QuickTpFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-			dispatcher.register(literal("quicktp")
-				.requires(source -> source.hasPermissionLevel(2))
+		dispatcher.register(literal("quicktp")
+			.requires(source -> source.hasPermissionLevel(2))
+			.executes(this::parseArguments)
+			.then(argument("distance", DoubleArgumentType.doubleArg())
 				.executes(this::parseArguments)
-				.then(argument("distance", DoubleArgumentType.doubleArg())
-						.executes(this::parseArguments)
-						.then(argument("throughFluids", BoolArgumentType.bool())
-								.executes(this::parseArguments)
-								.then(argument("resetVelocity", BoolArgumentType.bool())
-										.executes(this::parseArguments)))));
+				.then(argument("throughFluids", BoolArgumentType.bool())
+					.executes(this::parseArguments)
+					.then(argument("resetVelocity", BoolArgumentType.bool())
+						.executes(this::parseArguments)))));
 	}
 
 	protected int parseArguments(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
 		var player = context.getSource().getPlayer();
 
-		if (quicktpingForPlayer.contains(player)) throw new SimpleCommandExceptionType(Text.literal("Already doing a quicktp!")).create();
+		if (quicktpingForPlayer.contains(player))
+			throw new SimpleCommandExceptionType(Text.literal("Already doing a quicktp!")).create();
 		quicktpingForPlayer.add(player);
 		double distance;
 		boolean includeFluids;

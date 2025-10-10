@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GuiMacroManager extends GuiListBase<MacroBase, WidgetMacroEntry, WidgetListMacros>
-		implements ISelectionListener<MacroBase> {
+	implements ISelectionListener<MacroBase> {
 
 	public GuiMacroManager() {
 		super(10, 68);
@@ -157,7 +157,7 @@ public class GuiMacroManager extends GuiListBase<MacroBase, WidgetMacroEntry, Wi
 				if (!fileName.endsWith(".txt"))
 					continue;
 				List<String> commands = Files.readAllLines(path);
-				String name = fileName.substring(0, fileName.length()-4);
+				String name = fileName.substring(0, fileName.length() - 4);
 				MacroBase macro = MacroManager.createCommandMacro(name, commands.toArray(new String[]{}));
 				MacroManager.addMacroToTop(macro);
 				this.getListWidget().refreshEntries();

@@ -37,7 +37,7 @@ public abstract class PickBlockFeature extends BlockRaycastFeature {
 		} else if (player.isInCreativeMode()) {
 			playerInventory.swapStackWithHotbar(stack);
 		}
-		context.getSource().getPlayer().networkHandler.sendPacket(new UpdateSelectedSlotS2CPacket(((PlayerInventoryAccessor)playerInventory).getSelectedSlot()));
+		context.getSource().getPlayer().networkHandler.sendPacket(new UpdateSelectedSlotS2CPacket(((PlayerInventoryAccessor) playerInventory).getSelectedSlot()));
 		player.playerScreenHandler.sendContentUpdates();
 		return 1;
 	}
@@ -52,10 +52,10 @@ public abstract class PickBlockFeature extends BlockRaycastFeature {
 		if (i == -1) {
 			int j;
 			pi.setSelectedSlot(pi.getSwappableHotbarSlot());
-			if (!((PlayerInventoryAccessor)pi).getMain().get(((PlayerInventoryAccessor)pi).getSelectedSlot()).isEmpty() && (j = pi.getEmptySlot()) != -1) {
-				((PlayerInventoryAccessor)pi).getMain().set(j, ((PlayerInventoryAccessor)pi).getMain().get(((PlayerInventoryAccessor)pi).getSelectedSlot()));
+			if (!((PlayerInventoryAccessor) pi).getMain().get(((PlayerInventoryAccessor) pi).getSelectedSlot()).isEmpty() && (j = pi.getEmptySlot()) != -1) {
+				((PlayerInventoryAccessor) pi).getMain().set(j, ((PlayerInventoryAccessor) pi).getMain().get(((PlayerInventoryAccessor) pi).getSelectedSlot()));
 			}
-			((PlayerInventoryAccessor)pi).getMain().set(((PlayerInventoryAccessor)pi).getSelectedSlot(), stack);
+			((PlayerInventoryAccessor) pi).getMain().set(((PlayerInventoryAccessor) pi).getSelectedSlot(), stack);
 		} else {
 			pi.swapSlotWithHotbar(i);
 		}

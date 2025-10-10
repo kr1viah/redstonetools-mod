@@ -19,7 +19,7 @@ public abstract class AutoRotateClientMixin {
 	@ModifyReturnValue(method = "getPlacementState", at = @At("RETURN"))
 	private BlockState changeRotation(BlockState original, @Local(argsOnly = true) ItemPlacementContext context) {
 		if (!AutoRotateClient.isEnabled.getBooleanValue()
-				|| original == null) return original;
+			|| original == null) return original;
 
 		BlockState backup = original;
 		original = BlockUtils.rotate(original);

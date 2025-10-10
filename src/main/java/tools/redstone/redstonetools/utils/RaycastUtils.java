@@ -18,11 +18,11 @@ public class RaycastUtils {
 
 	public static BlockHitResult rayCastFromEye(PlayerEntity player, float reach) {
 		return player.getWorld().raycast(new RaycastContext(
-				player.getEyePos(),
-				player.getEyePos().add(player.getRotationVector().multiply(reach)),
-				RaycastContext.ShapeType.COLLIDER,
-				RaycastContext.FluidHandling.NONE,
-				player
+			player.getEyePos(),
+			player.getEyePos().add(player.getRotationVector().multiply(reach)),
+			RaycastContext.ShapeType.COLLIDER,
+			RaycastContext.FluidHandling.NONE,
+			player
 		));
 	}
 }

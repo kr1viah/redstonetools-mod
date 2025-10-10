@@ -17,32 +17,32 @@ public class ReachClient {
 	}
 
 	public void registerCommand(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
-			dispatcher.register(ClientCommandManager.literal("reach")
-				.requires(source -> source.getPlayer().hasPermissionLevel(2))
+		dispatcher.register(ClientCommandManager.literal("reach")
+			.requires(source -> source.getPlayer().hasPermissionLevel(2))
+			.then(ClientCommandManager.argument("reach", FloatArgumentType.floatArg(0.0f))
+				.executes(context -> execute(context, true, true))
+			)
+			.then(ClientCommandManager.literal("reset")
+				.executes(context -> reset(context, true, true))
+			)
+			.then(ClientCommandManager.literal("block")
 				.then(ClientCommandManager.argument("reach", FloatArgumentType.floatArg(0.0f))
-					.executes(context -> execute(context, true, true))
+					.suggests((context, builder) -> {
+						builder.suggest(String.valueOf(EntityAttributes.BLOCK_INTERACTION_RANGE.value().getDefaultValue()));
+						return builder.buildFuture();
+					})
+					.executes(context -> execute(context, true, false))
 				)
-				.then(ClientCommandManager.literal("reset")
-					.executes(context -> reset(context, true, true))
+			)
+			.then(ClientCommandManager.literal("entity")
+				.then(ClientCommandManager.argument("reach", FloatArgumentType.floatArg(0.0f))
+					.suggests((context, builder) -> {
+						builder.suggest(String.valueOf(EntityAttributes.ENTITY_INTERACTION_RANGE.value().getDefaultValue()));
+						return builder.buildFuture();
+					})
+					.executes(context -> execute(context, false, true))
 				)
-				.then(ClientCommandManager.literal("block")
-					.then(ClientCommandManager.argument("reach", FloatArgumentType.floatArg(0.0f))
-						.suggests((context, builder) -> {
-							builder.suggest(String.valueOf(EntityAttributes.BLOCK_INTERACTION_RANGE.value().getDefaultValue()));
-							return builder.buildFuture();
-						})
-						.executes(context -> execute(context, true, false))
-					)
-				)
-				.then(ClientCommandManager.literal("entity")
-					.then(ClientCommandManager.argument("reach", FloatArgumentType.floatArg(0.0f))
-						.suggests((context, builder) -> {
-							builder.suggest(String.valueOf(EntityAttributes.ENTITY_INTERACTION_RANGE.value().getDefaultValue()));
-							return builder.buildFuture();
-						})
-						.executes(context -> execute(context, false, true))
-					)
-				));
+			));
 	}
 
 	private int execute(CommandContext<FabricClientCommandSource> context, boolean block, boolean entity) {

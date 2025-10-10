@@ -35,7 +35,7 @@ public class AirPlaceFeature extends ClientToggleableFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
-			dispatcher.register(literal("airplace")
+		dispatcher.register(literal("airplace")
 			.requires(source -> source.getPlayer().hasPermissionLevel(2))
 			.executes(this::toggle));
 	}
@@ -57,8 +57,8 @@ public class AirPlaceFeature extends ClientToggleableFeature {
 		// TODO: shouldn't offhand also be checked?
 		// rocket boost for elytra
 		return itemStack.getItem() != Items.FIREWORK_ROCKET ||
-				player.getEquippedStack(EquipmentSlot.CHEST).getItem() != Items.ELYTRA ||
-				!player.isGliding();
+			player.getEquippedStack(EquipmentSlot.CHEST).getItem() != Items.ELYTRA ||
+			!player.isGliding();
 	}
 
 	public static BlockHitResult findAirPlaceBlockHit(PlayerEntity playerEntity) {
@@ -93,8 +93,8 @@ public class AirPlaceFeature extends ClientToggleableFeature {
 				return true;
 
 			BlockState blockState = ItemUtils.getUseState(client.player,
-					client.player.getMainHandStack(),
-					reach);
+				client.player.getMainHandStack(),
+				reach);
 			if (AutoRotateClient.isEnabled.getBooleanValue()) {
 				blockState = BlockUtils.rotate(blockState);
 			}
@@ -108,13 +108,13 @@ public class AirPlaceFeature extends ClientToggleableFeature {
 			VertexConsumer consumer = context.consumers().getBuffer(RenderLayer.getLines());
 
 			((WorldRendererInvoker) (context.worldRenderer())).invokeDrawBlockOutline(
-					context.matrixStack(),
-					consumer,
-					client.player,
-					camPos.x, camPos.y, camPos.z,
-					blockPos,
-					blockState,
-					Colors.BLACK
+				context.matrixStack(),
+				consumer,
+				client.player,
+				camPos.x, camPos.y, camPos.z,
+				blockPos,
+				blockState,
+				Colors.BLACK
 			);
 
 			return true;

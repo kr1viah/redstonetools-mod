@@ -17,9 +17,9 @@ public class BigDustFeature extends ClientToggleableFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
-			dispatcher.register(literal("bigdust")
-				.executes(this::toggle)
-				.then(argument("heightInPixels", IntegerArgumentType.integer(1, 16))
-						.executes(this::toggle)));
+		dispatcher.register(literal("bigdust")
+			.executes(this::toggle)
+			.then(argument("heightInPixels", IntegerArgumentType.integer(1, 16))
+				.executes(this::toggle)));
 	}
 }
