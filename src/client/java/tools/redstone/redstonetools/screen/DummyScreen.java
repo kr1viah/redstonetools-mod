@@ -4,12 +4,32 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.text.Style;
 
 public class DummyScreen extends ChatScreen {
 	public DummyScreen() {
 		super("");
 		client = MinecraftClient.getInstance();
+		if (this.client.player == null) this.client.setScreen(null);
+	}
+
+	@Override
+	public void init() {
+		if (this.client.player == null) return;
+		super.init();
+	}
+
+	@Override
+	protected void addScreenNarrations(NarrationMessageBuilder messageBuilder) {
+		if (this.client.player == null) return;
+		super.addScreenNarrations(messageBuilder);
+	}
+
+	@Override
+	protected void setInitialFocus() {
+		if (this.client.player == null) return;
+		super.setInitialFocus();
 	}
 
 	@Override

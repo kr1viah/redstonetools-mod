@@ -7,13 +7,15 @@ import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigHandler;
 import fi.dy.masa.malilib.config.options.*;
+import fi.dy.masa.malilib.hotkeys.KeybindMulti;
 import fi.dy.masa.malilib.util.JsonUtils;
 import net.minecraft.client.MinecraftClient;
 import tools.redstone.redstonetools.RedstoneTools;
-import tools.redstone.redstonetools.features.toggleable.AutoDustClient;
 import tools.redstone.redstonetools.screen.DummyScreen;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,41 +24,74 @@ public class Configs implements IConfigHandler {
 
 	public static class Kr1v {
 		public static boolean preventClosingOnce = false;
-		public static final ConfigHotkey SHOW_CURSOR = new ConfigHotkey("Show cursor", "", "");
-		public static final ConfigBoolean DISABLED_SERVER_SCREEN_CLOSING = new ConfigBooleanHotkeyed("Prevent servers from closing the screen", false, "", "");
-		public static final ConfigStringList DISABLED_SCREEN_CLOSING_EXCEPTIONS = new ConfigStringList("Only these", ImmutableList.of("ChatScreen"), "");
-		public static final ConfigBoolean DISABLED_SERVER_SCREEN_CLOSING_PRINT = new ConfigBooleanHotkeyed("Print prevented screen closings", false, "", "");
-		public static final ConfigStringList PREVENT_OPENING_OF_SCREEN = new ConfigStringList("Prevent these screens from opening", ImmutableList.of(), "");
-		public static final ConfigBoolean PREVENT_OPENING_OF_SCREEN_PRINT = new ConfigBooleanHotkeyed("Print screen openings that aren't prevented", false, "", "");
-		public static final ConfigBoolean ALWAYS_CLOSE_ON_ESC = new ConfigBooleanHotkeyed("Always close screens upon pressing escape", false, "", "");
-		public static final ConfigBoolean PERCENTAGE_DROPPED_PACKETS_C2S = new ConfigBooleanHotkeyed("Prevent C2S packets", false, "", "");
-		public static final ConfigBoolean PERCENTAGE_DROPPED_PACKETS_S2C = new ConfigBooleanHotkeyed("Prevent S2C packets", false, "", "");
-		public static final ConfigDouble  PERCENTAGE_DROPPED_PACKETS = new ConfigDouble("Amount of packets to drop (0 = none, 1 = all)", 0, 0, 1, true, "");
-		public static final ConfigDouble  PERCENTAGE_DELAYED_PACKETS = new ConfigDouble("Amount of packets to lag (0 = none, 1 = all)", 0, 0, 1, true, "");
-		public static final ConfigDouble  PERCENTAGE_DELAYED_PACKETS_TIME = new ConfigDouble("Lag (in seconds)", 0, 0, 1, true, "");
-		public static final ConfigStringList PERCENTAGE_DROPPED_PACKETS_IGNORE = new ConfigStringList("Prevent these packets from getting prevented", ImmutableList.of("HandshakeC2SPacket", "LoginHelloC2SPacket", "LoginSuccessS2CPacket", "EnterConfigurationC2SPacket", "CustomPayloadC2SPacket", "CustomPayloadS2CPacket", "ClientOptionsC2SPacket", "CommonPingS2CPacket", "CommonPongC2SPacket", "FeaturesS2CPacket", "SelectKnownPacksS2CPacket", "SelectKnownPacksC2SPacket"), "");
-		public static final ConfigBoolean PERCENTAGE_DROPPED_PACKETS_PRINT = new ConfigBooleanHotkeyed("Print prevented packets", false, "", "");
+		public static final ConfigLabel 			SCREEN_LABEL = new ConfigLabel("Screen related configs");
+		public static final ConfigBooleanHotkeyed 	DISABLED_SERVER_SCREEN_CLOSING = new ConfigBooleanHotkeyed("Prevent servers from closing the screen", false, "", "");
+		public static final ConfigStringList 		DISABLED_SCREEN_CLOSING_EXCEPTIONS = new ConfigStringList("Only these", ImmutableList.of("ChatScreen"), "");
+		public static final ConfigStringList 		PREVENT_OPENING_OF_SCREEN = new ConfigStringList("Prevent these screens from opening", ImmutableList.of(), "");
 
-		public static final List<? extends IConfigBase> OPTIONS = List.of(
-			SHOW_CURSOR,
-			DISABLED_SERVER_SCREEN_CLOSING,
-			DISABLED_SCREEN_CLOSING_EXCEPTIONS,
-			DISABLED_SERVER_SCREEN_CLOSING_PRINT,
-			PREVENT_OPENING_OF_SCREEN,
-			PREVENT_OPENING_OF_SCREEN_PRINT,
-			PERCENTAGE_DROPPED_PACKETS_C2S,
-			PERCENTAGE_DROPPED_PACKETS_S2C,
-			PERCENTAGE_DROPPED_PACKETS,
-			PERCENTAGE_DROPPED_PACKETS_IGNORE,
-			PERCENTAGE_DROPPED_PACKETS_PRINT,
-			ALWAYS_CLOSE_ON_ESC
-		);
+		public static final ConfigLabel 			PACKET_SEPARATOR = new ConfigLabel("");
+		public static final ConfigLabel 			PACKET_LABEL = new ConfigLabel("Packet related configs");
+		public static final ConfigBooleanHotkeyed 	AFFECT_PACKETS_C2S = new ConfigBooleanHotkeyed("Affect C2S packets", false, "", "");
+		public static final ConfigBooleanHotkeyed 	AFFECT_PACKETS_S2C = new ConfigBooleanHotkeyed("Affect S2C packets", false, "", "");
+		public static final ConfigStringList 		PACKETS_IGNORE = new ConfigStringList("Prevent these packets from getting affected", ImmutableList.of("HandshakeC2SPacket", "LoginHelloC2SPacket", "LoginSuccessS2CPacket", "EnterConfigurationC2SPacket", "CustomPayloadC2SPacket", "CustomPayloadS2CPacket", "ClientOptionsC2SPacket", "CommonPingS2CPacket", "CommonPongC2SPacket", "FeaturesS2CPacket", "SelectKnownPacksS2CPacket", "SelectKnownPacksC2SPacket", "DynamicRegistriesS2CPacket", "SynchronizeTagsS2CPacket", "ReadyS2CPacket", "ReadyC2SPacket"), "");
+		public static final ConfigDouble  			PERCENTAGE_DROPPED_PACKETS = new ConfigDouble("Amount of packets to drop (0 = none, 1 = all)", 0, 0, 1, true, "");
+		public static final ConfigDouble  			PERCENTAGE_DELAYED_PACKETS = new ConfigDouble("Amount of packets to lag (0 = none, 1 = all)", 0, 0, 1, true, "");
+		public static final ConfigDouble  			PERCENTAGE_DELAYED_PACKETS_TIME = new ConfigDouble("Max lag (in ms)", 0, 0, 10000, true, "");
+
+		public static final ConfigLabel 			MISC_SEPARATOR = new ConfigLabel("");
+		public static final ConfigLabel 			MISC_LABEL = new ConfigLabel("Miscellaneous  related configs");
+		public static final ConfigHotkey 			SHOW_CURSOR = new ConfigHotkey("Show cursor", "", "");
+		public static final ConfigBooleanHotkeyed ALWAYS_CLOSE_BUTTON = new ConfigBooleanHotkeyed("Always close screens upon pressing escape", false, "", "");
+
+		public static final ConfigLabel 			DEBUG_SEPARATOR = new ConfigLabel("");
+		public static final ConfigLabel 			DEBUG_LABEL = new ConfigLabel("Debug related configs");
+		public static final ConfigBooleanHotkeyed 	DISABLED_SERVER_SCREEN_CLOSING_PRINT = new ConfigBooleanHotkeyed("Print prevented screen closings", false, "", "");
+		public static final ConfigBooleanHotkeyed 	PREVENT_OPENING_OF_SCREEN_PRINT = new ConfigBooleanHotkeyed("Print screen openings that aren't prevented", false, "", "");
+		public static final ConfigBooleanHotkeyed 	PERCENTAGE_DROPPED_PACKETS_PRINT = new ConfigBooleanHotkeyed("Print prevented packets", false, "", "");
+
+		public static final List<? extends IConfigBase> OPTIONS;
 
 		static {
+			ALWAYS_CLOSE_BUTTON.getKeybind().setCallback((keyAction, keybind) -> {
+				preventClosingOnce = true;
+				if (MinecraftClient.getInstance().currentScreen != null)
+					MinecraftClient.getInstance().currentScreen.close();
+				preventClosingOnce = false;
+				return true;
+			});
+
 			SHOW_CURSOR.getKeybind().setCallback((button, keybind) -> {
 				MinecraftClient.getInstance().setScreen(new DummyScreen());
 				return true;
 			});
+
+			var ilb = ImmutableList.<IConfigBase>builder();
+			for (Field f : Kr1v.class.getDeclaredFields()) {
+				int mods = f.getModifiers();
+				if (Modifier.isStatic(mods) && IConfigBase.class.isAssignableFrom(f.getType())) {
+					try {
+						f.setAccessible(true);
+						Object value = f.get(null);
+						if (value != null) {
+							ilb.add((IConfigBase) value);
+						}
+					} catch (IllegalAccessException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}
+			OPTIONS = ilb.build();
+
+			for (IConfigBase config : OPTIONS) {
+				if (config instanceof ConfigBooleanHotkeyed cbh) {
+					if (((KeybindMulti)cbh.getKeybind()).getCallback() == null) {
+						cbh.getKeybind().setCallback((keyAction, keybind) -> {
+							cbh.setBooleanValue(!cbh.getBooleanValue());
+							return true;
+						});
+					}
+				}
+			}
 		}
 	}
 

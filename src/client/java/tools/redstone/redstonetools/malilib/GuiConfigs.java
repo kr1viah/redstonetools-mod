@@ -1,5 +1,6 @@
 package tools.redstone.redstonetools.malilib;
 
+import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonBase;
@@ -9,6 +10,7 @@ import fi.dy.masa.malilib.util.StringUtils;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import tools.redstone.redstonetools.RedstoneTools;
+import tools.redstone.redstonetools.malilib.config.ConfigLabel;
 import tools.redstone.redstonetools.malilib.config.Configs;
 
 import java.lang.reflect.InvocationTargetException;
@@ -75,7 +77,14 @@ public class GuiConfigs extends GuiConfigsBase {
 			return Collections.emptyList();
 		}
 
-		return ConfigOptionWrapper.createFor(configs);
+		ImmutableList.Builder<ConfigOptionWrapper> builder = ImmutableList.builder();
+		for (IConfigBase config : configs) {
+			if (config instanceof ConfigLabel)
+				builder.add(new ConfigOptionWrapper(config.getComment()));
+			else
+				builder.add(new ConfigOptionWrapper(config));
+		}
+		return builder.build();
 	}
 
 	Method m;

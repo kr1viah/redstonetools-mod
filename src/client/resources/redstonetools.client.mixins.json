@@ -26,7 +26,6 @@
     "features.ClientPlayNetworkHandlerMixin",
     "features.CommandSourceMixin",
     "features.ItemBindItemStackMixin",
-    "features.KeyboardMixin",
     "features.MinecraftClientMixin",
     "features.SuggestionWindowMixin",
     "features.TextFieldAccessor",
