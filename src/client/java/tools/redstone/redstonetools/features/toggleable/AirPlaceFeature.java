@@ -54,7 +54,7 @@ public class AirPlaceFeature extends ClientToggleableFeature {
 		if (ItemUtils.containsCommand(itemStack)) return false;
 
 		// TODO: shouldn't offhand also be checked?
-		// rocket boost for elytra
+		// rocket boost for elytraz
 		return itemStack.getItem() != Items.FIREWORK_ROCKET ||
 			player.getEquippedStack(EquipmentSlot.CHEST).getItem() != Items.ELYTRA ||
 			!player.isGliding();

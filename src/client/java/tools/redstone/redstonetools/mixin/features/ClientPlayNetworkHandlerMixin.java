@@ -31,7 +31,6 @@ import tools.redstone.redstonetools.utils.StringUtils;
 public class ClientPlayNetworkHandlerMixin {
 	@Inject(method = "onCommandTree", at = @At("RETURN"), order = 750)
 	private void onOnCommandTree(CommandTreeS2CPacket packet, CallbackInfo info) {
-		// TODO: fix
 		var parse = commandDispatcher.parse("base 0x2 5", commandSource); // there's probably a better way to check for rst being on the server, but I cba rn
 		DependencyLookup.REDSTONE_TOOLS_SERVER_PRESENT = !parse.getReader().canRead();
 		ClientCommands.registerCommands(ClientCommandInternals.getActiveDispatcher(), CommandRegistryAccess.of(this.combinedDynamicRegistries, this.enabledFeatures));

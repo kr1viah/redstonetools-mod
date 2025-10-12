@@ -35,7 +35,7 @@ public class Configs implements IConfigHandler {
 		public static final ConfigLabel 			PACKET_LABEL = new ConfigLabel("Packet related configs");
 		public static final ConfigBooleanHotkeyed 	AFFECT_PACKETS_C2S = new ConfigBooleanHotkeyed("Affect C2S packets", false, "", "");
 		public static final ConfigBooleanHotkeyed 	AFFECT_PACKETS_S2C = new ConfigBooleanHotkeyed("Affect S2C packets", false, "", "");
-		// TODO: Need to convert intermediary (runtime in a prod env) mappings to yarn so the default class values here actually work.
+
 		public static final ConfigStringList 		PACKETS_IGNORE = new ConfigStringList("Prevent these packets from getting affected", ImmutableList.of("HandshakeC2SPacket", "LoginHelloC2SPacket", "LoginSuccessS2CPacket", "EnterConfigurationC2SPacket", "CustomPayloadC2SPacket", "CustomPayloadS2CPacket", "ClientOptionsC2SPacket", "CommonPingS2CPacket", "CommonPongC2SPacket", "FeaturesS2CPacket", "SelectKnownPacksS2CPacket", "SelectKnownPacksC2SPacket", "DynamicRegistriesS2CPacket", "SynchronizeTagsS2CPacket", "ReadyS2CPacket", "ReadyC2SPacket"), "");
 		public static final ConfigDouble  			PERCENTAGE_DROPPED_PACKETS = new ConfigDouble("Amount of packets to drop (0 = none, 1 = all)", 0, 0, 1, true, "");
 		public static final ConfigDouble  			PERCENTAGE_DELAYED_PACKETS = new ConfigDouble("Amount of packets to lag (0 = none, 1 = all)", 0, 0, 1, true, "");
