@@ -40,7 +40,7 @@ public class Configs implements IConfigHandler {
 		public static final ConfigDouble  			PERCENTAGE_DELAYED_PACKETS_TIME = new ConfigDouble("Max lag (in ms)", 0, 0, 10000, true, "");
 
 		public static final ConfigLabel 			MISC_SEPARATOR = new ConfigLabel("");
-		public static final ConfigLabel 			MISC_LABEL = new ConfigLabel("Miscellaneous  related configs");
+		public static final ConfigLabel 			MISC_LABEL = new ConfigLabel("Miscellaneous related configs");
 		public static final ConfigHotkey 			SHOW_CURSOR = new ConfigHotkey("Show cursor", "", "");
 		public static final ConfigBooleanHotkeyed 	ALWAYS_CLOSE_BUTTON = new ConfigBooleanHotkeyed("Always close screens upon pressing escape", false, "", "");
 
