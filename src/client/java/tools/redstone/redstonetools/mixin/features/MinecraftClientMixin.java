@@ -31,7 +31,7 @@ public class MinecraftClientMixin {
 		if (Configs.Kr1v.preventClosingOnce) return;
 		String currentScreenClass;
 		if (screen == null) currentScreenClass = "null";
-		else currentScreenClass = MappingUtils.intermediaryToYarn(screen.getClass().getSimpleName());
+		else currentScreenClass = MappingUtils.intermediaryToYarnSimple(screen.getClass());
 		for (String s : Configs.Kr1v.PREVENT_OPENING_OF_SCREEN.getStrings()) {
 			if (s.equals(currentScreenClass)) {
 				ci.cancel();

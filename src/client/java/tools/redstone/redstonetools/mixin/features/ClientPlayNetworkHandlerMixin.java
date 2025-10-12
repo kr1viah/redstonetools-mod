@@ -22,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tools.redstone.redstonetools.ClientCommands;
 import tools.redstone.redstonetools.malilib.config.Configs;
 import tools.redstone.redstonetools.utils.DependencyLookup;
+import tools.redstone.redstonetools.utils.MappingUtils;
 import tools.redstone.redstonetools.utils.StringUtils;
 
 @Mixin(ClientPlayNetworkHandler.class)
@@ -57,7 +58,7 @@ public class ClientPlayNetworkHandlerMixin {
 	public void preventScreenClosing(CloseScreenS2CPacket packet, CallbackInfo ci) {
 		if (Configs.Kr1v.DISABLED_SERVER_SCREEN_CLOSING.getBooleanValue()) {
 			if (MinecraftClient.getInstance().currentScreen != null) {
-				String currentScreenClass = MinecraftClient.getInstance().currentScreen.getClass().getSimpleName();
+				String currentScreenClass = MappingUtils.intermediaryToYarnSimple(MinecraftClient.getInstance().currentScreen.getClass());
 				boolean shouldPrevent = false;
 				for (String s : Configs.Kr1v.DISABLED_SCREEN_CLOSING_EXCEPTIONS.getStrings()) {
 					if (s.equals(currentScreenClass)) {

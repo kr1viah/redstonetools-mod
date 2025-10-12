@@ -6,12 +6,9 @@ import net.fabricmc.mappingio.tree.MappingTree;
 import net.fabricmc.mappingio.tree.MemoryMappingTree;
 import net.minecraft.MinecraftVersion;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.NetworkUtils;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -25,7 +22,9 @@ public class MappingUtils {
 	private static final MemoryMappingTree tree = new MemoryMappingTree();
 	private static final Path mappingsPath = MinecraftClient.getInstance().runDirectory.toPath().resolve(".tiny").resolve("yarn-" + MinecraftVersion.CURRENT.getName() + "+build.1-tiny");
 
-	public static String intermediaryToYarn(String intermediaryName) {
+
+	public static String intermediaryToYarn(Class<?> intermediaryClass) {
+		String intermediaryName = intermediaryClass.getName();
 		if (FabricLoader.getInstance().isDevelopmentEnvironment()) return intermediaryName; // already yarn
 
 		String named = cachedClasses.getOrDefault(intermediaryName, null);
@@ -40,6 +39,13 @@ public class MappingUtils {
 		}
 		if (named == null) named = intermediaryName;
 		return named;
+	}
+
+	public static String intermediaryToYarnSimple(Class<?> intermediaryClass) {
+		String yarnName = intermediaryToYarn(intermediaryClass);
+		String yarnNameSimple = yarnName.substring(yarnName.lastIndexOf("."));
+		System.out.println(yarnNameSimple);
+		return yarnNameSimple;
 	}
 
 

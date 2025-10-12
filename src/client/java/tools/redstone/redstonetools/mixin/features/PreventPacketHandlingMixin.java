@@ -17,7 +17,7 @@ import tools.redstone.redstonetools.utils.MappingUtils;
 public class PreventPacketHandlingMixin {
 	@WrapMethod(method = "sendInternal")
 	private void injected(Packet<?> packet, PacketCallbacks callbacks, boolean flush, Operation<Void> original) {
-		String yarnClassName = MappingUtils.intermediaryToYarn(packet.getClass().getSimpleName());
+		String yarnClassName = MappingUtils.intermediaryToYarnSimple(packet.getClass());
 		if (packet.getPacketType().side().getName().equals("clientbound") ||
 			(packet.getPacketType().side().getName().equals("serverbound") && !Configs.Kr1v.AFFECT_PACKETS_C2S.getBooleanValue()) ||
 			Configs.Kr1v.PACKETS_IGNORE.getStrings().contains(yarnClassName)) {
@@ -48,7 +48,7 @@ public class PreventPacketHandlingMixin {
 
 	@WrapMethod(method = "handlePacket")
 	private static <T extends PacketListener> void injected(Packet<T> packet, PacketListener listener, Operation<Void> original) {
-		String yarnClassName = MappingUtils.intermediaryToYarn(packet.getClass().getSimpleName());
+		String yarnClassName = MappingUtils.intermediaryToYarnSimple(packet.getClass());
 		if (packet.getPacketType().side().getName().equals("serverbound") ||
 			(packet.getPacketType().side().getName().equals("clientbound") && !Configs.Kr1v.AFFECT_PACKETS_S2C.getBooleanValue()) ||
 			Configs.Kr1v.PACKETS_IGNORE.getStrings().contains(yarnClassName)) {
@@ -63,7 +63,7 @@ public class PreventPacketHandlingMixin {
 			int size = 0;
 			for (Packet<? super T> packet1 : thing.getPackets()) {
 				if (size == 0) toPrint.append(", ");
-				String packet1YarnName = MappingUtils.intermediaryToYarn(packet1.getClass().getSimpleName());
+				String packet1YarnName = MappingUtils.intermediaryToYarnSimple(packet1.getClass());
 				toPrint.append(packet1YarnName);
 				if (Configs.Kr1v.PACKETS_IGNORE.getStrings().contains(packet1YarnName)) {
 					original.call(packet, listener);
