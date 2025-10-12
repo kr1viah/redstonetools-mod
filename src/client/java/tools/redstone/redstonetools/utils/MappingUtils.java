@@ -43,9 +43,7 @@ public class MappingUtils {
 
 	public static String intermediaryToYarnSimple(Class<?> intermediaryClass) {
 		String yarnName = intermediaryToYarn(intermediaryClass);
-		String yarnNameSimple = yarnName.substring(yarnName.lastIndexOf(".") + 1);
-		System.out.println(yarnNameSimple);
-		return yarnNameSimple;
+		return yarnName.substring(yarnName.lastIndexOf(".") + 1);
 	}
 
 
