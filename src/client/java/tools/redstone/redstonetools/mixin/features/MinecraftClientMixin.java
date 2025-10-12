@@ -3,6 +3,8 @@ package tools.redstone.redstonetools.mixin.features;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,7 +41,7 @@ public class MinecraftClientMixin {
 			}
 		}
 		if (Configs.Kr1v.PREVENT_OPENING_OF_SCREEN_PRINT.getBooleanValue())
-			this.inGameHud.getChatHud().addMessage(Text.of("Allowed screen opening of class: " + currentScreenClass));
+			this.inGameHud.getChatHud().addMessage(Text.literal("Allowed screen opening of class: " + currentScreenClass + " (Click to copy)").setStyle(Style.EMPTY.withClickEvent(new ClickEvent.CopyToClipboard(currentScreenClass))));
 		if (screen == null) return;
 		OpenScreenFeature.INSTANCE.savedScreens.put(currentScreenClass, screen);
 	}

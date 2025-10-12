@@ -11,6 +11,8 @@ import net.minecraft.network.packet.s2c.play.CloseScreenS2CPacket;
 import net.minecraft.network.packet.s2c.play.CommandTreeS2CPacket;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.resource.featuretoggle.FeatureSet;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -69,7 +71,7 @@ public class ClientPlayNetworkHandlerMixin {
 				if (shouldPrevent) {
 					ci.cancel();
 				} else if (Configs.Kr1v.DISABLED_SERVER_SCREEN_CLOSING_PRINT.getBooleanValue()) {
-					MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Allowed closing of screen class: " + currentScreenClass));
+					MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.literal("Allowed closing of screen class: " + currentScreenClass + " (Click to copy)").setStyle(Style.EMPTY.withClickEvent(new ClickEvent.CopyToClipboard(currentScreenClass))));
 				}
 			}
 		}
