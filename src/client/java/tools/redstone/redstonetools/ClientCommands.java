@@ -10,11 +10,9 @@ import tools.redstone.redstonetools.utils.DependencyLookup;
 
 public class ClientCommands {
 	public static void registerCommands(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
-		if (!DependencyLookup.REDSTONE_TOOLS_SERVER_PRESENT) {
-			ReachClient.INSTANCE.registerCommand(dispatcher, registryAccess);
-			GiveMeClient.INSTANCE.registerCommand(dispatcher, registryAccess);
-			QuickTpClient.INSTANCE.registerCommand(dispatcher, registryAccess);
-		}
+		ReachClient.INSTANCE.registerCommand(dispatcher, registryAccess);
+		GiveMeClient.INSTANCE.registerCommand(dispatcher, registryAccess);
+		QuickTpClient.INSTANCE.registerCommand(dispatcher, registryAccess);
 		ClientDataFeature.INSTANCE.registerCommand(dispatcher, registryAccess);
 		PrintFeature.INSTANCE.registerCommand(dispatcher, registryAccess);
 		EditMacroFeature.INSTANCE.registerCommand(dispatcher, registryAccess);

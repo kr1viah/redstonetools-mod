@@ -22,13 +22,9 @@
 	"entrypoints": {
 		"client": [
 			"tools.redstone.redstonetools.RedstoneToolsClient"
-		],
-		"main": [
-			"tools.redstone.redstonetools.RedstoneTools"
 		]
 	},
 	"mixins": [
-		"redstonetools.mixins.json",
 		{
 			"config": "redstonetools.client.mixins.json",
 			"environment": "client"
@@ -37,10 +33,7 @@
 	"depends": {
 		"fabricloader": ">=${loader_version}",
 		"fabric": "*",
-		"minecraft": ">=1.21.4 <=1.21.8"
-	},
-	"recommends": {
-		"worldedit": "*",
+		"minecraft": ">=1.21.5 <=1.21.5",
 		"malilib": "*"
 	}
 }

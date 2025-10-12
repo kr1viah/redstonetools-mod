@@ -11,6 +11,7 @@ Currently:
 
 Downsides:
 * 1.21.5 only
+* No server sided functionality
 
 Commands:
 * /openscreen <screen>
