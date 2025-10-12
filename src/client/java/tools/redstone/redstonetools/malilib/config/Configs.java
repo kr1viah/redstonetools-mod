@@ -22,6 +22,8 @@ import java.util.List;
 public class Configs implements IConfigHandler {
 	private static final String CONFIG_FILE_NAME = RedstoneTools.MOD_ID + ".json";
 
+
+	@SuppressWarnings("unused")
 	public static class Kr1v {
 		public static boolean preventClosingOnce = false;
 		public static final ConfigLabel 			SCREEN_LABEL = new ConfigLabel("Screen related configs");
