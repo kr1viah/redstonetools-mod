@@ -3,7 +3,6 @@ package tools.redstone.redstonetools;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import tools.redstone.redstonetools.packets.RedstoneToolsPackets;
 
 public class RedstoneTools implements ModInitializer {
 	public static final String MOD_ID = "redstonetools";
@@ -12,8 +11,6 @@ public class RedstoneTools implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		RedstoneToolsPackets.registerPackets();
 		RedstoneToolsGameRules.register();
-		Commands.registerCommands();
 	}
 }

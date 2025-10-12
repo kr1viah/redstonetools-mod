@@ -95,9 +95,6 @@ public class AirPlaceFeature extends ClientToggleableFeature {
 			BlockState blockState = ItemUtils.getUseState(client.player,
 				client.player.getMainHandStack(),
 				reach);
-			if (AutoRotateClient.isEnabled.getBooleanValue()) {
-				blockState = BlockUtils.rotate(blockState);
-			}
 			if (blockState == null)
 				return true;
 

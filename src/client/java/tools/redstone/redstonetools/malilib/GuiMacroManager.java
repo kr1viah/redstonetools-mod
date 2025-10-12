@@ -35,23 +35,7 @@ public class GuiMacroManager extends GuiListBase<MacroBase, WidgetMacroEntry, Wi
 	@Override
 	public void render(DrawContext drawContext, int mouseX, int mouseY, float partialTicks) {
 		if (this.client != null && this.client.world == null) this.renderPanoramaBackground(drawContext, partialTicks);
-		try {
-			this.applyBlur(drawContext);
-		} catch (NoSuchMethodError ignored) {
-			if (m == null) {
-				try {
-					m = Screen.class.getDeclaredMethod("method_57734");
-				} catch (Exception e) {
-					throw new RuntimeException("Something went wrong. Contact a redstonetools developer", e);
-				}
-			}
-			try {
-				m.setAccessible(true);
-				m.invoke(this);
-			} catch (IllegalAccessException | InvocationTargetException e) {
-				throw new RuntimeException("Something went wrong. Contact a redstonetools developer", e);
-			}
-		}
+		this.applyBlur();
 		super.render(drawContext, mouseX, mouseY, partialTicks);
 	}
 

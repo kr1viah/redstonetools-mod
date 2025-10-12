@@ -10,15 +10,5 @@ public class AutoRotateClient {
 	public static ConfigBoolean isEnabled = Configs.Toggles.AUTOROTATE;
 
 	public static void registerHandler() {
-		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-			SetFeatureEnabledPayload payload = new SetFeatureEnabledPayload("AutoRotate", AutoRotateClient.isEnabled.getBooleanValue());
-			ClientPlayNetworking.send(payload);
-		});
-
-		isEnabled.setValueChangeCallback((t) -> {
-			System.out.println(t.getBooleanValue());
-			SetFeatureEnabledPayload payload = new SetFeatureEnabledPayload("AutoRotate", t.getBooleanValue());
-			ClientPlayNetworking.send(payload);
-		});
 	}
 }

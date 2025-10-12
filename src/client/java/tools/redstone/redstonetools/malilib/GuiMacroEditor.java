@@ -55,31 +55,10 @@ public class GuiMacroEditor extends Screen {
 		buttonKeybind.updateDisplayString();
 		buttonEnabled.updateDisplayString();
 		buttonMuted.updateDisplayString();
-		try {
-			buttonKeybind.render(context, mouseX, mouseY, buttonKeybind.isMouseOver(mouseX, mouseY));
-			buttonEnabled.render(context, mouseX, mouseY, buttonEnabled.isMouseOver(mouseX, mouseY));
-			buttonMuted.render(context, mouseX, mouseY, buttonMuted.isMouseOver(mouseX, mouseY));
-			widgetAdvancedKeybindSettings.render(context, mouseX, mouseY, widgetAdvancedKeybindSettings.isMouseOver(mouseX, mouseY));
-		} catch (NoSuchMethodError ignored) {
-			if (bkRenderMethod == null) {
-				try {
-					bkRenderMethod = ConfigButtonKeybind.class.getMethod("render", int.class, int.class, boolean.class, DrawContext.class);
-					beRenderMethod = ConfigButtonBoolean.class.getMethod("render", int.class, int.class, boolean.class, DrawContext.class);
-					bmRenderMethod = ConfigButtonBoolean.class.getMethod("render", int.class, int.class, boolean.class, DrawContext.class);
-					waksRenderMethod = WidgetKeybindSettings.class.getMethod("render", int.class, int.class, boolean.class, DrawContext.class);
-				} catch (Exception e) {
-					throw new RuntimeException("Something went wrong. Contact a redstonetools developer", e);
-				}
-			}
-			try {
-				bkRenderMethod.invoke(buttonKeybind, mouseX, mouseY, buttonKeybind.isMouseOver(mouseX, mouseY), context);
-				beRenderMethod.invoke(buttonEnabled, mouseX, mouseY, buttonEnabled.isMouseOver(mouseX, mouseY), context);
-				bmRenderMethod.invoke(buttonMuted, mouseX, mouseY, buttonMuted.isMouseOver(mouseX, mouseY), context);
-				waksRenderMethod.invoke(widgetAdvancedKeybindSettings, mouseX, mouseY, widgetAdvancedKeybindSettings.isMouseOver(mouseX, mouseY), context);
-			} catch (IllegalAccessException | InvocationTargetException e) {
-				throw new RuntimeException("Something went wrong. Contact a redstonetools developer", e);
-			}
-		}
+		buttonKeybind.render(mouseX, mouseY, buttonKeybind.isMouseOver(mouseX, mouseY), context);
+		buttonEnabled.render(mouseX, mouseY, buttonEnabled.isMouseOver(mouseX, mouseY), context);
+		buttonMuted.render(mouseX, mouseY, buttonMuted.isMouseOver(mouseX, mouseY), context);
+		widgetAdvancedKeybindSettings.render(mouseX, mouseY, widgetAdvancedKeybindSettings.isMouseOver(mouseX, mouseY), context);
 		if (errorCountDown > 0.0f) {
 			context.drawText(this.textRenderer, "Name already exists!", mouseX, mouseY - 10, 0xFFFFFFFF, true);
 			errorCountDown -= deltaTicks;

@@ -5,7 +5,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientWorldEvents;
 import tools.redstone.redstonetools.malilib.InitHandler;
 import tools.redstone.redstonetools.malilib.config.Configs;
-import tools.redstone.redstonetools.packets.RedstoneToolsClientPackets;
+import tools.redstone.redstonetools.utils.MappingUtils;
 
 import static tools.redstone.redstonetools.RedstoneTools.LOGGER;
 
@@ -16,6 +16,12 @@ public class RedstoneToolsClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		LOGGER.info("Initializing Redstone Tools");
 		InitializationHandler.getInstance().registerInitializationHandler(new InitHandler());
+
+		try {
+			Class.forName(MappingUtils.class.getName());
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 
 		ClientWorldEvents.AFTER_CLIENT_WORLD_CHANGE.register((client, clientWorld) -> {
 			if (client.getNetworkHandler() != null) { // dimension change
@@ -42,8 +48,5 @@ public class RedstoneToolsClient implements ClientModInitializer {
 				}
 			}
 		});
-
-		RedstoneToolsClientPackets.registerPackets();
-		Commands.registerCommands();
 	}
 }

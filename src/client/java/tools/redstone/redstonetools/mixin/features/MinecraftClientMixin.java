@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tools.redstone.redstonetools.features.commands.OpenScreenFeature;
 import tools.redstone.redstonetools.malilib.config.Configs;
+import tools.redstone.redstonetools.utils.MappingUtils;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
@@ -30,7 +31,7 @@ public class MinecraftClientMixin {
 		if (Configs.Kr1v.preventClosingOnce) return;
 		String currentScreenClass;
 		if (screen == null) currentScreenClass = "null";
-		else currentScreenClass = screen.getClass().getSimpleName();
+		else currentScreenClass = MappingUtils.intermediaryToYarn(screen.getClass().getSimpleName());
 		for (String s : Configs.Kr1v.PREVENT_OPENING_OF_SCREEN.getStrings()) {
 			if (s.equals(currentScreenClass)) {
 				ci.cancel();

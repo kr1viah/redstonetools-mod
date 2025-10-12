@@ -193,22 +193,7 @@ public class CommandListWidget extends EntryListWidget<CommandListWidget.Command
 			commandWidget.setWidth(entryWidth - 100);
 			commandWidget.setHeight(26);
 			commandWidget.render(context, mouseX, mouseY, tickProgress);
-			try {
-				removeButton.render(context, mouseX, mouseY, removeButton.isMouseOver());
-			} catch (NoSuchMethodError ignored) {
-				if (m == null) {
-					try {
-						m = ButtonBase.class.getMethod("render", int.class, int.class, boolean.class, DrawContext.class);
-					} catch (Exception e) {
-						throw new RuntimeException("Something went wrong. Contact a redstonetools developer", e);
-					}
-				}
-				try {
-					m.invoke(removeButton, mouseX, mouseY, removeButton.isMouseOver(), context);
-				} catch (IllegalAccessException | InvocationTargetException e) {
-					throw new RuntimeException("Something went wrong. Contact a redstonetools developer", e);
-				}
-			}
+			removeButton.render(mouseX, mouseY, removeButton.isMouseOver(), context);
 			command.command = commandWidget.getText();
 		}
 
