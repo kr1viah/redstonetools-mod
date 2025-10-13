@@ -1,4 +1,4 @@
-package tools.redstone.redstonetools.mixin.features;
+package tools.redstone.redstonetools.mixin.accessors;
 
 import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import net.minecraft.client.gui.widget.TextFieldWidget;

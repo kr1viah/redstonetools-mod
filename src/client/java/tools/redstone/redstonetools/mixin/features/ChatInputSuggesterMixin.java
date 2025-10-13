@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tools.redstone.redstonetools.malilib.config.Configs;
+import tools.redstone.redstonetools.mixin.accessors.TextFieldAccessor;
 import tools.redstone.redstonetools.utils.StringUtils;
 
 import static tools.redstone.redstonetools.utils.StringUtils.unmodifiedCommand;

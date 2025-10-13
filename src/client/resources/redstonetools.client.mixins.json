@@ -21,18 +21,25 @@
 		"features.AirPlaceClientMixin",
 		"features.ChatHudMixin",
 		"features.ChatInputSuggesterMixin",
-		"features.ChatInputSuggestorAccessor",
+		"accessors.ChatInputSuggestorAccessor",
 		"features.ClientPlayNetworkHandlerMixin",
-		"features.CommandSourceMixin",
+		"accessors.CommandSourceMixin",
+		"accessors.InGameHudAccessor",
 		"features.ItemBindItemStackMixin",
 		"features.MinecraftClientMixin",
+		"accessors.SubtitleEntryAccessor",
+		"accessors.SubtitlesHudAccessor",
+		"features.SubtitlesHudMixin",
 		"features.SuggestionWindowMixin",
-		"features.TextFieldAccessor",
-		"features.WorldRendererInvoker",
+		"accessors.TextFieldAccessor",
+		"accessors.WorldRendererInvoker",
 		"macros.AddMacroButtonMixin",
 		"macros.InitializeMacroManagerMixin"
 	],
 	"mixins": [
 		"features.PreventPacketHandlingMixin"
-	]
+	],
+	"mixinextras": {
+		"minVersion": "0.5.0"
+	}
 }

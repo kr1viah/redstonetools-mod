@@ -20,7 +20,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import tools.redstone.redstonetools.malilib.config.Configs;
-import tools.redstone.redstonetools.mixin.features.WorldRendererInvoker;
+import tools.redstone.redstonetools.mixin.accessors.WorldRendererInvoker;
 import tools.redstone.redstonetools.utils.ItemUtils;
 import tools.redstone.redstonetools.utils.RaycastUtils;
 

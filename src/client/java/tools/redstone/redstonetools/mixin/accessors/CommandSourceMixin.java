@@ -1,4 +1,4 @@
-package tools.redstone.redstonetools.mixin.features;
+package tools.redstone.redstonetools.mixin.accessors;
 
 import net.minecraft.command.CommandSource;
 import org.spongepowered.asm.mixin.Mixin;

@@ -31,6 +31,12 @@ public class Configs implements IConfigHandler {
 		public static final ConfigStringList 		DISABLED_SCREEN_CLOSING_EXCEPTIONS = new ConfigStringList("Only these", ImmutableList.of("ChatScreen"), "");
 		public static final ConfigStringList 		PREVENT_OPENING_OF_SCREEN = new ConfigStringList("Prevent these screens from opening", ImmutableList.of(), "");
 
+		public static final ConfigLabel 			CHAT_SEPARATOR = new ConfigLabel("");
+		public static final ConfigLabel 			CHAT_LABEL = new ConfigLabel("Chat related configs");
+		public static final ConfigStringList 		CHAT_HIDE = new ConfigStringList("Prevent messages with these regex strings from getting added to the chat", ImmutableList.of(), "");
+		public static final ConfigBooleanHotkeyed 	REDIRECT_TO_SUBTITLES = new ConfigBooleanHotkeyed("Redirect matched messages to the subtitle hud element", true, "", "");
+		public static final ConfigBooleanHotkeyed 	ALLOW_DUPLICATE_SUBTITLES = new ConfigBooleanHotkeyed("Duplicate subtitles", false, "", "Allow having multiple of the same message after each other in the subtitles");
+
 		public static final ConfigLabel 			PACKET_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			PACKET_LABEL = new ConfigLabel("Packet related configs");
 		public static final ConfigBooleanHotkeyed 	AFFECT_PACKETS_C2S = new ConfigBooleanHotkeyed("Affect C2S packets", false, "", "");
