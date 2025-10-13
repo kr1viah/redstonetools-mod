@@ -18,9 +18,10 @@ public class SubtitlesHudMixin {
 	@Shadow
 	private boolean enabled;
 
-	@Definition(id = "enabled", field = "Lnet/minecraft/client/gui/hud/SubtitlesHud;enabled:Z")
-	@Expression("this.enabled")
-	@ModifyExpressionValue(method = "render", at = @At("MIXINEXTRAS:EXPRESSION"))
+//	@Definition(id = "enabled", field = "Lnet/minecraft/client/gui/hud/SubtitlesHud;enabled:Z")
+//	@Expression("(this.enabled)")
+//	@ModifyExpressionValue(method = "render", at = @At("MIXINEXTRAS:EXPRESSION"))
+	@ModifyExpressionValue(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/hud/SubtitlesHud;enabled:Z", ordinal = 4))
 	private boolean forceRender(boolean original) {
 		return original || Configs.Kr1v.REDIRECT_TO_SUBTITLES.getBooleanValue();
 	}
