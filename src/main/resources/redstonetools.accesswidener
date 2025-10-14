@@ -1,3 +1,19 @@
 accessWidener	v2	named
 
 accessible class net/minecraft/client/gui/hud/SubtitlesHud$SubtitleEntry
+
+accessible method net/minecraft/client/gui/hud/ChatHud isChatHidden ()Z
+accessible field net/minecraft/client/gui/hud/ChatHud visibleMessages Ljava/util/List;
+accessible method net/minecraft/client/gui/hud/ChatHud getMessageIndex (DD)I
+accessible method net/minecraft/client/gui/hud/ChatHud toChatLineX (D)D
+accessible method net/minecraft/client/gui/hud/ChatHud toChatLineY (D)D
+accessible field net/minecraft/client/gui/hud/ChatHud client Lnet/minecraft/client/MinecraftClient;
+accessible method net/minecraft/client/gui/hud/ChatHud getLineHeight ()I
+accessible field net/minecraft/client/gui/hud/ChatHud scrolledLines I
+accessible field net/minecraft/client/gui/hud/ChatHud visibleMessages Ljava/util/List;
+accessible method net/minecraft/client/gui/hud/ChatHud getMessageOpacityMultiplier (I)D
+accessible method net/minecraft/client/gui/hud/ChatHud getIndicatorX (Lnet/minecraft/client/gui/hud/ChatHudLine$Visible;)I
+accessible method net/minecraft/client/gui/hud/ChatHud drawIndicatorIcon (Lnet/minecraft/client/gui/DrawContext;IILnet/minecraft/client/gui/hud/MessageIndicator$Icon;)V
+accessible field net/minecraft/client/gui/hud/ChatHud hasUnreadNewMessages Z
+accessible field net/minecraft/client/gui/hud/ChatHud messages Ljava/util/List;
+accessible method net/minecraft/client/gui/hud/ChatHud getMessageLineIndex (DD)I
