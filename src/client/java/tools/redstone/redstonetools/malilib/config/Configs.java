@@ -76,7 +76,7 @@ public class Configs implements IConfigHandler {
 			});
 
 			CHAT_SELECTING.getKeybind().setCallback((button, keybind) -> {
-				if (BetterChatHud.selectedText == null || BetterChatHud.selectedText.isEmpty()) return false;
+				if (BetterChatHud.selectedText == null || BetterChatHud.selectedText.isEmpty() || !CHAT_SELECTING.getBooleanValue()) return false;
 				MinecraftClient.getInstance().keyboard.setClipboard(BetterChatHud.selectedText);
 				return true;
 			});

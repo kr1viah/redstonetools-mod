@@ -5,12 +5,16 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.ChatHudLine;
 import net.minecraft.client.gui.hud.MessageIndicator;
+import net.minecraft.client.util.ChatMessages;
+import net.minecraft.network.message.MessageSignatureData;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.profiler.Profilers;
+import org.jetbrains.annotations.Nullable;
+import tools.redstone.redstonetools.malilib.config.Configs;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,7 +43,26 @@ public class BetterChatHud extends ChatHud {
 	}
 
 	@Override
+	public void addMessage(Text message, @Nullable MessageSignatureData signatureData, @Nullable MessageIndicator indicator) {
+		ChatHudLine chatHudLine = new ChatHudLine(this.client.inGameHud.getTicks(), message, signatureData, indicator);
+
+		int i = MathHelper.floor((double)this.getWidth() / this.getChatScale());
+		MessageIndicator.Icon icon = chatHudLine.getIcon();
+		if (icon != null) {
+			i -= icon.width + 4 + 2;
+		}
+		if (normFirstSelectedLine != -1 && normLastSelectedLine != -1) {
+			normFirstSelectedLine += ChatMessages.breakRenderedChatMessageLines(chatHudLine.content(), i, this.client.textRenderer).size();
+			normLastSelectedLine += ChatMessages.breakRenderedChatMessageLines(chatHudLine.content(), i, this.client.textRenderer).size();
+		}
+		super.addMessage(message, signatureData, indicator);
+	}
+
+	@Override
 	public boolean mouseClicked(double mouseX, double mouseY) {
+		if (!Configs.Kr1v.CHAT_SELECTING.getBooleanValue()) {
+			return super.mouseClicked(mouseX, mouseY);
+		}
 		mouseClickX = (int) mouseX;
 		mouseClickY = (int) mouseY;
 		int messageIndex = this.getMessageLineIndex(this.toChatLineX(mouseX), this.toChatLineY(mouseY));
@@ -69,6 +92,7 @@ public class BetterChatHud extends ChatHud {
 	}
 
 	public void mouseReleased(double mouseX, double mouseY) {
+		if (!Configs.Kr1v.CHAT_SELECTING.getBooleanValue()) return;
 		if (mouseClickX == (int) mouseX && mouseClickY == (int) mouseY) {
 			clearSelection();
 			return;
@@ -107,6 +131,10 @@ public class BetterChatHud extends ChatHud {
 
 	@Override
 	public void render(DrawContext context, int currentTick, int mouseX, int mouseY, boolean focused) {
+		if (!Configs.Kr1v.CHAT_SELECTING.getBooleanValue()) {
+			super.render(context, currentTick, mouseX, mouseY, focused);
+			return;
+		}
 		StringBuilder selectedTextBuilder = new StringBuilder();
 		if (!focused) {
 			clearSelection();
