@@ -39,6 +39,7 @@ public class Configs implements IConfigHandler {
 		public static final ConfigBooleanHotkeyed 	REDIRECT_TO_SUBTITLES = new ConfigBooleanHotkeyed("Redirect matched messages to the subtitle hud element", true, "", "");
 		public static final ConfigBooleanHotkeyed 	ALLOW_DUPLICATE_SUBTITLES = new ConfigBooleanHotkeyed("Duplicate subtitles", false, "", "Allow having multiple of the same message after each other in the subtitles");
 		public static final ConfigBooleanHotkeyed 	CHAT_SELECTING = new ConfigBooleanHotkeyed("Chat selecting", true, "LEFT_CONTROL,C", KeybindSettings.GUI, "Be able to select and copy the chat");
+		public static final ConfigColor				CHAT_SELECTED_TEXT_BACKGROUND_COLOUR = new ConfigColor("Selected text background colour", "0xAA0033FF", "");
 
 		public static final ConfigLabel 			MISC_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			MISC_LABEL = new ConfigLabel("Miscellaneous related configs");

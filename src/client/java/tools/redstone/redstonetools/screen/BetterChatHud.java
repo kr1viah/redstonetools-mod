@@ -195,7 +195,7 @@ public class BetterChatHud extends ChatHud {
 
 								if (indexInsideOf(messageIndex)) {
 									int backgroundColourForNormalText = backgroundOpacity << 24;
-									int backgroundColourForSelectedText = backgroundColourForNormalText + 0x44FF;
+									int backgroundColourForSelectedText = Configs.Kr1v.CHAT_SELECTED_TEXT_BACKGROUND_COLOUR.getIntegerValue();
 
 									int startX = -4;
 									int normalEndSelectedStart = -4;
