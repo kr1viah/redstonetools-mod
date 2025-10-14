@@ -37,10 +37,10 @@ public class SubtitlesHudMixin {
 		return original;
 	}
 
-	@Definition(id = "f", local = @Local(type = double.class, name = "f"))
-	@Expression("f > 0.5")
+	@Definition(id = "bl", local = @Local(type = boolean.class))
+	@Expression("bl")
 	@ModifyExpressionValue(method = "render", at = @At("MIXINEXTRAS:EXPRESSION"))
-	private boolean preventAngleBracketRendering(boolean original, @Local(name = "subtitleEntry2") SubtitlesHud.SubtitleEntry subtitleEntry) {
+	private boolean preventAngleBracketRendering(boolean original, @SuppressWarnings("LocalMayBeArgsOnly") @Local SubtitlesHud.SubtitleEntry subtitleEntry) {
 		if (((SubtitleEntryAccessor)subtitleEntry).getRange() == 1093813.875f) {
 			return true;
 		}
