@@ -35,6 +35,8 @@
 		"features.ParentElementMixin",
 		"features.SubtitlesHudMixin",
 		"features.SuggestionWindowMixin",
+		"features.flight.ClientPlayerEntityMixin",
+		"features.flight.ClientPlayNetworkHandlerMixin",
 		"macros.AddMacroButtonMixin",
 		"macros.InitializeMacroManagerMixin"
 	],

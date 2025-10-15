@@ -12,6 +12,8 @@ import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 import fi.dy.masa.malilib.util.JsonUtils;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.util.math.Vec3d;
 import tools.redstone.redstonetools.RedstoneTools;
 import tools.redstone.redstonetools.screen.BetterChatHud;
 import tools.redstone.redstonetools.screen.DummyScreen;
@@ -55,6 +57,8 @@ public class Configs implements IConfigHandler {
 		public static final ConfigLabel 			MISC_LABEL = new ConfigLabel("Miscellaneous related configs");
 		public static final ConfigHotkey 			SHOW_CURSOR = new ConfigHotkey("Show cursor", "", "");
 		public static final ConfigBooleanHotkeyed 	ALWAYS_CLOSE_BUTTON = new ConfigBooleanHotkeyed("Always close screens upon pressing escape", false, "", "");
+		public static final ConfigHotkey 			FORCE_TOGGLE_FLIGHT = new ConfigHotkey("Force toggle creative flight", "", "");
+		public static final ConfigBooleanHotkeyed 	PREVENT_FLIGHT_STATE_CHANGE = new ConfigBooleanHotkeyed("Prevent creative flight state change", false, "", "");
 
 		public static final ConfigLabel 			DEBUG_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			DEBUG_LABEL = new ConfigLabel("Debug related configs");
@@ -74,40 +78,6 @@ public class Configs implements IConfigHandler {
 		public static final List<? extends IConfigBase> OPTIONS;
 
 		static {
-			//noinspection deprecation
-			HudRenderCallback.EVENT.register((context, renderTickCounter) -> {
-				String toDisplay = KeybindMulti.getActiveKeysString();
-				toDisplay = toDisplay.replaceAll("\\s*\\([^)]*\\)", "");
-				if (toDisplay.equals("<none>")) return;
-				var individualKeys = toDisplay.split("\\+");
-				StringBuilder keyDisplay = new StringBuilder();
-				StringBuilder mouseDisplay = new StringBuilder();
-				boolean shouldNotAddPlusKey = true;
-				boolean shouldNotAddPlusMouse = true;
-				for (String s : individualKeys) {
-					s = s.strip();
-					if (s.startsWith("BUTTON_")) {
-						if (!shouldNotAddPlusMouse) mouseDisplay.append(" + ");
-						mouseDisplay.append(s);
-						shouldNotAddPlusMouse = false;
-					} else {
-						if (!shouldNotAddPlusKey) keyDisplay.append(" + ");
-						keyDisplay.append(s);
-						shouldNotAddPlusKey = false;
-					}
-				}
-				if (DISPLAY_CURRENTLY_PRESSED_KEYS.getBooleanValue()) {
-					int x = Kr1v.PRESSED_KEYS_X.getIntegerValue();
-					int y = Kr1v.PRESSED_KEYS_Y.getIntegerValue();
-					context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, keyDisplay.toString(), x, y, 0xFFFFFFFF);
-				}
-				if (DISPLAY_CURRENTLY_PRESSED_MOUSE_BUTTONS.getBooleanValue()) {
-					int x = Kr1v.PRESSED_MOUSE_X.getIntegerValue();
-					int y = Kr1v.PRESSED_MOUSE_Y.getIntegerValue();
-					context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, mouseDisplay.toString(), x, y, 0xFFFFFFFF);
-				}
-			});
-
 			ALWAYS_CLOSE_BUTTON.getKeybind().setCallback((keyAction, keybind) -> {
 				preventClosingOnce = true;
 				if (MinecraftClient.getInstance().currentScreen != null)
@@ -118,6 +88,16 @@ public class Configs implements IConfigHandler {
 
 			SHOW_CURSOR.getKeybind().setCallback((button, keybind) -> {
 				MinecraftClient.getInstance().setScreen(new DummyScreen());
+				return true;
+			});
+
+			FORCE_TOGGLE_FLIGHT.getKeybind().setCallback((button, keybind) -> {
+				ClientPlayerEntity player = MinecraftClient.getInstance().player;
+				if (player != null && player.getAbilities().allowFlying) {
+					player.getAbilities().flying = !player.getAbilities().flying;
+					if (!PREVENT_FLIGHT_STATE_CHANGE.getBooleanValue() && player.isOnGround())
+						player.addVelocity(new Vec3d(0, 0.08, 0));
+				}
 				return true;
 			});
 
@@ -152,6 +132,41 @@ public class Configs implements IConfigHandler {
 				}
 			}
 			OPTIONS = ilb.build();
+
+			//noinspection deprecation
+			HudRenderCallback.EVENT.register((context, renderTickCounter) -> {
+				String toDisplay = KeybindMulti.getActiveKeysString();
+				toDisplay = toDisplay.replaceAll("\\s*\\([^)]*\\)", "");
+				if (toDisplay.equals("<none>")) return;
+				var individualKeys = toDisplay.split("\\+");
+				StringBuilder keyDisplay = new StringBuilder();
+				StringBuilder mouseDisplay = new StringBuilder();
+				boolean shouldNotAddPlusKey = true;
+				boolean shouldNotAddPlusMouse = true;
+				for (String s : individualKeys) {
+					s = s.strip();
+					if (s.startsWith("BUTTON_")) {
+						if (!shouldNotAddPlusMouse) mouseDisplay.append(" + ");
+						mouseDisplay.append(s);
+						shouldNotAddPlusMouse = false;
+					} else {
+						if (!shouldNotAddPlusKey) keyDisplay.append(" + ");
+						keyDisplay.append(s);
+						shouldNotAddPlusKey = false;
+					}
+				}
+				if (DISPLAY_CURRENTLY_PRESSED_KEYS.getBooleanValue()) {
+					int x = Kr1v.PRESSED_KEYS_X.getIntegerValue();
+					int y = Kr1v.PRESSED_KEYS_Y.getIntegerValue();
+					context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, keyDisplay.toString(), x, y, 0xFFFFFFFF);
+				}
+				if (DISPLAY_CURRENTLY_PRESSED_MOUSE_BUTTONS.getBooleanValue()) {
+					int x = Kr1v.PRESSED_MOUSE_X.getIntegerValue();
+					int y = Kr1v.PRESSED_MOUSE_Y.getIntegerValue();
+					context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, mouseDisplay.toString(), x, y, 0xFFFFFFFF);
+				}
+			});
+
 		}
 	}
 
