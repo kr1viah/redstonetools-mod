@@ -10,6 +10,7 @@ import fi.dy.masa.malilib.config.options.*;
 import fi.dy.masa.malilib.hotkeys.KeybindMulti;
 import fi.dy.masa.malilib.hotkeys.KeybindSettings;
 import fi.dy.masa.malilib.util.JsonUtils;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import tools.redstone.redstonetools.RedstoneTools;
 import tools.redstone.redstonetools.screen.BetterChatHud;
@@ -23,7 +24,6 @@ import java.util.List;
 
 public class Configs implements IConfigHandler {
 	private static final String CONFIG_FILE_NAME = RedstoneTools.MOD_ID + ".json";
-
 
 	@SuppressWarnings("unused")
 	public static class Kr1v {
@@ -40,6 +40,16 @@ public class Configs implements IConfigHandler {
 		public static final ConfigBooleanHotkeyed 	ALLOW_DUPLICATE_SUBTITLES = new ConfigBooleanHotkeyed("Duplicate subtitles", false, "", "Allow having multiple of the same message after each other in the subtitles");
 		public static final ConfigBooleanHotkeyed 	CHAT_SELECTING = new ConfigBooleanHotkeyed("Chat selecting", true, "LEFT_CONTROL,C", KeybindSettings.GUI, "Be able to select and copy the chat");
 		public static final ConfigColor				CHAT_SELECTED_TEXT_BACKGROUND_COLOUR = new ConfigColor("Selected text background colour", "0xAA0033FF", "");
+
+
+		public static final ConfigLabel 			KEY_SEPARATOR = new ConfigLabel("");
+		public static final ConfigLabel 			KEY_LABEL = new ConfigLabel("Input related configs");
+		public static final ConfigBooleanHotkeyed 	DISPLAY_CURRENTLY_PRESSED_KEYS = new ConfigBooleanHotkeyed("Display currently pressed keys", false, "", "");
+		public static final ConfigBooleanHotkeyed 	DISPLAY_CURRENTLY_PRESSED_MOUSE_BUTTONS = new ConfigBooleanHotkeyed("Display currently pressed mouse buttons", false, "", "");
+		public static final ConfigInteger			PRESSED_KEYS_X = new ConfigInteger("Currently pressed keys X", 2, "");
+		public static final ConfigInteger			PRESSED_KEYS_Y = new ConfigInteger("Currently pressed keys Y", 0, "");
+		public static final ConfigInteger			PRESSED_MOUSE_X = new ConfigInteger("Currently pressed mouse X", 2, "");
+		public static final ConfigInteger			PRESSED_MOUSE_Y = new ConfigInteger("Currently pressed mouse Y", 11, "");
 
 		public static final ConfigLabel 			MISC_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			MISC_LABEL = new ConfigLabel("Miscellaneous related configs");
@@ -64,6 +74,40 @@ public class Configs implements IConfigHandler {
 		public static final List<? extends IConfigBase> OPTIONS;
 
 		static {
+			//noinspection deprecation
+			HudRenderCallback.EVENT.register((context, renderTickCounter) -> {
+				String toDisplay = KeybindMulti.getActiveKeysString();
+				toDisplay = toDisplay.replaceAll("\\s*\\([^)]*\\)", "");
+				if (toDisplay.equals("<none>")) return;
+				var individualKeys = toDisplay.split("\\+");
+				StringBuilder keyDisplay = new StringBuilder();
+				StringBuilder mouseDisplay = new StringBuilder();
+				boolean shouldNotAddPlusKey = true;
+				boolean shouldNotAddPlusMouse = true;
+				for (String s : individualKeys) {
+					s = s.strip();
+					if (s.startsWith("BUTTON_")) {
+						if (!shouldNotAddPlusMouse) mouseDisplay.append(" + ");
+						mouseDisplay.append(s);
+						shouldNotAddPlusMouse = false;
+					} else {
+						if (!shouldNotAddPlusKey) keyDisplay.append(" + ");
+						keyDisplay.append(s);
+						shouldNotAddPlusKey = false;
+					}
+				}
+				if (DISPLAY_CURRENTLY_PRESSED_KEYS.getBooleanValue()) {
+					int x = Kr1v.PRESSED_KEYS_X.getIntegerValue();
+					int y = Kr1v.PRESSED_KEYS_Y.getIntegerValue();
+					context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, keyDisplay.toString(), x, y, 0xFFFFFFFF);
+				}
+				if (DISPLAY_CURRENTLY_PRESSED_MOUSE_BUTTONS.getBooleanValue()) {
+					int x = Kr1v.PRESSED_MOUSE_X.getIntegerValue();
+					int y = Kr1v.PRESSED_MOUSE_Y.getIntegerValue();
+					context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, mouseDisplay.toString(), x, y, 0xFFFFFFFF);
+				}
+			});
+
 			ALWAYS_CLOSE_BUTTON.getKeybind().setCallback((keyAction, keybind) -> {
 				preventClosingOnce = true;
 				if (MinecraftClient.getInstance().currentScreen != null)
@@ -92,6 +136,15 @@ public class Configs implements IConfigHandler {
 						Object value = f.get(null);
 						if (value != null) {
 							ilb.add((IConfigBase) value);
+
+							if (value instanceof ConfigBooleanHotkeyed cbh) {
+								if (((KeybindMulti) cbh.getKeybind()).getCallback() == null) {
+									cbh.getKeybind().setCallback((keyAction, keybind) -> {
+										cbh.setBooleanValue(!cbh.getBooleanValue());
+										return true;
+									});
+								}
+							}
 						}
 					} catch (IllegalAccessException e) {
 						throw new RuntimeException(e);
@@ -99,17 +152,6 @@ public class Configs implements IConfigHandler {
 				}
 			}
 			OPTIONS = ilb.build();
-
-			for (IConfigBase config : OPTIONS) {
-				if (config instanceof ConfigBooleanHotkeyed cbh) {
-					if (((KeybindMulti) cbh.getKeybind()).getCallback() == null) {
-						cbh.getKeybind().setCallback((keyAction, keybind) -> {
-							cbh.setBooleanValue(!cbh.getBooleanValue());
-							return true;
-						});
-					}
-				}
-			}
 		}
 	}
 
