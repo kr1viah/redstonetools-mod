@@ -1,15 +1,15 @@
 package tools.redstone.redstonetools.mixin.features;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.MessageIndicator;
 import net.minecraft.client.gui.hud.SubtitlesHud;
 import net.minecraft.network.message.MessageSignatureData;
-import net.minecraft.text.Text;
+import net.minecraft.text.*;
+import net.minecraft.util.Pair;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tools.redstone.redstonetools.malilib.config.Configs;
 import tools.redstone.redstonetools.malilib.config.MacroManager;
 import tools.redstone.redstonetools.mixin.accessors.InGameHudAccessor;
@@ -22,15 +22,21 @@ import java.util.regex.PatternSyntaxException;
 
 @Mixin(ChatHud.class)
 public class ChatHudMixin {
-	@Inject(method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;Lnet/minecraft/client/gui/hud/MessageIndicator;)V", at = @At("HEAD"), cancellable = true)
-	private void injected(Text message, MessageSignatureData signatureData, MessageIndicator indicator, CallbackInfo ci) {
-		if (MacroManager.shouldMute) ci.cancel();
+	@WrapMethod(method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;Lnet/minecraft/client/gui/hud/MessageIndicator;)V")
+	private void injected(Text message, MessageSignatureData signatureData, MessageIndicator indicator, Operation<Void> original) {
+		if (MacroManager.shouldMute) return;
+
+		for (Pair<String, String> entry : Configs.Kr1v.CHAT_REPLACE.getMap()) {
+			if (message.getString().contains(entry.getLeft())) {
+				message = Text.literal(message.getString().replace(entry.getLeft(), entry.getRight()));
+			}
+		}
+
 		for (String str : Configs.Kr1v.CHAT_HIDE.getStrings()) {
 			try {
 				Pattern pattern = Pattern.compile(str);
 				Matcher matcher = pattern.matcher(message.getString());
 				if (matcher.matches()) {
-					ci.cancel();
 					if (Configs.Kr1v.REDIRECT_TO_SUBTITLES.getBooleanValue()) {
 						if (MinecraftClient.getInstance().player != null) {
 							List<SubtitlesHud.SubtitleEntry> entries = ((SubtitlesHudAccessor)((InGameHudAccessor)MinecraftClient.getInstance().inGameHud).getSubtitlesHud()).getEntries();
@@ -52,5 +58,6 @@ public class ChatHudMixin {
 			} catch (PatternSyntaxException ignored) {
 			}
 		}
+		original.call(message, signatureData, indicator);
 	}
 }

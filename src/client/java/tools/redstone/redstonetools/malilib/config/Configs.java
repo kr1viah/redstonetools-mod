@@ -15,6 +15,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import tools.redstone.redstonetools.RedstoneTools;
+import tools.redstone.redstonetools.malilib.config.options.ConfigStringMap;
 import tools.redstone.redstonetools.screen.BetterChatHud;
 import tools.redstone.redstonetools.screen.DummyScreen;
 
@@ -37,7 +38,8 @@ public class Configs implements IConfigHandler {
 
 		public static final ConfigLabel 			CHAT_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			CHAT_LABEL = new ConfigLabel("Chat related configs");
-		public static final ConfigStringList 		CHAT_HIDE = new ConfigStringList("Prevent messages with these regex strings from getting added to the chat", ImmutableList.of(), "");
+		public static final ConfigStringMap			CHAT_REPLACE = new ConfigStringMap("Replace strings with strings", ImmutableList.of(), "", "", "Happens before hiding");
+		public static final ConfigStringList 		CHAT_HIDE = new ConfigStringList("Prevent messages with these regex strings from getting added to the chat", ImmutableList.of(), "Happens after replacing");
 		public static final ConfigBooleanHotkeyed 	REDIRECT_TO_SUBTITLES = new ConfigBooleanHotkeyed("Redirect matched messages to the subtitle hud element", true, "", "");
 		public static final ConfigBooleanHotkeyed 	ALLOW_DUPLICATE_SUBTITLES = new ConfigBooleanHotkeyed("Duplicate subtitles", false, "", "Allow having multiple of the same message after each other in the subtitles");
 		public static final ConfigBooleanHotkeyed 	CHAT_SELECTING = new ConfigBooleanHotkeyed("Chat selecting", true, "LEFT_CONTROL,C", KeybindSettings.GUI, "Be able to select and copy the chat");
@@ -65,15 +67,6 @@ public class Configs implements IConfigHandler {
 		public static final ConfigBooleanHotkeyed 	DISABLED_SERVER_SCREEN_CLOSING_PRINT = new ConfigBooleanHotkeyed("Print prevented screen closings", false, "", "");
 		public static final ConfigBooleanHotkeyed 	PREVENT_OPENING_OF_SCREEN_PRINT = new ConfigBooleanHotkeyed("Print screen openings that aren't prevented", false, "", "");
 		public static final ConfigBooleanHotkeyed 	PERCENTAGE_DROPPED_PACKETS_PRINT = new ConfigBooleanHotkeyed("Print prevented packets", false, "", "");
-
-		public static final ConfigLabel 			PACKET_SEPARATOR = new ConfigLabel("");
-		public static final ConfigLabel 			PACKET_LABEL = new ConfigLabel("Packet related configs");
-		public static final ConfigBooleanHotkeyed 	AFFECT_PACKETS_C2S = new ConfigBooleanHotkeyed("Affect C2S packets", false, "", "");
-		public static final ConfigBooleanHotkeyed 	AFFECT_PACKETS_S2C = new ConfigBooleanHotkeyed("Affect S2C packets", false, "", "");
-		public static final ConfigStringList 		PACKETS_IGNORE = new ConfigStringList("Prevent these packets from getting affected", ImmutableList.of("HandshakeC2SPacket", "LoginHelloC2SPacket", "LoginSuccessS2CPacket", "EnterConfigurationC2SPacket", "CustomPayloadC2SPacket", "CustomPayloadS2CPacket", "ClientOptionsC2SPacket", "CommonPingS2CPacket", "CommonPongC2SPacket", "FeaturesS2CPacket", "SelectKnownPacksS2CPacket", "SelectKnownPacksC2SPacket", "DynamicRegistriesS2CPacket", "SynchronizeTagsS2CPacket", "ReadyS2CPacket", "ReadyC2SPacket"), "");
-		public static final ConfigDouble  			PERCENTAGE_DROPPED_PACKETS = new ConfigDouble("Amount of packets to drop (0 = none, 1 = all)", 0, 0, 1, true, "");
-		public static final ConfigDouble  			PERCENTAGE_DELAYED_PACKETS = new ConfigDouble("Amount of packets to lag (0 = none, 1 = all)", 0, 0, 1, true, "");
-		public static final ConfigDouble  			PERCENTAGE_DELAYED_PACKETS_TIME = new ConfigDouble("Max lag (in ms)", 0, 0, 10000, true, "");
 
 		public static final List<? extends IConfigBase> OPTIONS;
 
