@@ -22,17 +22,8 @@ public class ConfigStringMap extends ConfigBase<ConfigStringMap> implements ICon
         this.map.addAll(defaultValue);
     }
 
-	private static ImmutableList<Pair<String, String>> getMapFrom2Lists(List<String> keys, List<String> values) {
-        ImmutableList.Builder<Pair<String, String>> imb = new ImmutableList.Builder<>();
-        final int count = keys.size();
-        for (int i = 0; i < count; i++) {
-            imb.add(new Pair<>(keys.get(i), values.get(i)));
-        }
-        return imb.build();
-    }
 
-
-    @Override
+	@Override
     public List<Pair<String, String>> getMap() {
         return map;
     }
