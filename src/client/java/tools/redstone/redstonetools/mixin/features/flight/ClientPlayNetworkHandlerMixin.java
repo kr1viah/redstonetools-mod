@@ -15,7 +15,7 @@ public class ClientPlayNetworkHandlerMixin {
 	@ModifyExpressionValue(method = "onPlayerAbilities", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/play/PlayerAbilitiesS2CPacket;isFlying()Z"))
 	private boolean injected(boolean original, @Local PlayerEntity player) {
 		if (Configs.Kr1v.PREVENT_FLIGHT_STATE_CHANGE.getBooleanValue()) {
-			return true;
+			return player.getAbilities().flying;
 		} else {
 			return original;
 		}
