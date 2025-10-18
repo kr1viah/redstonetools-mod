@@ -45,7 +45,6 @@ public class Configs implements IConfigHandler {
 		public static final ConfigBooleanHotkeyed 	CHAT_SELECTING = new ConfigBooleanHotkeyed("Chat selecting", true, "LEFT_CONTROL,C", KeybindSettings.GUI, "Be able to select and copy the chat");
 		public static final ConfigColor				CHAT_SELECTED_TEXT_BACKGROUND_COLOUR = new ConfigColor("Selected text background colour", "0xAA0033FF", "");
 
-
 		public static final ConfigLabel 			KEY_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			KEY_LABEL = new ConfigLabel("Input related configs");
 		public static final ConfigBooleanHotkeyed 	DISPLAY_CURRENTLY_PRESSED_KEYS = new ConfigBooleanHotkeyed("Display currently pressed keys", false, "", "");
@@ -61,6 +60,7 @@ public class Configs implements IConfigHandler {
 		public static final ConfigBooleanHotkeyed 	ALWAYS_CLOSE_BUTTON = new ConfigBooleanHotkeyed("Always close screens upon pressing escape", false, "", "");
 		public static final ConfigHotkey 			FORCE_TOGGLE_FLIGHT = new ConfigHotkey("Force toggle creative flight", "", "");
 		public static final ConfigBooleanHotkeyed 	PREVENT_FLIGHT_STATE_CHANGE = new ConfigBooleanHotkeyed("Prevent creative flight state change", false, "", "");
+		public static final ConfigStringList		QUICKPLAY_SERVERS = new ConfigStringList("Servers to put onto the main menu", ImmutableList.of(), "Separate name with ip with a #");
 
 		public static final ConfigLabel 			DEBUG_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			DEBUG_LABEL = new ConfigLabel("Debug related configs");
