@@ -55,6 +55,12 @@ public class MappingUtils {
 
 				var gzPath = mappingsPath.resolveSibling("temp.gz");
 				InputStream in = URI.create(url).toURL().openStream();
+
+				if (!Files.exists(gzPath)) {
+					Files.createDirectories(gzPath.getParent());
+					Files.createFile(gzPath);
+				}
+				
 				Files.copy(in, gzPath, StandardCopyOption.REPLACE_EXISTING);
 				GZIPInputStream gis = new GZIPInputStream(new FileInputStream(gzPath.toFile()));
 				FileOutputStream fos = new FileOutputStream(mappingsPath.toFile());
