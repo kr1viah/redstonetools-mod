@@ -3,11 +3,16 @@ My own changes that the others probably don't want merged
 Currently:
 * Prevent servers from closing certain screen
 * Prevent certain screens from opening
-* Drop x amount of packets
-* Lag x amount of packets
 * Show cursor hotkey
   * Opens a screen that allows you to interact with chat, and close the screen upon pressing a mouse button
 * Force close screen hotkey
+* (Re)move chat messages that match a regex
+* Chat selecting and copying
+* Display currently pressed keys/mouse buttons
+* Force toggle creative flight
+* Prevent creative flight state change
+* Main menu servers
+* No main menu fade in
 
 Downsides:
 * 1.21.5 only

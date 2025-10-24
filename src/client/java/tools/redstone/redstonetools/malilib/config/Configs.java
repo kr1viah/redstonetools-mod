@@ -38,7 +38,7 @@ public class Configs implements IConfigHandler {
 
 		public static final ConfigLabel 			CHAT_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			CHAT_LABEL = new ConfigLabel("Chat related configs");
-		public static final ConfigStringMap			CHAT_REPLACE = new ConfigStringMap("Replace strings with strings", ImmutableList.of(), "", "", "Happens before hiding");
+		public static final ConfigStringMap			CHAT_REPLACE = new ConfigStringMap("Replace strings with strings", ImmutableList.of(), "Happens before hiding", "", "");
 		public static final ConfigStringList 		CHAT_HIDE = new ConfigStringList("Prevent messages with these regex strings from getting added to the chat", ImmutableList.of(), "Happens after replacing");
 		public static final ConfigBooleanHotkeyed 	REDIRECT_TO_SUBTITLES = new ConfigBooleanHotkeyed("Redirect matched messages to the subtitle hud element", true, "", "");
 		public static final ConfigBooleanHotkeyed 	ALLOW_DUPLICATE_SUBTITLES = new ConfigBooleanHotkeyed("Duplicate subtitles", false, "", "Allow having multiple of the same message after each other in the subtitles");
@@ -61,6 +61,7 @@ public class Configs implements IConfigHandler {
 		public static final ConfigHotkey 			FORCE_TOGGLE_FLIGHT = new ConfigHotkey("Force toggle creative flight", "", "");
 		public static final ConfigBooleanHotkeyed 	PREVENT_FLIGHT_STATE_CHANGE = new ConfigBooleanHotkeyed("Prevent creative flight state change", false, "", "");
 		public static final ConfigStringList		QUICKPLAY_SERVERS = new ConfigStringList("Servers to put onto the main menu", ImmutableList.of(), "Separate name with ip with a #");
+		public static final ConfigBoolean			FAST_MAIN_MENU = new ConfigBoolean("Fast main menu", true, "");
 
 		public static final ConfigLabel 			DEBUG_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			DEBUG_LABEL = new ConfigLabel("Debug related configs");

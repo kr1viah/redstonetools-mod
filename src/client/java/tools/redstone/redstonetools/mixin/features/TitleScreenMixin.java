@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import tools.redstone.redstonetools.malilib.config.Configs;
@@ -37,6 +38,11 @@ public abstract class TitleScreenMixin extends Screen {
 
 	protected TitleScreenMixin(Text title) {
 		super(title);
+	}
+
+	@ModifyVariable(method = "<init>(ZLnet/minecraft/client/gui/LogoDrawer;)V", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+	private static boolean modifyInitArg(boolean original) {
+		return !Configs.Kr1v.FAST_MAIN_MENU.getBooleanValue() && original;
 	}
 
 	@Inject(method = "init", at = @At("TAIL"))
