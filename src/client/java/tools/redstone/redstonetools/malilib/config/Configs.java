@@ -34,7 +34,7 @@ public class Configs implements IConfigHandler {
 		public static final ConfigLabel 			SCREEN_LABEL = new ConfigLabel("Screen related configs");
 		public static final ConfigBooleanHotkeyed 	DISABLED_SERVER_SCREEN_CLOSING = new ConfigBooleanHotkeyed("Prevent servers from closing the screen", false, "", "");
 		public static final ConfigStringList 		DISABLED_SCREEN_CLOSING_EXCEPTIONS = new ConfigStringList("Only these", ImmutableList.of("ChatScreen"), "");
-		public static final ConfigStringList 		PREVENT_OPENING_OF_SCREEN = new ConfigStringList("Prevent these screens from opening", ImmutableList.of(), "");
+		public static final ConfigStringMap 		PREVENT_OPENING_OF_SCREEN = new ConfigStringMap("Prevent these screens from opening", ImmutableList.of(), "", "", "");
 
 		public static final ConfigLabel 			CHAT_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			CHAT_LABEL = new ConfigLabel("Chat related configs");
