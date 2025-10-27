@@ -66,6 +66,7 @@ dependencies {
 	implementation(include("net.fabricmc:tiny-remapper:${project.tiny_version}"))
 	implementation(include("net.fabricmc:mapping-io:${project.mapping_io_version}"))
 	implementation(include("org.reflections:reflections:${project.reflections_version}"))
+	implementation(include("org.javassist:javassist:${project.javaasist_version}-GA"))
 
 	// MaLiLib
 	modApi("maven.modrinth:malilib:${project.malilib_version}")

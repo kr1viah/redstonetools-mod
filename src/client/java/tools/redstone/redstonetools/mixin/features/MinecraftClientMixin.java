@@ -11,7 +11,7 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
 import org.reflections.Reflections;
-import org.reflections.scanners.Scanners;
+import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.spongepowered.asm.mixin.Final;
@@ -37,7 +37,7 @@ public class MinecraftClientMixin {
 	private static void collectScreenClasses(CallbackInfo ci) {
 		Reflections reflections = new Reflections(new ConfigurationBuilder()
 			.setUrls(ClasspathHelper.forJavaClassPath())
-			.addScanners(Scanners.SubTypes)
+			.addScanners(new SubTypesScanner(false))
 		);
 		Set<Class<? extends Screen>> allScreenClasses = reflections.getSubTypesOf(Screen.class);
 		for (Class<? extends Screen> cls : allScreenClasses) {
