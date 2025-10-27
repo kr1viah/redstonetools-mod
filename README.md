@@ -23,6 +23,8 @@ Commands:
   * Opens the last cached screen of a certain type
 
 Internal:
+* ConfigStringMap
+ 	* Map of strings
 * ConfigLabel
   * In malilib, will make a label instead of a normal config
 * MappingUtils
