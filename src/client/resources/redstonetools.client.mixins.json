@@ -25,7 +25,6 @@
 		"accessors.TextFieldAccessor",
 		"accessors.WorldRendererInvoker",
 		"blocks.RedstoneHitboxMixin",
-		"features.AirPlaceClientMixin",
 		"features.ChatHudMixin",
 		"features.ChatInputSuggesterMixin",
 		"features.ClientPlayNetworkHandlerMixin",
@@ -42,6 +41,7 @@
 		"macros.InitializeMacroManagerMixin"
 	],
 	"mixins": [
+		"features.LivingEntityMixin",
 		"malilib.WidgetConfigOptionMixin"
 	],
 	"mixinextras": {

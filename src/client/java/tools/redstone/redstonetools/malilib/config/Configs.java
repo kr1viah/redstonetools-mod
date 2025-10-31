@@ -61,7 +61,10 @@ public class Configs implements IConfigHandler {
 		public static final ConfigHotkey 			FORCE_TOGGLE_FLIGHT = new ConfigHotkey("Force toggle creative flight", "", "");
 		public static final ConfigBooleanHotkeyed 	PREVENT_FLIGHT_STATE_CHANGE = new ConfigBooleanHotkeyed("Prevent creative flight state change", false, "", "");
 		public static final ConfigStringList		QUICKPLAY_SERVERS = new ConfigStringList("Servers to put onto the main menu", ImmutableList.of(), "Separate name with ip with a #");
-		public static final ConfigBoolean			FAST_MAIN_MENU = new ConfigBoolean("Fast main menu", true, "");
+		public static final ConfigBooleanHotkeyed	FAST_MAIN_MENU = new ConfigBooleanHotkeyed("Fast main menu", true, "", "");
+		public static final ConfigBooleanHotkeyed	PRINT_SUBOPTIMAL_JUMPS = new ConfigBooleanHotkeyed("Print suboptimal jumps", false, "", "Prints a message to the chat when a jump isn't made on the last tick possible");
+		public static final ConfigBooleanHotkeyed	PRINT_OPTIMAL_JUMPS = new ConfigBooleanHotkeyed("Print optimal jumps", false, "", "Prints a message to the chat when a jump is made on the last tick possible");
+		public static final ConfigBooleanHotkeyed	PRINT_MISSED_JUMPS = new ConfigBooleanHotkeyed("Print missed jumps", false, "", "Prints a message to the chat when a jump is missed");
 
 		public static final ConfigLabel 			DEBUG_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			DEBUG_LABEL = new ConfigLabel("Debug related configs");

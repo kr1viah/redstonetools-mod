@@ -4,9 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandRegistryAccess;
 import tools.redstone.redstonetools.features.commands.*;
-import tools.redstone.redstonetools.features.toggleable.AirPlaceFeature;
 import tools.redstone.redstonetools.features.toggleable.BigDustFeature;
-import tools.redstone.redstonetools.utils.DependencyLookup;
 
 public class ClientCommands {
 	public static void registerCommands(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
@@ -18,7 +16,6 @@ public class ClientCommands {
 		EditMacroFeature.INSTANCE.registerCommand(dispatcher, registryAccess);
 		MacroFeature.INSTANCE.registerCommand(dispatcher, registryAccess);
 		OpenScreenFeature.INSTANCE.registerCommand(dispatcher, registryAccess);
-		AirPlaceFeature.INSTANCE.registerCommand(dispatcher, registryAccess);
 		RstFeature.INSTANCE.registerCommand(dispatcher, registryAccess);
 		BigDustFeature.INSTANCE.registerCommand(dispatcher, registryAccess);
 	}

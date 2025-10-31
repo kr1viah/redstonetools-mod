@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tools.redstone.redstonetools.features.commands.OpenScreenFeature;
 import tools.redstone.redstonetools.malilib.config.Configs;
+import tools.redstone.redstonetools.utils.ChatUtils;
 import tools.redstone.redstonetools.utils.MappingUtils;
 
 import java.lang.reflect.Constructor;
@@ -74,12 +75,12 @@ public class MinecraftClientMixin {
 					Screen newScreen = null;
 					if (!newScreenClass.equals("null")) {
 						Class<?> screenClass = screenClasses.get(newScreenClass);
-						this.inGameHud.getChatHud().addMessage(Text.literal("Failed to create new instance of class: " + newScreenClass + ", will try saved instance / null-arg constructor / unsafe as last resort"));
+						ChatUtils.sendMessage("Failed to create new instance of class: " + newScreenClass + ", will try saved instance / null-arg constructor / unsafe as last resort");
 						if (OpenScreenFeature.INSTANCE.savedScreens.get(newScreenClass) != null) {
 							newScreen = OpenScreenFeature.INSTANCE.savedScreens.get(newScreenClass);
-							this.inGameHud.getChatHud().addMessage(Text.literal("Using saved screen instance for class: " + newScreenClass));
+							ChatUtils.sendMessage("Using saved screen instance for class: " + newScreenClass);
 						} else {
-							this.inGameHud.getChatHud().addMessage(Text.literal("No saved screen instance for class: " + newScreenClass + ", trying to pass null to constructor arguments"));
+							ChatUtils.sendMessage("No saved screen instance for class: \" + newScreenClass + \", trying to pass null to constructor arguments");
 							try {
 								@SuppressWarnings("unchecked")
 								Constructor<Screen> constructor = (Constructor<Screen>) screenClass.getDeclaredConstructors()[0];
@@ -137,9 +138,9 @@ public class MinecraftClientMixin {
 									}
 								}
 								newScreen = constructor.newInstance(params);
-								this.inGameHud.getChatHud().addMessage(Text.literal("Successfully created new instance of class: " + newScreenClass + " via null constructor"));
+								ChatUtils.sendMessage("Successfully created new instance of class: " + newScreenClass + " via null constructor");
 							} catch (InstantiationException | IllegalAccessException | InvocationTargetException e3) {
-								this.inGameHud.getChatHud().addMessage(Text.literal("Failed to create new instance of class: " + newScreenClass + " via null constructor"));
+								ChatUtils.sendMessage("Failed to create new instance of class: " + newScreenClass + " via null constructor");
 							}
 						}
 					}
@@ -149,7 +150,7 @@ public class MinecraftClientMixin {
 			}
 		}
 		if (Configs.Kr1v.PREVENT_OPENING_OF_SCREEN_PRINT.getBooleanValue())
-			this.inGameHud.getChatHud().addMessage(Text.literal("Allowed screen opening of class: " + currentScreenClass + " (Click to copy)").setStyle(Style.EMPTY.withClickEvent(new ClickEvent.CopyToClipboard(currentScreenClass))));
+			ChatUtils.sendMessage(Text.literal("Allowed screen opening of class: " + currentScreenClass + " (Click to copy)").setStyle(Style.EMPTY.withClickEvent(new ClickEvent.CopyToClipboard(currentScreenClass))));
 		if (screen == null) return;
 		OpenScreenFeature.INSTANCE.savedScreens.put(currentScreenClass, screen);
 	}

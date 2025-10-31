@@ -12,7 +12,6 @@ import tools.redstone.redstonetools.malilib.config.Configs;
 
 @Mixin(ClientPlayerEntity.class)
 public class ClientPlayerEntityMixin {
-
 	// if (!playerAbilities.flying) {
 	@Definition(id = "playerAbilities", local = @Local(type = PlayerAbilities.class))
 	@Definition(id = "flying", field = "Lnet/minecraft/entity/player/PlayerAbilities;flying:Z")

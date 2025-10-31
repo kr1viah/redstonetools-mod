@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tools.redstone.redstonetools.ClientCommands;
 import tools.redstone.redstonetools.malilib.config.Configs;
+import tools.redstone.redstonetools.utils.ChatUtils;
 import tools.redstone.redstonetools.utils.DependencyLookup;
 import tools.redstone.redstonetools.utils.MappingUtils;
 import tools.redstone.redstonetools.utils.StringUtils;
@@ -71,7 +72,7 @@ public class ClientPlayNetworkHandlerMixin {
 				if (shouldPrevent) {
 					ci.cancel();
 				} else if (Configs.Kr1v.DISABLED_SERVER_SCREEN_CLOSING_PRINT.getBooleanValue()) {
-					MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.literal("Allowed closing of screen class: " + currentScreenClass + " (Click to copy)").setStyle(Style.EMPTY.withClickEvent(new ClickEvent.CopyToClipboard(currentScreenClass))));
+					ChatUtils.sendMessage(Text.literal("Allowed closing of screen class: " + currentScreenClass + " (Click to copy)").setStyle(Style.EMPTY.withClickEvent(new ClickEvent.CopyToClipboard(currentScreenClass))));
 				}
 			}
 		}
