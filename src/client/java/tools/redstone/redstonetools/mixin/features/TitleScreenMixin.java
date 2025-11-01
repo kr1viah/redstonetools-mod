@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import tools.redstone.redstonetools.malilib.config.Configs;
+import tools.redstone.redstonetools.ClientCommands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +42,7 @@ public abstract class TitleScreenMixin extends Screen {
 
 	@ModifyVariable(method = "<init>(ZLnet/minecraft/client/gui/LogoDrawer;)V", at = @At("HEAD"), ordinal = 0, argsOnly = true)
 	private static boolean modifyInitArg(boolean original) {
-		return !Configs.Kr1v.FAST_MAIN_MENU.getBooleanValue() && original;
+		return !ClientCommands.Configs.Kr1v.FAST_MAIN_MENU.getBooleanValue() && original;
 	}
 
 	@Inject(method = "init", at = @At("TAIL"))
@@ -56,7 +56,7 @@ public abstract class TitleScreenMixin extends Screen {
 		MultiplayerServerListWidget dummyWidget = new MultiplayerServerListWidget(dummyScreen, MinecraftClient.getInstance(), 0, 0, 0, 0);
 		dummyScreen.serverList = dummyList;
 
-		for (String server : Configs.Kr1v.QUICKPLAY_SERVERS.getStrings()) {
+		for (String server : ClientCommands.Configs.Kr1v.QUICKPLAY_SERVERS.getStrings()) {
 			String ip = Arrays.asList(server.split("#")).getLast();
 			String name = Arrays.asList(server.split("#")).getFirst();
 			if (this.textRenderer.getWidth(name) > 64){

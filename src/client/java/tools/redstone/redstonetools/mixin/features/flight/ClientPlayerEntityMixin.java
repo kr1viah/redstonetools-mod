@@ -8,7 +8,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerAbilities;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import tools.redstone.redstonetools.malilib.config.Configs;
+import tools.redstone.redstonetools.ClientCommands;
 
 @Mixin(ClientPlayerEntity.class)
 public class ClientPlayerEntityMixin {
@@ -18,7 +18,7 @@ public class ClientPlayerEntityMixin {
 	@Expression("playerAbilities.flying")
 	@ModifyExpressionValue(method = "tickMovement", at = @At(value = "MIXINEXTRAS:EXPRESSION", ordinal = 1))
 	private boolean injected2(boolean original) {
-		if (Configs.Kr1v.PREVENT_FLIGHT_STATE_CHANGE.getBooleanValue()) {
+		if (ClientCommands.Configs.Kr1v.PREVENT_FLIGHT_STATE_CHANGE.getBooleanValue()) {
 			return false;
 		} else {
 			return original;
@@ -31,7 +31,7 @@ public class ClientPlayerEntityMixin {
 	@Expression("playerAbilities.flying")
 	@ModifyExpressionValue(method = "tickMovement", at = @At(value = "MIXINEXTRAS:EXPRESSION", ordinal = 2))
 	private boolean injected3(boolean original) {
-		if (Configs.Kr1v.PREVENT_FLIGHT_STATE_CHANGE.getBooleanValue()) {
+		if (ClientCommands.Configs.Kr1v.PREVENT_FLIGHT_STATE_CHANGE.getBooleanValue()) {
 			return !original;
 		} else {
 			return original;
@@ -41,7 +41,7 @@ public class ClientPlayerEntityMixin {
 	// if (this.isOnGround() && playerAbilities.flying && !this.client.interactionManager.isFlyingLocked()) {
 	@ModifyExpressionValue(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isOnGround()Z", ordinal = 1))
 	private boolean injected(boolean original) {
-		if (Configs.Kr1v.PREVENT_FLIGHT_STATE_CHANGE.getBooleanValue()) {
+		if (ClientCommands.Configs.Kr1v.PREVENT_FLIGHT_STATE_CHANGE.getBooleanValue()) {
 			return false;
 		}
 		return original;

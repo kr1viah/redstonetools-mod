@@ -7,7 +7,6 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -19,7 +18,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import tools.redstone.redstonetools.malilib.config.Configs;
+import tools.redstone.redstonetools.ClientCommands;
 import tools.redstone.redstonetools.utils.ChatUtils;
 
 import java.util.*;
@@ -68,11 +67,11 @@ public abstract class LivingEntityMixin extends Entity {
 						closestDistance = distance;
 					}
 				}
-				if (Configs.Kr1v.PRINT_SUBOPTIMAL_JUMPS.getBooleanValue())
+				if (ClientCommands.Configs.Kr1v.PRINT_SUBOPTIMAL_JUMPS.getBooleanValue())
 					ChatUtils.sendMessage(String.format("Suboptimal jump by: %.4f blocks", closestDistance));
 			} else {
 				// idk man, unintended coyote time?
-				if (Configs.Kr1v.PRINT_OPTIMAL_JUMPS.getBooleanValue())
+				if (ClientCommands.Configs.Kr1v.PRINT_OPTIMAL_JUMPS.getBooleanValue())
 					ChatUtils.sendMessage("You jumped on the last tick possible!");
 			}
 
@@ -82,7 +81,7 @@ public abstract class LivingEntityMixin extends Entity {
 				Vec3d pos = positions.get(positions.size() - 1 - i);
 				List<Box> boxes = getTouchingBoxes(pos, (int) Math.floor(pos.y - 0.00001));
 				if (!boxes.isEmpty()) {
-					if (Configs.Kr1v.PRINT_MISSED_JUMPS.getBooleanValue())
+					if (ClientCommands.Configs.Kr1v.PRINT_MISSED_JUMPS.getBooleanValue())
 						ChatUtils.sendMessage("You missed the jump by " + (i-1) + " tick(s)");
 					break;
 				}
