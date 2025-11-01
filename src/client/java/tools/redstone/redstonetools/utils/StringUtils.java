@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static tools.redstone.redstonetools.ClientCommands.Configs.ClientData.*;
+import static tools.redstone.redstonetools.Configs.ClientData.*;
 
 public class StringUtils {
 	public static List<String> unmodifiedCommand = new ArrayList<>();

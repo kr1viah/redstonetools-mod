@@ -24,14 +24,14 @@ public class RedstoneToolsClient implements ClientModInitializer {
 
 		ClientWorldEvents.AFTER_CLIENT_WORLD_CHANGE.register((client, clientWorld) -> {
 			if (client.getNetworkHandler() != null) { // dimension change
-				String dimensionChange = ClientCommands.Configs.ClientData.AUTORUN_DIMENSION_CHANGE.getStringValue();
+				String dimensionChange = Configs.ClientData.AUTORUN_DIMENSION_CHANGE.getStringValue();
 				if (dimensionChange.startsWith("/")) {
 					client.getNetworkHandler().sendChatCommand(dimensionChange.substring(1));
 				} else if (!dimensionChange.isEmpty()) {
 					client.getNetworkHandler().sendChatMessage(dimensionChange);
 				}
 			} else { // world entry
-				String worldEntry = ClientCommands.Configs.ClientData.AUTORUN_WORLD_ENTRY.getStringValue();
+				String worldEntry = Configs.ClientData.AUTORUN_WORLD_ENTRY.getStringValue();
 				if (worldEntry.startsWith("/")) {
 					client.send(() -> client.getNetworkHandler().sendChatCommand(worldEntry.substring(1)));
 				} else if (!worldEntry.isEmpty()) {
@@ -39,7 +39,7 @@ public class RedstoneToolsClient implements ClientModInitializer {
 				}
 				if (hasRanCommands) return;
 				hasRanCommands = true;
-				String firstWorldEntry = ClientCommands.Configs.ClientData.AUTORUN_FIRST_WORLD_ENTRY.getStringValue();
+				String firstWorldEntry = Configs.ClientData.AUTORUN_FIRST_WORLD_ENTRY.getStringValue();
 				if (firstWorldEntry.startsWith("/")) {
 					client.send(() -> client.getNetworkHandler().sendChatCommand(firstWorldEntry.substring(1)));
 				} else if (!firstWorldEntry.isEmpty()) {

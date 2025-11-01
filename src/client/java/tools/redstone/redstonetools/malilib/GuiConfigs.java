@@ -8,7 +8,7 @@ import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.button.IButtonActionListener;
 import fi.dy.masa.malilib.util.StringUtils;
 import net.minecraft.client.gui.DrawContext;
-import tools.redstone.redstonetools.ClientCommands;
+import tools.redstone.redstonetools.Configs;
 import tools.redstone.redstonetools.RedstoneTools;
 import tools.redstone.redstonetools.malilib.config.ConfigLabel;
 
@@ -64,13 +64,13 @@ public class GuiConfigs extends GuiConfigsBase {
 		ConfigGuiTab tab = GuiConfigs.tab;
 
 		if (tab == ConfigGuiTab.GENERAL) {
-			configs = ClientCommands.Configs.General.OPTIONS;
+			configs = Configs.General.OPTIONS;
 		} else if (tab == ConfigGuiTab.TOGGLES) {
-			configs = ClientCommands.Configs.Toggles.TOGGLES;
+			configs = Configs.Toggles.TOGGLES;
 		} else if (tab == ConfigGuiTab.CLIENTDATA) {
-			configs = ClientCommands.Configs.ClientData.OPTIONS;
+			configs = Configs.ClientData.OPTIONS;
 		} else if (tab == ConfigGuiTab.KR1V) {
-			configs = ClientCommands.Configs.Kr1v.OPTIONS;
+			configs = Configs.Kr1v.OPTIONS;
 		} else {
 			return Collections.emptyList();
 		}

@@ -31,3 +31,7 @@ accessible method net/minecraft/client/gui/screen/multiplayer/MultiplayerServerL
 accessible field net/minecraft/client/gui/screen/Screen client Lnet/minecraft/client/MinecraftClient;
 accessible field net/minecraft/client/gui/widget/EntryListWidget client Lnet/minecraft/client/MinecraftClient;
 accessible method net/minecraft/client/gui/screen/multiplayer/MultiplayerServerListWidget$ServerEntry <init> (Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerServerListWidget;Lnet/minecraft/client/gui/screen/multiplayer/MultiplayerScreen;Lnet/minecraft/client/network/ServerInfo;)V
+
+accessible class net/minecraft/client/render/VertexConsumers$Dual
+accessible class net/minecraft/client/render/OutlineVertexConsumerProvider$OutlineVertexConsumer
+accessible class net/minecraft/client/render/VertexConsumers$Union

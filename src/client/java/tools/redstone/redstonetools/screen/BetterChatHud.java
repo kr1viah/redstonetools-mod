@@ -14,7 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.profiler.Profilers;
 import org.jetbrains.annotations.Nullable;
-import tools.redstone.redstonetools.ClientCommands;
+import tools.redstone.redstonetools.Configs;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -60,7 +60,7 @@ public class BetterChatHud extends ChatHud {
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY) {
-		if (!ClientCommands.Configs.Kr1v.CHAT_SELECTING.getBooleanValue()) {
+		if (!Configs.Kr1v.CHAT_SELECTING.getBooleanValue()) {
 			return super.mouseClicked(mouseX, mouseY);
 		}
 		mouseClickX = (int) mouseX;
@@ -92,7 +92,7 @@ public class BetterChatHud extends ChatHud {
 	}
 
 	public void mouseReleased(double mouseX, double mouseY) {
-		if (!ClientCommands.Configs.Kr1v.CHAT_SELECTING.getBooleanValue()) return;
+		if (!Configs.Kr1v.CHAT_SELECTING.getBooleanValue()) return;
 		if (mouseClickX == (int) mouseX && mouseClickY == (int) mouseY) {
 			clearSelection();
 			return;
@@ -131,7 +131,7 @@ public class BetterChatHud extends ChatHud {
 
 	@Override
 	public void render(DrawContext context, int currentTick, int mouseX, int mouseY, boolean focused) {
-		if (!ClientCommands.Configs.Kr1v.CHAT_SELECTING.getBooleanValue()) {
+		if (!Configs.Kr1v.CHAT_SELECTING.getBooleanValue()) {
 			super.render(context, currentTick, mouseX, mouseY, focused);
 			return;
 		}
@@ -195,7 +195,7 @@ public class BetterChatHud extends ChatHud {
 
 								if (indexInsideOf(messageIndex)) {
 									int backgroundColourForNormalText = backgroundOpacity << 24;
-									int backgroundColourForSelectedText = ClientCommands.Configs.Kr1v.CHAT_SELECTED_TEXT_BACKGROUND_COLOUR.getIntegerValue();
+									int backgroundColourForSelectedText = Configs.Kr1v.CHAT_SELECTED_TEXT_BACKGROUND_COLOUR.getIntegerValue();
 
 									int startX = -4;
 									int normalEndSelectedStart = -4;

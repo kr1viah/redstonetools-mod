@@ -10,7 +10,7 @@ import net.minecraft.network.message.MessageSignatureData;
 import net.minecraft.text.*;
 import net.minecraft.util.Pair;
 import org.spongepowered.asm.mixin.Mixin;
-import tools.redstone.redstonetools.ClientCommands;
+import tools.redstone.redstonetools.Configs;
 import tools.redstone.redstonetools.malilib.config.MacroManager;
 import tools.redstone.redstonetools.mixin.accessors.InGameHudAccessor;
 import tools.redstone.redstonetools.mixin.accessors.SubtitlesHudAccessor;
@@ -26,21 +26,21 @@ public class ChatHudMixin {
 	private void injected(Text message, MessageSignatureData signatureData, MessageIndicator indicator, Operation<Void> original) {
 		if (MacroManager.shouldMute) return;
 
-		for (Pair<String, String> entry : ClientCommands.Configs.Kr1v.CHAT_REPLACE.getMap()) {
+		for (Pair<String, String> entry : Configs.Kr1v.CHAT_REPLACE.getMap()) {
 			if (message.getString().contains(entry.getLeft())) {
 				message = Text.literal(message.getString().replace(entry.getLeft(), entry.getRight()));
 			}
 		}
 
-		for (String str : ClientCommands.Configs.Kr1v.CHAT_HIDE.getStrings()) {
+		for (String str : Configs.Kr1v.CHAT_HIDE.getStrings()) {
 			try {
 				Pattern pattern = Pattern.compile(str);
 				Matcher matcher = pattern.matcher(message.getString());
 				if (matcher.matches()) {
-					if (ClientCommands.Configs.Kr1v.REDIRECT_TO_SUBTITLES.getBooleanValue()) {
+					if (Configs.Kr1v.REDIRECT_TO_SUBTITLES.getBooleanValue()) {
 						if (MinecraftClient.getInstance().player != null) {
 							List<SubtitlesHud.SubtitleEntry> entries = ((SubtitlesHudAccessor)((InGameHudAccessor)MinecraftClient.getInstance().inGameHud).getSubtitlesHud()).getEntries();
-							if (!ClientCommands.Configs.Kr1v.ALLOW_DUPLICATE_SUBTITLES.getBooleanValue()){
+							if (!Configs.Kr1v.ALLOW_DUPLICATE_SUBTITLES.getBooleanValue()){
 								List<SubtitlesHud.SubtitleEntry> audibleEntries = ((SubtitlesHudAccessor) ((InGameHudAccessor) MinecraftClient.getInstance().inGameHud).getSubtitlesHud()).getAudibleEntries();
 								for (var entry : audibleEntries) {
 									if (entry.getText().copy().equals(message.copy())) {

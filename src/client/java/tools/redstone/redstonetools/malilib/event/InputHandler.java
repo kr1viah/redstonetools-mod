@@ -2,7 +2,7 @@ package tools.redstone.redstonetools.malilib.event;
 
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.hotkeys.*;
-import tools.redstone.redstonetools.ClientCommands;
+import tools.redstone.redstonetools.Configs;
 import tools.redstone.redstonetools.RedstoneTools;
 
 import java.util.List;
@@ -20,15 +20,15 @@ public class InputHandler implements IKeybindProvider, IKeyboardInputHandler, IM
 
 	@Override
 	public void addKeysToMap(IKeybindManager manager) {
-		for (IConfigBase config : ClientCommands.Configs.General.OPTIONS) {
+		for (IConfigBase config : Configs.General.OPTIONS) {
 			if (config instanceof IHotkey hotkey)
 				manager.addKeybindToMap(hotkey.getKeybind());
 		}
-		for (IConfigBase config : ClientCommands.Configs.Toggles.TOGGLES) {
+		for (IConfigBase config : Configs.Toggles.TOGGLES) {
 			if (config instanceof IHotkey hotkey)
 				manager.addKeybindToMap(hotkey.getKeybind());
 		}
-		for (IConfigBase config : ClientCommands.Configs.Kr1v.OPTIONS) {
+		for (IConfigBase config : Configs.Kr1v.OPTIONS) {
 			if (config instanceof IHotkey hotkey)
 				manager.addKeybindToMap(hotkey.getKeybind());
 		}
@@ -36,17 +36,17 @@ public class InputHandler implements IKeybindProvider, IKeyboardInputHandler, IM
 
 	@Override
 	public void addHotkeys(IKeybindManager manager) {
-		List<IHotkey> hotkeysOptions = ClientCommands.Configs.General.OPTIONS.stream()
+		List<IHotkey> hotkeysOptions = Configs.General.OPTIONS.stream()
 			.filter(IHotkey.class::isInstance)
 			.map(IHotkey.class::cast)
 			.toList();
 		manager.addHotkeysForCategory(RedstoneTools.MOD_NAME, "Generic", hotkeysOptions);
-		List<IHotkey> hotkeysToggles = ClientCommands.Configs.Toggles.TOGGLES.stream()
+		List<IHotkey> hotkeysToggles = Configs.Toggles.TOGGLES.stream()
 			.filter(IHotkey.class::isInstance)
 			.map(IHotkey.class::cast)
 			.toList();
 		manager.addHotkeysForCategory(RedstoneTools.MOD_NAME, "Toggles", hotkeysToggles);
-		List<IHotkey> hotkeysKr1v = ClientCommands.Configs.Kr1v.OPTIONS.stream()
+		List<IHotkey> hotkeysKr1v = Configs.Kr1v.OPTIONS.stream()
 			.filter(IHotkey.class::isInstance)
 			.map(IHotkey.class::cast)
 			.toList();

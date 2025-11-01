@@ -21,7 +21,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import tools.redstone.redstonetools.ClientCommands;
+import tools.redstone.redstonetools.Configs;
+import tools.redstone.redstonetools.Statics;
 import tools.redstone.redstonetools.features.commands.OpenScreenFeature;
 import tools.redstone.redstonetools.utils.ChatUtils;
 import tools.redstone.redstonetools.utils.MappingUtils;
@@ -63,11 +64,11 @@ public class MinecraftClientMixin {
 		if (screen == null && this.disconnecting) {
 			ci.cancel(); // prevent boom
 		}
-		if (ClientCommands.Configs.Kr1v.preventClosingOnce) return;
+		if (Configs.Kr1v.preventClosingOnce) return;
 		String currentScreenClass;
 		if (screen == null) currentScreenClass = "null";
 		else currentScreenClass = MappingUtils.intermediaryToYarnSimple(screen.getClass());
-		for (Pair<String, String> s : ClientCommands.Configs.Kr1v.PREVENT_OPENING_OF_SCREEN.getMap()) {
+		for (Pair<String, String> s : Configs.Kr1v.PREVENT_OPENING_OF_SCREEN.getMap()) {
 			if (s.getLeft().equals(currentScreenClass)) {
 				ci.cancel();
 				String newScreenClass = s.getRight();
@@ -149,7 +150,7 @@ public class MinecraftClientMixin {
 				return;
 			}
 		}
-		if (ClientCommands.Configs.Kr1v.PREVENT_OPENING_OF_SCREEN_PRINT.getBooleanValue())
+		if (Configs.Kr1v.PREVENT_OPENING_OF_SCREEN_PRINT.getBooleanValue())
 			ChatUtils.sendMessage(Text.literal("Allowed screen opening of class: " + currentScreenClass + " (Click to copy)").setStyle(Style.EMPTY.withClickEvent(new ClickEvent.CopyToClipboard(currentScreenClass))));
 		if (screen == null) return;
 		OpenScreenFeature.INSTANCE.savedScreens.put(currentScreenClass, screen);
@@ -163,5 +164,12 @@ public class MinecraftClientMixin {
 			Collections.addAll(fields, declared);
 		}
 		return fields.toArray(new Field[0]);
+	}
+
+	@Inject(method = "render", at = @At("RETURN"))
+	private void injected(boolean tick, CallbackInfo ci) {
+		Statics.lastFrameDrawCalls = Statics.currentDrawCalls;
+		Statics.currentDrawCalls = 0;
+		Statics.attemptedDrawCalls = 0;
 	}
 }

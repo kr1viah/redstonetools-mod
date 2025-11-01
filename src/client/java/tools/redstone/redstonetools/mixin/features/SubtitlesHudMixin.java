@@ -8,7 +8,7 @@ import net.minecraft.client.gui.hud.SubtitlesHud;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import tools.redstone.redstonetools.ClientCommands;
+import tools.redstone.redstonetools.Configs;
 import tools.redstone.redstonetools.mixin.accessors.SubtitleEntryAccessor;
 
 import java.util.List;
@@ -23,14 +23,14 @@ public class SubtitlesHudMixin {
 //	@ModifyExpressionValue(method = "render", at = @At("MIXINEXTRAS:EXPRESSION"))
 	@ModifyExpressionValue(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/hud/SubtitlesHud;enabled:Z", ordinal = 4))
 	private boolean forceRender(boolean original) {
-		return original || ClientCommands.Configs.Kr1v.REDIRECT_TO_SUBTITLES.getBooleanValue();
+		return original || Configs.Kr1v.REDIRECT_TO_SUBTITLES.getBooleanValue();
 	}
 
 	@Definition(id = "entries", field = "Lnet/minecraft/client/gui/hud/SubtitlesHud;entries:Ljava/util/List;")
 	@Expression("this.entries")
 	@ModifyExpressionValue(method = "render", at = @At("MIXINEXTRAS:EXPRESSION"))
 	private List<SubtitlesHud.SubtitleEntry> removeEntriesIfDisabled(List<SubtitlesHud.SubtitleEntry> original) {
-		if (!enabled && ClientCommands.Configs.Kr1v.REDIRECT_TO_SUBTITLES.getBooleanValue()) {
+		if (!enabled && Configs.Kr1v.REDIRECT_TO_SUBTITLES.getBooleanValue()) {
 			original.removeIf(entry ->
 				((SubtitleEntryAccessor) entry).getRange() != 1093813.875f);
 		}

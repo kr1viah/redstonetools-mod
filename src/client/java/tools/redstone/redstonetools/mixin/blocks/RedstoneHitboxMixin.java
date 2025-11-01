@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import tools.redstone.redstonetools.ClientCommands;
+import tools.redstone.redstonetools.Configs;
 import tools.redstone.redstonetools.features.toggleable.BigDustFeature;
 
 @Mixin(RedstoneWireBlock.class)
@@ -36,7 +36,7 @@ public class RedstoneHitboxMixin {
 			throw new IllegalStateException("MaLiLib not present");
 		}
 		if (BigDustFeature.INSTANCE.isEnabled()) {
-			cir.setReturnValue(SHAPES[ClientCommands.Configs.General.getHeightInPixels()]);
+			cir.setReturnValue(SHAPES[Configs.General.getHeightInPixels()]);
 		}
 	}
 

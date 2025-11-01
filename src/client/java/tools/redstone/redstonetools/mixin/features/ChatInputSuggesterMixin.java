@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import tools.redstone.redstonetools.ClientCommands;
+import tools.redstone.redstonetools.Configs;
 import tools.redstone.redstonetools.mixin.accessors.TextFieldAccessor;
 import tools.redstone.redstonetools.utils.StringUtils;
 
@@ -26,7 +26,7 @@ public class ChatInputSuggesterMixin {
 
 	@Inject(method = "refresh", at = @At("HEAD"))
 	private void meowww(CallbackInfo ci) {
-		shouldReturn = !ClientCommands.Configs.ClientData.ENABLE_MATH_VARIABLES.getBooleanValue() || StringUtils.insertVariablesAndMath(textField.getText()).length() < textField.getText().length();
+		shouldReturn = !Configs.ClientData.ENABLE_MATH_VARIABLES.getBooleanValue() || StringUtils.insertVariablesAndMath(textField.getText()).length() < textField.getText().length();
 		if (shouldReturn) return;
 		unmodifiedCommand.add(textField.getText());
 		((TextFieldAccessor) textField).setText2(StringUtils.insertVariablesAndMath(textField.getText()));

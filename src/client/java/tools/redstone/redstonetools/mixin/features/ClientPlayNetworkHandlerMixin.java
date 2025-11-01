@@ -22,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tools.redstone.redstonetools.ClientCommands;
+import tools.redstone.redstonetools.Configs;
 import tools.redstone.redstonetools.utils.ChatUtils;
 import tools.redstone.redstonetools.utils.DependencyLookup;
 import tools.redstone.redstonetools.utils.MappingUtils;
@@ -58,11 +59,11 @@ public class ClientPlayNetworkHandlerMixin {
 
 	@Inject(method = "onCloseScreen", at = @At("HEAD"), cancellable = true)
 	public void preventScreenClosing(CloseScreenS2CPacket packet, CallbackInfo ci) {
-		if (ClientCommands.Configs.Kr1v.DISABLED_SERVER_SCREEN_CLOSING.getBooleanValue()) {
+		if (Configs.Kr1v.DISABLED_SERVER_SCREEN_CLOSING.getBooleanValue()) {
 			if (MinecraftClient.getInstance().currentScreen != null) {
 				String currentScreenClass = MappingUtils.intermediaryToYarnSimple(MinecraftClient.getInstance().currentScreen.getClass());
 				boolean shouldPrevent = false;
-				for (String s : ClientCommands.Configs.Kr1v.DISABLED_SCREEN_CLOSING_EXCEPTIONS.getStrings()) {
+				for (String s : Configs.Kr1v.DISABLED_SCREEN_CLOSING_EXCEPTIONS.getStrings()) {
 					if (s.equals(currentScreenClass)) {
 						shouldPrevent = true;
 						break;
@@ -70,7 +71,7 @@ public class ClientPlayNetworkHandlerMixin {
 				}
 				if (shouldPrevent) {
 					ci.cancel();
-				} else if (ClientCommands.Configs.Kr1v.DISABLED_SERVER_SCREEN_CLOSING_PRINT.getBooleanValue()) {
+				} else if (Configs.Kr1v.DISABLED_SERVER_SCREEN_CLOSING_PRINT.getBooleanValue()) {
 					ChatUtils.sendMessage(Text.literal("Allowed closing of screen class: " + currentScreenClass + " (Click to copy)").setStyle(Style.EMPTY.withClickEvent(new ClickEvent.CopyToClipboard(currentScreenClass))));
 				}
 			}
