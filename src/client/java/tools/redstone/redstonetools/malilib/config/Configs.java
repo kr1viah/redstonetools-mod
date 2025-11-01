@@ -54,6 +54,10 @@ public class Configs implements IConfigHandler {
 		public static final ConfigInteger			PRESSED_MOUSE_X = new ConfigInteger("Currently pressed mouse X", 2, "");
 		public static final ConfigInteger			PRESSED_MOUSE_Y = new ConfigInteger("Currently pressed mouse Y", 11, "");
 
+		public static final ConfigLabel 			RENDER_SEPARATOR = new ConfigLabel("");
+		public static final ConfigLabel 			RENDER_LABEL = new ConfigLabel("Render related configs");
+		public static final ConfigBooleanHotkeyed	DONT_RENDER_HAND = new ConfigBooleanHotkeyed("Render hand", true, "", "Whether or not to render the player's hand");
+
 		public static final ConfigLabel 			MISC_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			MISC_LABEL = new ConfigLabel("Miscellaneous related configs");
 		public static final ConfigHotkey 			SHOW_CURSOR = new ConfigHotkey("Show cursor", "", "");
