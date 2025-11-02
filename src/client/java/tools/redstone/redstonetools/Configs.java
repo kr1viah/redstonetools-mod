@@ -59,13 +59,15 @@ public class Configs implements IConfigHandler {
 		public static final ConfigLabel 			RENDER_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			RENDER_LABEL = new ConfigLabel("Render related configs");
 		public static final ConfigBooleanHotkeyed 	DONT_RENDER_HAND = new ConfigBooleanHotkeyed("Render hand", true, "", "Whether or not to render the player's hand");
-		public static final ConfigInteger 			MAX_DRAW_CALLS = new ConfigInteger("Max draw calls per frame", 1000000, 1000, 1000000, "Maximum amount of draw calls allowed per frame before cancelling the rest");
+		public static final ConfigBooleanHotkeyed	AFFECT_RENDERING = new ConfigBooleanHotkeyed("Affect rendering", false, "");
+		public static final ConfigInteger 			MAX_DRAW_CALLS = new ConfigInteger("Max draw calls per frame", 100000, 0, 100000, "Maximum amount of draw calls allowed per frame before cancelling the rest");
+		public static final ConfigDouble			DROP_X_DRAW_CALLS = new ConfigDouble("Drop x amount of draw calls", 0, 0, 1, "0 is none, 1 is all");
 		public static final ConfigBooleanHotkeyed	RANDOMISE_X = new ConfigBooleanHotkeyed("Randomise X in vertexes", false, "", "");
-		public static final ConfigFloat				X_FACTOR = new ConfigFloat("Factor to randomise x by", 1.0f, 0, 100);
+		public static final ConfigFloat				X_FACTOR = new ConfigFloat("Factor to randomise x by", 1.0f, -100, 100);
 		public static final ConfigBooleanHotkeyed	RANDOMISE_Y = new ConfigBooleanHotkeyed("Randomise Y in vertexes", false, "", "");
-		public static final ConfigFloat				Y_FACTOR = new ConfigFloat("Factor to randomise y by", 1.0f, 0, 100);
+		public static final ConfigFloat				Y_FACTOR = new ConfigFloat("Factor to randomise y by", 1.0f, -100, 100);
 		public static final ConfigBooleanHotkeyed	RANDOMISE_Z = new ConfigBooleanHotkeyed("Randomise Z in vertexes", false, "", "");
-		public static final ConfigFloat				Z_FACTOR = new ConfigFloat("Factor to randomise z by", 1.0f, 0, 100);
+		public static final ConfigFloat				Z_FACTOR = new ConfigFloat("Factor to randomise z by", 1.0f, -100, 100);
 
 		public static final ConfigLabel 			MISC_SEPARATOR = new ConfigLabel("");
 		public static final ConfigLabel 			MISC_LABEL = new ConfigLabel("Miscellaneous related configs");

@@ -37,6 +37,8 @@
 		"features.SuggestionWindowMixin",
 		"features.TitleScreenMixin",
 		"features.VertexConsumerMixin",
+		"features.VertexConsumerMixin2",
+		"features.VertexConsumerMixin3",
 		"features.flight.ClientPlayerEntityMixin",
 		"features.flight.ClientPlayNetworkHandlerMixin",
 		"macros.AddMacroButtonMixin",
@@ -44,6 +46,7 @@
 	],
 	"mixins": [
 		"features.LivingEntityMixin",
+		"features.Vec3dMixin",
 		"malilib.WidgetConfigOptionMixin"
 	],
 	"mixinextras": {

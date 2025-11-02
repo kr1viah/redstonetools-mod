@@ -1,5 +1,8 @@
 package tools.redstone.redstonetools.mixin.features;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.Screen;
@@ -10,6 +13,8 @@ import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
+import net.minecraft.util.profiler.Profiler;
+import net.minecraft.util.profiler.Profilers;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
@@ -48,15 +53,15 @@ public class MinecraftClientMixin {
 		}
 		System.out.println("Hello");
 	}
-	@Shadow
-	@Final
-	public InGameHud inGameHud;
 
 	@Unique
 	private static final Map<String, Class<? extends Screen>> screenClasses = new HashMap<>();
 	// simple name, screen class
 	@Shadow
 	private boolean disconnecting;
+
+	@Unique
+	private int crashes = 0;
 
 	@Inject(method = "setScreen", at = @At("HEAD"), cancellable = true)
 	private void preventScreenOpening(Screen screen, CallbackInfo ci) {
@@ -166,10 +171,19 @@ public class MinecraftClientMixin {
 		return fields.toArray(new Field[0]);
 	}
 
-	@Inject(method = "render", at = @At("RETURN"))
-	private void injected(boolean tick, CallbackInfo ci) {
+	@WrapMethod(method = "render")
+	private void injected(boolean tick, Operation<Void> original) {
+		try {
+			original.call(tick);
+		} catch (Throwable t) {
+			if (crashes++ > 100) throw t;
+			RenderSystem.getModelViewStack().clear();
+			RenderSystem.resetModelOffset();
+			RenderSystem.resetTextureMatrix();
+		}
 		Statics.lastFrameDrawCalls = Statics.currentDrawCalls;
 		Statics.currentDrawCalls = 0;
 		Statics.attemptedDrawCalls = 0;
+		Statics.random = new Random(1230482134890L);
 	}
 }
