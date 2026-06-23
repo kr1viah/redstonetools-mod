@@ -1,19 +1,22 @@
 package tools.redstone.redstonetools;
 
+//~ if paper 'net.fabricmc.api.ModInitializer' -> 'org.bukkit.plugin.java.JavaPlugin'
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.redstone.redstonetools.packets.RedstoneToolsPackets;
 
+//~ if paper 'implements ModInitializer' -> 'extends JavaPlugin'
 public class RedstoneTools implements ModInitializer {
 	public static final String MOD_ID = "redstonetools";
 	public static final String MOD_NAME = "Redstone tools";
 	public static final Logger LOGGER = LoggerFactory.getLogger(RedstoneTools.MOD_ID);
 
 	@Override
+	//~ if paper 'onInitialize' -> 'onEnable'
 	public void onInitialize() {
 		RedstoneToolsPackets.registerPackets();
 		RedstoneToolsGameRules.register();
-		Commands.registerCommands();
+		Commands.registerCommands(/*? paper {*//*this.getLifecycleManager()*//*? }*/);
 	}
 }

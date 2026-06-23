@@ -5,13 +5,20 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+
 import java.math.BigInteger;
 import java.util.Locale;
 import java.util.function.Consumer;
+//? if fabric {
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+//? } else {
+/*import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
+import net.kyori.adventure.text.Component;
+*///? }
 
 
 public class BaseConvertFeature {
@@ -20,7 +27,7 @@ public class BaseConvertFeature {
 	protected BaseConvertFeature() {
 	}
 
-	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection registrationEnvironment) {
+	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
 			dispatcher.register(Commands.literal("base")
 			.then(Commands.argument("inputNum", StringArgumentType.word())
 				.then(Commands.argument("toBase", IntegerArgumentType.integer(2, 16))
@@ -28,19 +35,18 @@ public class BaseConvertFeature {
 						StringArgumentType.getString(context, "inputNum"),
 						IntegerArgumentType.getInteger(context, "toBase"),
 						(t) -> {
-							try {
-								context.getSource().getPlayerOrException().sendSystemMessage(t);
-							} catch (CommandSyntaxException ignored) {
-							}
+							//~ if paper 'getPlayer().sendSystemMessage' -> 'getExecutor().sendMessage'
+							context.getSource().getPlayer().sendSystemMessage(t);
 						}
 					)))));
 	}
 
 	private static final SimpleCommandExceptionType INVALID_NUMBER =
+		//~ if paper 'Component.literal' -> '() -> '
 		new SimpleCommandExceptionType(Component.literal("Invalid number"));
 
 	protected int execute(String number, int toBase, Consumer<Component> printToChat)
-		throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+		throws CommandSyntaxException {
 
 		int base = 10;
 		number = number.toLowerCase(Locale.ROOT);
@@ -73,8 +79,10 @@ public class BaseConvertFeature {
 			toPrefix = "0b";
 		}
 		if (!toPrefix.isEmpty()) {
+			//~ if paper 'literal' -> 'text'
 			printToChat.accept(Component.literal("%s = %s".formatted(prefix + number, toPrefix + output)));
 		} else {
+			//~ if paper 'literal' -> 'text'
 			printToChat.accept(Component.literal("%s = %s in base %s".formatted(prefix + number, output, toBase)));
 		}
 		return 1;
