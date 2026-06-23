@@ -7,7 +7,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.fabric.FabricAdapter;
+//~ if paper 'fabric.Fabric' -> 'bukkit.Bukkit'
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.function.mask.Mask;
 import com.sk89q.worldedit.function.mask.Mask2D;
 import com.sk89q.worldedit.function.operation.Operations;
@@ -21,6 +22,8 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import tools.redstone.redstonetools.Commands;
 import tools.redstone.redstonetools.utils.*;
+
+import java.util.Objects;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
@@ -84,16 +87,23 @@ public class ColorCodeFeature {
 		assert player != null;
 
 		//? if <26.1 {
-		/*var wePlayer = FabricAdapter.adaptPlayer(player);
-		*///? } else
-		var wePlayer = FabricAdapter.get().fromNativePlayer(player);
+		/*var wePlayer = FabricAdapter.adaptPlayer(Objects.requireNonNull(context.getSource().getPlayer()));
+		 *///? } else if fabric {
+		/*var wePlayer = FabricAdapter.get().fromNativePlayer(Objects.requireNonNull(context.getSource().getPlayer()));
+		 *///? } else {
+		var wePlayer = BukkitAdapter.adapt(Objects.requireNonNull(context.getSource().getPlayer()).getBukkitEntity());
+		//? }
+
 		var playerSession = worldEdit.getSessionManager().get(wePlayer);
 
 		// for each block in the selection
 		//? if <26.1 {
 		/*final World world = FabricAdapter.adapt(PlayerUtils.getWorld(player));
-		*///? } else
-		final World world = FabricAdapter.get().fromNativeWorld(PlayerUtils.getWorld(player));
+		*///? } else if fabric {
+		/*final World world = FabricAdapter.get().fromNativeWorld(PlayerUtils.getWorld(player));
+		*///? } else {
+		final World world = BukkitAdapter.adapt(PlayerUtils.getWorld(player).getWorld());
+		//? }
 		try (EditSession session = worldEdit.newEditSession(world)) {
 			// create mask and pattern and execute block set
 			int blocksColored = session.replaceBlocks(selection,

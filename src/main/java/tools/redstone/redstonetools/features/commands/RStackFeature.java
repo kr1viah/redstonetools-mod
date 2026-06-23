@@ -11,7 +11,8 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
-import com.sk89q.worldedit.fabric.FabricAdapter;
+//~ if paper 'fabric.Fabric' -> 'bukkit.Bukkit'
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.function.mask.Mask;
 import com.sk89q.worldedit.function.mask.Mask2D;
 import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
@@ -70,8 +71,12 @@ public class RStackFeature {
 	protected int execute(CommandContext<CommandSourceStack> context, int count, int offset, DirectionArgument direction, boolean moveSelection) throws CommandSyntaxException {
 		//? if <26.1 {
 		/*var actor = FabricAdapter.adaptPlayer(Objects.requireNonNull(context.getSource().getPlayer()));
-		 *///? } else
-		var actor = FabricAdapter.get().fromNativePlayer(Objects.requireNonNull(context.getSource().getPlayer()));
+		 *///? } else if fabric {
+		/*var actor = FabricAdapter.get().fromNativePlayer(Objects.requireNonNull(context.getSource().getPlayer()));
+		*///? } else {
+		var actor = BukkitAdapter.adapt(context.getSource().getPlayer().getBukkitEntity());
+		//? }
+
 
 		var localSession = WorldEdit.getInstance()
 				.getSessionManager()
