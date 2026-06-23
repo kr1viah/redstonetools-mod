@@ -72,7 +72,6 @@ public class BaseConvertFeature {
 		if (!toPrefix.isEmpty()) {
 			printToChat.accept(Component.literal("%s = %s".formatted(prefix + number, toPrefix + output)));
 		} else {
-			//~ if paper 'literal' -> 'text'
 			printToChat.accept(Component.literal("%s = %s in base %s".formatted(prefix + number, output, toBase)));
 		}
 		return 1;
