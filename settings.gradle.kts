@@ -15,6 +15,7 @@ pluginManagement {
             name = "KikuGie Releases"
             url = uri("https://maven.kikugie.dev/releases")
         }
+		maven("https://repo.papermc.io/repository/maven-public/")
     }
 }
 

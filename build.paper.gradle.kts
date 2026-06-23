@@ -1,6 +1,7 @@
 plugins {
 	id("java-library")
 	id("xyz.jpenilla.run-paper") version "3.0.2"
+	id("io.papermc.paperweight.userdev") version "2.0.0-beta.21"
 }
 
 repositories {
@@ -14,7 +15,8 @@ repositories {
 }
 
 dependencies {
-	compileOnly("io.papermc.paper:paper-api:${project.property("minecraft_version")}.build.+")
+	paperweight.paperDevBundle("${project.property("minecraft_version")}.build.+")
+//	compileOnly("io.papermc.paper:paper-api:${project.property("minecraft_version")}.build.+")
 	implementation("com.sk89q.worldedit:worldedit-bukkit:${project.property("worldedit_version")}")
 }
 

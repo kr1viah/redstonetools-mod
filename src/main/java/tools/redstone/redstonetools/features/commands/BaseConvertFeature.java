@@ -9,16 +9,9 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import java.math.BigInteger;
 import java.util.Locale;
 import java.util.function.Consumer;
-//? if fabric {
-import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-//? } else {
-/*import io.papermc.paper.command.brigadier.CommandSourceStack;
-import io.papermc.paper.command.brigadier.Commands;
-import net.kyori.adventure.text.Component;
-*///? }
 
 
 public class BaseConvertFeature {
@@ -36,13 +29,12 @@ public class BaseConvertFeature {
 						IntegerArgumentType.getInteger(context, "toBase"),
 						(t) -> {
 							//~ if paper 'getPlayer().sendSystemMessage' -> 'getExecutor().sendMessage'
-							context.getSource().getPlayer().sendSystemMessage(t);
+							context.getSource().getExecutor().sendMessage(t);
 						}
 					)))));
 	}
 
 	private static final SimpleCommandExceptionType INVALID_NUMBER =
-		//~ if paper 'Component.literal' -> '() -> '
 		new SimpleCommandExceptionType(Component.literal("Invalid number"));
 
 	protected int execute(String number, int toBase, Consumer<Component> printToChat)
@@ -80,10 +72,10 @@ public class BaseConvertFeature {
 		}
 		if (!toPrefix.isEmpty()) {
 			//~ if paper 'literal' -> 'text'
-			printToChat.accept(Component.literal("%s = %s".formatted(prefix + number, toPrefix + output)));
+			printToChat.accept(Component.text("%s = %s".formatted(prefix + number, toPrefix + output)));
 		} else {
 			//~ if paper 'literal' -> 'text'
-			printToChat.accept(Component.literal("%s = %s in base %s".formatted(prefix + number, output, toBase)));
+			printToChat.accept(Component.text("%s = %s in base %s".formatted(prefix + number, output, toBase)));
 		}
 		return 1;
 	}

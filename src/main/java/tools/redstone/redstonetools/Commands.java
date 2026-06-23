@@ -9,33 +9,29 @@ import tools.redstone.redstonetools.features.commands.*;
 import tools.redstone.redstonetools.features.toggleable.*;
 import tools.redstone.redstonetools.utils.DependencyLookup;
 
-//? if fabric {
 import net.minecraft.commands.CommandSourceStack;
-//? } else {
-/*import io.papermc.paper.command.brigadier.CommandSourceStack;
-*///? }
 
 import java.util.function.Predicate;
 
 public class Commands {
 	//? if fabric {
-	public static final Predicate<CommandSourceStack> PERMISSION_LEVEL_2 =
+	/*public static final Predicate<CommandSourceStack> PERMISSION_LEVEL_2 =
 		//? if <=1.21.10 {
-		/*source -> source.hasPermission(2);
-		*///?} else {
+		/^source -> source.hasPermission(2);
+		^///?} else {
 		net.minecraft.commands.Commands.hasPermission(new PermissionCheck.Require(Permissions.COMMANDS_GAMEMASTER));
 		//?}
-	//? } else {
-	/*public static final Predicate<CommandSourceStack> PERMISSION_LEVEL_2 = sender -> sender.getSender().hasPermission("permission.test");
-	*///? }
+	*///? } else {
+	public static final Predicate<CommandSourceStack> PERMISSION_LEVEL_2 = sender -> sender.getSender().hasPermission("permission.test");
+	//? }
 
-	public static void registerCommands(/*? paper {*//*io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager<org.bukkit.plugin.Plugin> events*//*? }*/) {
+	public static void registerCommands(/*? paper {*/io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager<org.bukkit.plugin.Plugin> events/*? }*/) {
 		//? if fabric {
-		CommandRegistrationCallback.EVENT.register((commandDispatcher, commandRegistryAccess, registrationEnvironment) -> {
-		 //? } else {
-		/*events.registerEventHandler(io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents.COMMANDS, event -> {
+		/*CommandRegistrationCallback.EVENT.register((commandDispatcher, commandRegistryAccess, registrationEnvironment) -> {
+		 *///? } else {
+		events.registerEventHandler(io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents.COMMANDS, event -> {
 			var commandDispatcher = event.registrar().getDispatcher();
-		*///? }
+		//? }
 			if (DependencyLookup.WORLDEDIT_PRESENT) {
 				BinaryBlockReadFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 				ColorCodeFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
