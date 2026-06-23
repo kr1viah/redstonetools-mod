@@ -28,8 +28,7 @@ public class BaseConvertFeature {
 						StringArgumentType.getString(context, "inputNum"),
 						IntegerArgumentType.getInteger(context, "toBase"),
 						(t) -> {
-							//~ if paper 'getPlayer().sendSystemMessage' -> 'getExecutor().sendMessage'
-							context.getSource().getExecutor().sendMessage(t);
+							context.getSource().getPlayer().sendSystemMessage(t);
 						}
 					)))));
 	}
@@ -71,11 +70,10 @@ public class BaseConvertFeature {
 			toPrefix = "0b";
 		}
 		if (!toPrefix.isEmpty()) {
-			//~ if paper 'literal' -> 'text'
-			printToChat.accept(Component.text("%s = %s".formatted(prefix + number, toPrefix + output)));
+			printToChat.accept(Component.literal("%s = %s".formatted(prefix + number, toPrefix + output)));
 		} else {
 			//~ if paper 'literal' -> 'text'
-			printToChat.accept(Component.text("%s = %s in base %s".formatted(prefix + number, output, toBase)));
+			printToChat.accept(Component.literal("%s = %s in base %s".formatted(prefix + number, output, toBase)));
 		}
 		return 1;
 	}
