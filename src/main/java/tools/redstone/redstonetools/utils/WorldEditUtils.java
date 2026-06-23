@@ -4,7 +4,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.fabric.FabricAdapter;
+//~ if paper 'fabric.Fabric' -> 'bukkit.Bukkit'
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.regions.Region;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,8 +18,10 @@ public class WorldEditUtils {
 
 		//? if <26.1 {
 		/*var actor = FabricAdapter.adaptPlayer(player);
+		*///? } else if fabric {
+		/*var actor = FabricAdapter.get().fromNativePlayer(player);
 		*///? } else
-		var actor = FabricAdapter.get().fromNativePlayer(player);
+		var actor = BukkitAdapter.adapt(player.getBukkitEntity());
 
 		var localSession = WorldEdit.getInstance()
 				.getSessionManager()
