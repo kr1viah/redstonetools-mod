@@ -5,14 +5,13 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import tools.redstone.redstonetools.mixin.accessor.GiveCommandAccessor;
 
+import net.minecraft.commands.CommandSourceStack;
 //? if fabric {
 /*import net.minecraft.commands.CommandBuildContext;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.arguments.item.ItemArgument;
 import net.minecraft.commands.arguments.item.ItemInput;
 *///? } else {
-import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import org.bukkit.inventory.ItemStack;
 //? }
@@ -20,10 +19,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.Objects;
 
-//~ if paper 'net.minecraft.commands.Commands' -> 'io.papermc.paper.command.brigadier.Commands'  {
-import static io.papermc.paper.command.brigadier.Commands.argument;
-import static io.papermc.paper.command.brigadier.Commands.literal;
-//~ }
+import static net.minecraft.commands.Commands.argument;
+import static net.minecraft.commands.Commands.literal;
 
 import static tools.redstone.redstonetools.Commands.PERMISSION_LEVEL_2;
 

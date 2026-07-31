@@ -1,7 +1,9 @@
 package tools.redstone.redstonetools;
 
+import com.mojang.brigadier.CommandDispatcher;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 //? if >=1.21.11 {
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.permissions.PermissionCheck;
 import net.minecraft.server.permissions.Permissions;
 //? }
@@ -28,10 +30,15 @@ public class Commands {
 	public static void registerCommands(/*? paper {*/io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager<org.bukkit.plugin.Plugin> events/*? }*/) {
 		//? if fabric {
 		/*CommandRegistrationCallback.EVENT.register((commandDispatcher, commandRegistryAccess, registrationEnvironment) -> {
-		 *///? } else {
+		 *///? } else
 		events.registerEventHandler(io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents.COMMANDS, event -> {
-			var commandDispatcher = event.registrar().getDispatcher();
-		//? }
+			//? paper {
+			MinecraftServer server = ((org.bukkit.craftbukkit.CraftServer) org.bukkit.Bukkit.getServer()).getServer();
+			net.minecraft.commands.Commands commands = server.getCommands();
+
+			CommandDispatcher<CommandSourceStack> commandDispatcher = commands.getDispatcher();
+			//? }
+
 			if (DependencyLookup.WORLDEDIT_PRESENT) {
 				BinaryBlockReadFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 				ColorCodeFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
