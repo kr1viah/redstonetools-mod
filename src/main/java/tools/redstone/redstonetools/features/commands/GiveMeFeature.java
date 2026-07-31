@@ -1,9 +1,13 @@
 package tools.redstone.redstonetools.features.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import tools.redstone.redstonetools.mixin.accessor.GiveCommandAccessor;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.item.ItemArgument;
+import net.minecraft.commands.arguments.item.ItemInput;
 
 import net.minecraft.commands.CommandSourceStack;
 //? if fabric {
@@ -30,12 +34,11 @@ public class GiveMeFeature {
 	protected GiveMeFeature() {
 	}
 
-	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher/*? fabric {*//*, CommandBuildContext registryAccess*//*? }*/) {
+	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection registrationEnvironment) {
 		dispatcher.register(
 			literal("g")
 				.requires(PERMISSION_LEVEL_2)
-				//? if fabric {
-				/*.then(argument("item", ItemArgument.item(registryAccess))
+				.then(argument("item", ItemArgument.item(registryAccess))
 					.executes(context -> this.execute(
 						context,
 						ItemArgument.getItem(context, "item"),
@@ -45,13 +48,7 @@ public class GiveMeFeature {
 							context,
 							ItemArgument.getItem(context, "item"),
 							IntegerArgumentType.getInteger(context, "count"))))));
-				*///? } else {
-				.then(argument("stack", ArgumentTypes.itemStack())
-					.executes(context -> this.execute(
-						context,
-						context.getArgument("stack", ItemStack.class))) // todo: fix
-					));
-				//? }
+
 	}
 
 	private int execute(CommandContext<CommandSourceStack> context, ItemInput itemArgument, int count) throws CommandSyntaxException {
@@ -65,7 +62,12 @@ public class GiveMeFeature {
 		server.getCommands().performPrefixedCommand(
 			server.createCommandSourceStack(), "/give " + context.getSource().getTextName() + " " + itemArgument.serialize(server.registryAccess()) + " " + count);
 		*///? } else {
-		GiveCommandAccessor.invokeGiveItem(context.getSource(), itemArgument, List.of(Objects.requireNonNull(context.getSource().getPlayer())), count);
+		//? if fabric {
+		/*tools.redstone.redstonetools.mixin.accessor.GiveCommandAccessor.invokeGiveItem(context.getSource(), itemArgument, List.of(Objects.requireNonNull(context.getSource().getPlayer())), count);
+		*///? } else {
+		// todo: breakpoint here and test
+		context.getSource().getServer().getCommands().performPrefixedCommand(context.getSource(), context.getInput().replaceFirst("/g ", "/give @s "));
+		//? }
 		//? }
 		return 0;
 	}

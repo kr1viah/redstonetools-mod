@@ -1,8 +1,11 @@
 package tools.redstone.redstonetools;
 
 import com.mojang.brigadier.CommandDispatcher;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+//? fabric
+//import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 //? if >=1.21.11 {
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.permissions.PermissionCheck;
 import net.minecraft.server.permissions.Permissions;
@@ -37,6 +40,8 @@ public class Commands {
 			net.minecraft.commands.Commands commands = server.getCommands();
 
 			CommandDispatcher<CommandSourceStack> commandDispatcher = commands.getDispatcher();
+			CommandBuildContext commandRegistryAccess = CommandBuildContext.simple(VanillaRegistries.createLookup(), server.getWorldData().enabledFeatures());
+			net.minecraft.commands.Commands.CommandSelection registrationEnvironment = net.minecraft.commands.Commands.CommandSelection.DEDICATED;
 			//? }
 
 			if (DependencyLookup.WORLDEDIT_PRESENT) {
@@ -47,7 +52,7 @@ public class Commands {
 			}
 			ReachFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 			BaseConvertFeature.INSTANCE.registerCommand(commandDispatcher);
-			GiveMeFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess);
+			GiveMeFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 			ItemComponentsFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 			ItemBindFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 			QuickTpFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
