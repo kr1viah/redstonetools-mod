@@ -1,6 +1,6 @@
 package tools.redstone.redstonetools.packets;
-
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+//? fabric {
+/*import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import tools.redstone.redstonetools.features.toggleable.AutoDustFeature;
 import tools.redstone.redstonetools.features.toggleable.AutoRotateFeature;
@@ -9,9 +9,9 @@ import tools.redstone.redstonetools.features.toggleable.ClickContainerFeature;
 public class RedstoneToolsPackets {
 	public static void registerPackets() {
 		//? if <26.1 {
-		/*PayloadTypeRegistry.playS2C().register(SetFeatureEnabledPayload.ID, SetFeatureEnabledPayload.CODEC);
+		/^PayloadTypeRegistry.playS2C().register(SetFeatureEnabledPayload.ID, SetFeatureEnabledPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(SetFeatureEnabledPayload.ID, SetFeatureEnabledPayload.CODEC);
-		*///? } else {
+		^///? } else {
 		PayloadTypeRegistry.serverboundPlay().register(SetFeatureEnabledPayload.ID, SetFeatureEnabledPayload.CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(SetFeatureEnabledPayload.ID, SetFeatureEnabledPayload.CODEC);
 		//? }
@@ -28,3 +28,4 @@ public class RedstoneToolsPackets {
 		});
 	}
 }
+*///? }
