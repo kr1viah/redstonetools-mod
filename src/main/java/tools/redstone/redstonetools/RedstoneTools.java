@@ -1,6 +1,8 @@
 package tools.redstone.redstonetools;
 
 //~ if paper 'net.fabricmc.api.ModInitializer' -> 'org.bukkit.plugin.java.JavaPlugin'
+import org.bukkit.craftbukkit.event.CraftEventFactory;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,5 +20,8 @@ public class RedstoneTools extends JavaPlugin {
 		RedstoneToolsPackets.registerPackets();
 		RedstoneToolsGameRules.register();
 		Commands.registerCommands(/*? paper {*/this.getLifecycleManager()/*? }*/);
+
+		//? paper
+		getServer().getPluginManager().registerEvents(new RedstoneToolsListener(), this);
 	}
 }
