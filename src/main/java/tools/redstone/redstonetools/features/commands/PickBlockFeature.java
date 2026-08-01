@@ -47,6 +47,10 @@ public abstract class PickBlockFeature extends BlockRaycastFeature {
 
 	// reimplementation from 1.18.2
 	public void addPickBlock(Inventory pi, ItemStack stack) {
+		//? fabric
+		//var accessor = (PlayerInventoryAccessor)pi;
+		//? paper
+		var accessor = pi;
 		int i = pi.findSlotMatchingItem(stack);
 		if (Inventory.isHotbarSlot(i)) {
 			//? if <=1.21.4 {
@@ -61,10 +65,10 @@ public abstract class PickBlockFeature extends BlockRaycastFeature {
 			/*pi.setSelectedHotbarSlot(pi.getSuitableHotbarSlot());
 			*///? } else
 			pi.setSelectedSlot(pi.getSuitableHotbarSlot());
-			if (!((PlayerInventoryAccessor)pi).getItems().get(((PlayerInventoryAccessor)pi).getSelected()).isEmpty() && (j = pi.getFreeSlot()) != -1) {
-				((PlayerInventoryAccessor)pi).getItems().set(j, ((PlayerInventoryAccessor)pi).getItems().get(((PlayerInventoryAccessor)pi).getSelected()));
+			if (!accessor.getItems().get(accessor.getSelected()).isEmpty() && (j = pi.getFreeSlot()) != -1) {
+				accessor.getItems().set(j, accessor.getItems().get(accessor.getSelected()));
 			}
-			((PlayerInventoryAccessor)pi).getItems().set(((PlayerInventoryAccessor)pi).getSelected(), stack);
+			accessor.getItems().set(accessor.getSelected(), stack);
 		} else {
 			pi.pickSlot(i);
 		}
