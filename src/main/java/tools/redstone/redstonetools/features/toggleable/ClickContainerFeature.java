@@ -3,6 +3,7 @@ package tools.redstone.redstonetools.features.toggleable;
 import com.mojang.brigadier.CommandDispatcher;
 //? if fabric {
 /*import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.minecraft.world.InteractionResult;
  *///? }
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;

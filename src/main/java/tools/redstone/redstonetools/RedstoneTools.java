@@ -4,9 +4,7 @@ package tools.redstone.redstonetools;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//? if fabric {
-/*import tools.redstone.redstonetools.packets.RedstoneToolsPackets;
- *///? }
+import tools.redstone.redstonetools.packets.RedstoneToolsPackets;
 
 //~ if paper 'implements ModInitializer' -> 'extends JavaPlugin'
 public class RedstoneTools extends JavaPlugin {
@@ -23,11 +21,13 @@ public class RedstoneTools extends JavaPlugin {
 		registerListeners();
 	}
 
-	/** Custom payloads. Fabric only cause Paper relies on plugin messaging instead. */
+	/** Feature toggle sync with the client mod. Fabric uses custom payloads, Paper plugin messaging. */
 	private void registerNetworking() {
 		//? if fabric {
 		/*RedstoneToolsPackets.registerPackets();
-		*///? }
+		 *///? } else {
+		RedstoneToolsPackets.registerPackets(this);
+		//? }
 	}
 
 	/**
