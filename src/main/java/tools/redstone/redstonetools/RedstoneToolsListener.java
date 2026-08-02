@@ -1,16 +1,23 @@
 package tools.redstone.redstonetools;
 //? paper {
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.block.impl.CraftRedStoneWire;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import tools.redstone.redstonetools.features.toggleable.AutoDustFeature;
 import tools.redstone.redstonetools.features.toggleable.AutoRotateFeature;
 import tools.redstone.redstonetools.utils.ColoredBlock;
+import tools.redstone.redstonetools.features.toggleable.ClickContainerFeature;
 
 public class RedstoneToolsListener implements Listener {
 	@EventHandler
@@ -39,6 +46,25 @@ public class RedstoneToolsListener implements Listener {
 			if (!rotated.matches(data)) {
 				block.setBlockData(rotated, false);
 			}
+		}
+	}
+
+	@EventHandler
+	public void onPlayerInteract(PlayerInteractEvent event) {
+		if (event.getAction() != Action.RIGHT_CLICK_BLOCK || event.getClickedBlock() == null) {
+			return;
+		}
+
+		ServerPlayer player = ((CraftPlayer) event.getPlayer()).getHandle();
+		InteractionHand hand = event.getHand() == EquipmentSlot.OFF_HAND
+			? InteractionHand.OFF_HAND
+			: InteractionHand.MAIN_HAND;
+
+		Block clicked = event.getClickedBlock();
+		BlockPos pos = new BlockPos(clicked.getX(), clicked.getY(), clicked.getZ());
+
+		if (ClickContainerFeature.handleUse(player, player.level(), hand, pos)) {
+			event.setCancelled(true);
 		}
 	}
 }
