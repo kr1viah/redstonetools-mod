@@ -4,6 +4,9 @@ package tools.redstone.redstonetools;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+//? if fabric {
+/*import tools.redstone.redstonetools.packets.RedstoneToolsPackets;
+ *///? }
 
 //~ if paper 'implements ModInitializer' -> 'extends JavaPlugin'
 public class RedstoneTools extends JavaPlugin {
@@ -14,12 +17,42 @@ public class RedstoneTools extends JavaPlugin {
 	@Override
 	//~ if paper 'onInitialize' -> 'onEnable'
 	public void onEnable() {
-		//? fabric
-		//tools.redstone.redstonetools.packets.RedstoneToolsPackets.registerPackets();
-		RedstoneToolsGameRules.register();
-		Commands.registerCommands(/*? paper {*/this.getLifecycleManager()/*? }*/);
+		registerNetworking();
+		registerGameRules();
+		registerCommands();
+		registerListeners();
+	}
 
-		//? paper
+	/** Custom payloads. Fabric only cause Paper relies on plugin messaging instead. */
+	private void registerNetworking() {
+		//? if fabric {
+		/*RedstoneToolsPackets.registerPackets();
+		*///? }
+	}
+
+	/**
+	 * Vanilla registries are frozen before plugins are enabled, so custom game rules
+	 * cannot be registered on Paper. doContainerDrops still needs a Bukkit-side
+	 * reimplementation, most likely through BlockDropItemEvent.
+	 */
+	private void registerGameRules() {
+		//? if fabric {
+		/*RedstoneToolsGameRules.register();
+		*///? }
+	}
+
+	private void registerCommands() {
+		//? if fabric {
+		/*Commands.registerCommands();
+		*///? } else {
+		Commands.registerCommands(this.getLifecycleManager());
+		//? }
+	}
+
+	/** Feature hooks. Paper only: Fabric registers its callbacks statically. */
+	private void registerListeners() {
+		//? if paper {
 		getServer().getPluginManager().registerEvents(new RedstoneToolsListener(), this);
+		//? }
 	}
 }
