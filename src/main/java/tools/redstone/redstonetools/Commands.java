@@ -4,15 +4,12 @@ import com.mojang.brigadier.CommandDispatcher;
 //? fabric
 //import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 //? if >=1.21.11 {
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.permissions.PermissionCheck;
 import net.minecraft.server.permissions.Permissions;
 //? }
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.plugin.RegisteredListener;
 import tools.redstone.redstonetools.features.commands.*;
 import tools.redstone.redstonetools.features.toggleable.*;
 import tools.redstone.redstonetools.utils.DependencyLookup;

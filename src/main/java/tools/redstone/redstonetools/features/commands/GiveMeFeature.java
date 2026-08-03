@@ -16,8 +16,9 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.arguments.item.ItemArgument;
 import net.minecraft.commands.arguments.item.ItemInput;
 *///? } else {
-import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import org.bukkit.inventory.ItemStack;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 //? }
 
 import java.util.List;
@@ -64,9 +65,26 @@ public class GiveMeFeature {
 		*///? } else {
 		//? if fabric {
 		/*tools.redstone.redstonetools.mixin.accessor.GiveCommandAccessor.invokeGiveItem(context.getSource(), itemArgument, List.of(Objects.requireNonNull(context.getSource().getPlayer())), count);
-		*///? } else {
-		// todo: breakpoint here and test
-		context.getSource().getServer().getCommands().performPrefixedCommand(context.getSource(), context.getInput().replaceFirst("/g ", "/give @s "));
+		 *///? } else {
+		ServerPlayer player = context.getSource().getPlayerOrException();
+		int maxStackSize = itemArgument.item().value().getDefaultMaxStackSize();
+		int remaining = count;
+
+		while (remaining > 0) {
+			int amount = Math.min(maxStackSize, remaining);
+			remaining -= amount;
+
+			ItemStack stack = itemArgument.createItemStack(amount);
+			if (!player.getInventory().add(stack) && !stack.isEmpty()) {
+				ItemEntity dropped = player.drop(stack, false);
+				if (dropped != null) {
+					dropped.setNoPickUpDelay();
+					dropped.setTarget(player.getUUID());
+				}
+			}
+		}
+
+		player.inventoryMenu.broadcastChanges();
 		//? }
 		//? }
 		return 0;
