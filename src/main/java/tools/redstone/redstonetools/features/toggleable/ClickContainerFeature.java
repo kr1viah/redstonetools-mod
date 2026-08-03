@@ -111,6 +111,7 @@ public class ClickContainerFeature extends ToggleableFeature {
 
 	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection registrationEnvironment) {
 		dispatcher.register(literal("clickcontainers").executes(this::toggle));
+//		dispatcher.register(literal("cauldron").executes(this::toggle));
 	}
 
 	@Override
