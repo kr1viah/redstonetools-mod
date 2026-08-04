@@ -57,6 +57,9 @@ permissions:
     redstonetools.selstack:
         description: Push and pop WorldEdit selections onto a stack
         default: op
+    redstonetools.signsearch:
+        description: Search signs in a selection with a regular expression
+        default: op
     redstonetools.ssb:
         description: Give a container with a given signal strength
         default: op

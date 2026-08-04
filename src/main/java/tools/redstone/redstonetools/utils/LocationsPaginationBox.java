@@ -12,9 +12,9 @@ import java.util.List;
 
 public class LocationsPaginationBox extends PaginationBox {
 
-	private final List<BlockVector3> locations;
+	private final List<LocationContainer> locations;
 
-	public LocationsPaginationBox(List<BlockVector3> locations, String title, String pageCommand) {
+	public LocationsPaginationBox(List<LocationContainer> locations, String title, String pageCommand) {
 		super(title, pageCommand);
 		this.locations = locations;
 		setComponentsPerPage(7);
@@ -22,12 +22,13 @@ public class LocationsPaginationBox extends PaginationBox {
 
 	@Override
 	public Component getComponent(int number) {
-		var pos = locations.get(number);
+		var entry = locations.get(number);
+		var pos = entry.position();
 		return TextComponent.of((number + 1) + ": ")
-			.append(TextComponent.of(WorldEditUtils.BV3ToString(pos)))
+			.append(entry.match())
 			.color(TextColor.LIGHT_PURPLE)
-			.clickEvent(ClickEvent.runCommand("/tp " + pos.x() + " " + pos.y() + " " + pos.z()))
-			.hoverEvent(HoverEvent.showText(TextComponent.of("Click to teleport")));
+			.clickEvent(ClickEvent.suggestCommand("/tp " + pos.x() + " " + pos.y() + " " + pos.z()))
+			.hoverEvent(HoverEvent.showText(TextComponent.of("Click to fill in a teleport command")));
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import net.minecraft.commands.Commands.CommandSelection;
 import net.minecraft.network.chat.Component;
 import tools.redstone.redstonetools.Commands;
 import tools.redstone.redstonetools.utils.ArgumentUtils;
+import tools.redstone.redstonetools.utils.LocationContainer;
 import tools.redstone.redstonetools.utils.LocationsPaginationBox;
 import tools.redstone.redstonetools.utils.WorldEditUtils;
 
@@ -32,11 +33,10 @@ public class FindFeature {
 
 	public static final FindFeature INSTANCE = new FindFeature();
 
-	// TODO: Temp, dropped once pagination lands.
 	private static final int MAX_PRINTED_RESULTS = 100;
 
 	// TODO: entries are never removed when a player disconnects. See the Platform layer issue.
-	private final Map<UUID, List<BlockVector3>> results = new HashMap<>();
+	private final Map<UUID, List<LocationContainer>> results = new HashMap<>();
 
 	protected FindFeature() {
 	}
@@ -61,9 +61,9 @@ public class FindFeature {
 		var selection = WorldEditUtils.getSelection(player);
 		var mask = WorldEditUtils.parseMask(player, StringArgumentType.getString(context, "mask"));
 
-		var matches = new ArrayList<BlockVector3>();
+		var matches = new ArrayList<LocationContainer>();
 		RegionFunction collect = position -> {
-			matches.add(position);
+			matches.add(LocationContainer.of(position));
 			return false;
 		};
 
@@ -104,7 +104,7 @@ public class FindFeature {
 		return 1;
 	}
 
-	private void sendPage(Actor actor, List<BlockVector3> locations, int page) throws CommandSyntaxException {
+	private void sendPage(Actor actor, List<LocationContainer> locations, int page) throws CommandSyntaxException {
 		var box = new LocationsPaginationBox(locations, "Find Results", "//find -p %page%");
 
 		try {
