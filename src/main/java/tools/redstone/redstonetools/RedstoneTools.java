@@ -4,6 +4,7 @@ package tools.redstone.redstonetools;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.redstone.redstonetools.config.ServerConfig;
 import tools.redstone.redstonetools.packets.RedstoneToolsPackets;
 
 //~ if paper 'implements ModInitializer' -> 'extends JavaPlugin'
@@ -15,10 +16,20 @@ public class RedstoneTools extends JavaPlugin {
 	@Override
 	//~ if paper 'onInitialize' -> 'onEnable'
 	public void onEnable() {
+		registerConfig();
 		registerNetworking();
 		registerGameRules();
 		registerCommands();
 		registerListeners();
+	}
+
+	/** Server-side configuration. Fabric uses a shared config dir, Paper the plugin's folder. */
+	private void registerConfig() {
+		//? if fabric {
+		/*ServerConfig.load(net.fabricmc.loader.api.FabricLoader.getInstance().getConfigDir().resolve("redstonetools.properties"));
+		*///? } else {
+		ServerConfig.load(getDataFolder().toPath().resolve("config.yml"));
+		//? }
 	}
 
 	/** Feature toggle sync with the client mod. Fabric uses custom payloads, Paper plugin messaging. */
