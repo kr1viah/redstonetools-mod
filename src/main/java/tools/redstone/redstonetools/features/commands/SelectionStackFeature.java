@@ -37,7 +37,7 @@ public class SelectionStackFeature {
 
 	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, CommandSelection registrationEnvironment) {
 		dispatcher.register(literal("/selstack")
-			.requires(Commands.PERMISSION_LEVEL_2)
+			.requires(Commands.getPerm("selstack"))
 			.then(literal("push").executes(this::push))
 			.then(literal("pop").executes(this::pop))
 			.then(literal("clear").executes(this::clear))

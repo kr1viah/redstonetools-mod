@@ -19,17 +19,6 @@ import net.minecraft.commands.CommandSourceStack;
 import java.util.function.Predicate;
 
 public class Commands {
-	//? if fabric {
-	/*public static final Predicate<CommandSourceStack> PERMISSION_LEVEL_2 =
-		//? if <=1.21.10 {
-		/^source -> source.hasPermission(2);
-		^///?} else {
-		net.minecraft.commands.Commands.hasPermission(new PermissionCheck.Require(Permissions.COMMANDS_GAMEMASTER));
-		//?}
-	*///? } else {
-	public static final Predicate<CommandSourceStack> PERMISSION_LEVEL_2 = sender -> sender.getSender().hasPermission("permission.test");
-	//? }
-
 	public static void registerCommands(/*? paper {*/io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager<org.bukkit.plugin.Plugin> events/*? }*/) {
 		//? if fabric {
 		/*CommandRegistrationCallback.EVENT.register((commandDispatcher, commandRegistryAccess, registrationEnvironment) -> {
@@ -49,6 +38,7 @@ public class Commands {
 				ColorCodeFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 				MinSelectionFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 				RStackFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
+				SelectionStackFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 			}
 			ReachFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 			BaseConvertFeature.INSTANCE.registerCommand(commandDispatcher);
@@ -62,7 +52,6 @@ public class Commands {
 			ClickContainerFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 			ColoredFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 			CopyStateFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
-			SelectionStackFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 		});
 	}
 
