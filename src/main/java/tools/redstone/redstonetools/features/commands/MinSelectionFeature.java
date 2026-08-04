@@ -4,9 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import com.sk89q.worldedit.WorldEdit;
-//~ if paper 'fabric.Fabric' -> 'bukkit.Bukkit'
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
@@ -41,17 +38,8 @@ public class MinSelectionFeature {
 		var selection = WorldEditUtils.getSelection(context.getSource().getPlayer());
 		var selectionWorld = selection.getWorld();
 
-		//? if <26.1 {
-		/*var actor = FabricAdapter.adaptPlayer(Objects.requireNonNull(context.getSource().getPlayer()));
-		 *///? } else if fabric {
-		/*var actor = FabricAdapter.get().fromNativePlayer(Objects.requireNonNull(context.getSource().getPlayer()));
-		 *///? } else {
-		var actor = BukkitAdapter.adapt(context.getSource().getPlayer().getBukkitEntity());
-		//? }
-
-		var localSession = WorldEdit.getInstance()
-				.getSessionManager()
-				.get(actor);
+		var actor = WorldEditUtils.getActor(context.getSource().getPlayer());
+		var localSession = WorldEditUtils.getSession(context.getSource().getPlayer());
 
 		var selector = localSession.getRegionSelector(selectionWorld);
 
