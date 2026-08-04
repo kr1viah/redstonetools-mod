@@ -59,6 +59,9 @@ public class FindFeature {
 	protected int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
 		var player = context.getSource().getPlayerOrException();
 		var selection = WorldEditUtils.getSelection(player);
+
+		WorldEditUtils.requireScannableVolume(selection);
+
 		var mask = WorldEditUtils.parseMask(player, StringArgumentType.getString(context, "mask"));
 
 		var matches = new ArrayList<LocationContainer>();

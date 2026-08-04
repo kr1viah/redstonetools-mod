@@ -20,6 +20,9 @@ import net.minecraft.server.level.ServerPlayer;
 import java.util.List;
 
 public class WorldEditUtils {
+
+	public static final long MAX_SCAN_VOLUME = 4_000_000L;
+
 	/**
 	 * Adapts a Minecraft server player to a WorldEdit actor.
 	 * This is the only platform-specific part of the WorldEdit integration.
@@ -80,5 +83,14 @@ public class WorldEditUtils {
 
 	public static String BV3ToString(BlockVector3 pos) {
 		return "(" + pos.x() + ", " + pos.y() + ", " + pos.z() + ")";
+	}
+
+	public static void requireScannableVolume(Region region) throws CommandSyntaxException {
+		long volume = region.getVolume();
+
+		if (volume > MAX_SCAN_VOLUME) {
+			throw new SimpleCommandExceptionType(Component.literal(
+				"Selection is too large to scan: " + volume + " blocks, limit is " + MAX_SCAN_VOLUME)).create();
+		}
 	}
 }
