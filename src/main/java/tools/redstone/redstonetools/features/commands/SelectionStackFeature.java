@@ -105,14 +105,11 @@ public class SelectionStackFeature {
 		context.getSource().sendSystemMessage(Component.literal("pos1 / pos2"));
 		for (StackEntry entry : stack) {
 			context.getSource().sendSystemMessage(
-				Component.literal(BV3ToString(entry.pos1()) + " / " + BV3ToString(entry.pos2)));
+				Component.literal(
+					WorldEditUtils.BV3ToString(entry.pos1()) + " / " + WorldEditUtils.BV3ToString(entry.pos2)));
 		}
 		context.getSource().sendSystemMessage(Component.literal("Most recent (top of stack)"));
 
 		return stack.size();
-	}
-
-	private static String BV3ToString(BlockVector3 pos) {
-		return "(" + pos.x() + ", " + pos.y() + ", " + pos.z() + ")";
 	}
 }

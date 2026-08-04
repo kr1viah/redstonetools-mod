@@ -47,6 +47,16 @@ public class ArgumentUtils {
 		return builder.buildFuture();
 	};
 
+	public static final SuggestionProvider<CommandSourceStack> MASK_SUGGESTION_PROVIDER = (context, builder) -> {
+		var player = context.getSource().getPlayer();
+		if (player == null || !DependencyLookup.WORLDEDIT_PRESENT) {
+			return builder.buildFuture();
+		}
+
+		SharedSuggestionProvider.suggest(WorldEditUtils.suggestMask(player, builder.getRemaining()), builder);
+		return builder.buildFuture();
+	};
+
 	public static SignalBlock parseSignalBlock(CommandContext<CommandSourceStack> context, final String name) throws CommandSyntaxException {
 		String result = context.getArgument(name, String.class);
 		SignalBlock signalBlock = EnumUtils.byNameOrNull(SignalBlock.values(), result);
