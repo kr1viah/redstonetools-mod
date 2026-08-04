@@ -33,7 +33,7 @@ public class QuickTpFeature {
 
 	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, net.minecraft.commands.Commands.CommandSelection registrationEnvironment) {
 			dispatcher.register(literal("quicktp")
-				.requires(Commands.PERMISSION_LEVEL_2)
+				.requires(Commands.getPerm("quicktp"))
 				.executes(this::parseArguments)
 				.then(argument("distance", DoubleArgumentType.doubleArg())
 						.executes(this::parseArguments)

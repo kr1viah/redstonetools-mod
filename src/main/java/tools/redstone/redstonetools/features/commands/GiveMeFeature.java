@@ -27,8 +27,6 @@ import java.util.Objects;
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
-import static tools.redstone.redstonetools.Commands.PERMISSION_LEVEL_2;
-
 public class GiveMeFeature {
 	public static final GiveMeFeature INSTANCE = new GiveMeFeature();
 
@@ -38,7 +36,7 @@ public class GiveMeFeature {
 	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection registrationEnvironment) {
 		dispatcher.register(
 			literal("g")
-				.requires(PERMISSION_LEVEL_2)
+				.requires(tools.redstone.redstonetools.Commands.getPerm("g"))
 				.then(argument("item", ItemArgument.item(registryAccess))
 					.executes(context -> this.execute(
 						context,

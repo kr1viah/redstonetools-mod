@@ -37,7 +37,7 @@ public class CopyStateFeature extends PickBlockFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, net.minecraft.commands.Commands.CommandSelection registrationEnvironment) {
-		dispatcher.register(net.minecraft.commands.Commands.literal("copystate").requires(Commands.PERMISSION_LEVEL_2).executes(this::execute));
+		dispatcher.register(net.minecraft.commands.Commands.literal("copystate").requires(Commands.getPerm("copystate")).executes(this::execute));
 	}
 
 	@Override

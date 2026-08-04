@@ -16,7 +16,7 @@ public class AutoDustFeature extends ToggleableFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection registrationEnvironment) {
-			dispatcher.register(literal("autodust").executes(this::toggle));
+			dispatcher.register(literal("autodust").requires(tools.redstone.redstonetools.Commands.getPerm("autodust")).executes(this::toggle));
 //			dispatcher.register(literal("autowire").executes(this::toggle));
 //			dispatcher.register(literal("aw").executes(this::toggle));
 	}

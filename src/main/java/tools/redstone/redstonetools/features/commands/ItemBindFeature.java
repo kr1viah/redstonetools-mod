@@ -26,7 +26,7 @@ public class ItemBindFeature {
 
 	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, net.minecraft.commands.Commands.CommandSelection registrationEnvironment) {
 			dispatcher.register(literal("itembind")
-				.requires(Commands.PERMISSION_LEVEL_2)
+				.requires(Commands.getPerm("itembind"))
 				.executes(this::execute)
 				.then(literal("reset")
 					.executes(ItemBindFeature::executeReset)));

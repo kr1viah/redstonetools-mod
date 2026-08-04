@@ -33,7 +33,7 @@ public class MinSelectionFeature {
 
 	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, net.minecraft.commands.Commands.CommandSelection registrationEnvironment) {
 			dispatcher.register(literal("/minsel")
-				.requires(Commands.PERMISSION_LEVEL_2)
+				.requires(Commands.getPerm("minsel"))
 				.executes(this::execute));
 	}
 
