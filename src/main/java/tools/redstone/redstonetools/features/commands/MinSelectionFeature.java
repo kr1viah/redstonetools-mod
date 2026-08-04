@@ -15,7 +15,6 @@ import tools.redstone.redstonetools.utils.WorldEditUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
@@ -35,11 +34,12 @@ public class MinSelectionFeature {
 	}
 
 	protected int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-		var selection = WorldEditUtils.getSelection(context.getSource().getPlayer());
+		var player = context.getSource().getPlayerOrException();
+		var selection = WorldEditUtils.getSelection(player);
 		var selectionWorld = selection.getWorld();
 
-		var actor = WorldEditUtils.getActor(context.getSource().getPlayer());
-		var localSession = WorldEditUtils.getSession(context.getSource().getPlayer());
+		var actor = WorldEditUtils.getActor(player);
+		var localSession = WorldEditUtils.getSession(player);
 
 		var selector = localSession.getRegionSelector(selectionWorld);
 

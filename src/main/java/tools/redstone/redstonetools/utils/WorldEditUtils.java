@@ -6,9 +6,9 @@ import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.WorldEdit;
 //~ if paper 'fabric.Fabric' -> 'bukkit.Bukkit'
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.entity.Player;
 import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldedit.LocalSession;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
