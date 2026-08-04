@@ -55,7 +55,7 @@ public class SignSearchFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, CommandSelection registrationEnvironment) {
-		var node = dispatcher.register(literal("/signsearch")
+		dispatcher.register(literal("/signsearch")
 			.then(literal("-p")
 				.then(argument("page", IntegerArgumentType.integer(1))
 					.executes(this::showPage)))
@@ -68,8 +68,10 @@ public class SignSearchFeature {
 		var player = context.getSource().getPlayerOrException();
 		var level = context.getSource().getLevel();
 		var selection = WorldEditUtils.getSelection(player);
-		var pattern = compile(StringArgumentType.getString(context, "regex"));
 
+		WorldEditUtils.requireScannableVolume(selection);
+
+		var pattern = compile(StringArgumentType.getString(context, "regex"));
 		var signMask = new BlockCategoryMask(selection.getWorld(), BlockCategories.ALL_SIGNS);
 
 		var matches = new ArrayList<LocationContainer>();
