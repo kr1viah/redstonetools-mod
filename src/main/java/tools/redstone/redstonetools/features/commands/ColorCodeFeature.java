@@ -36,7 +36,7 @@ public class ColorCodeFeature {
 
 	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, net.minecraft.commands.Commands.CommandSelection registrationEnvironment) {
 		dispatcher.register(literal("/colorcode")
-			.requires(Commands.PERMISSION_LEVEL_2)
+			.requires(Commands.getPerm("colorcode"))
 			.then(argument("color", StringArgumentType.string()).suggests(ArgumentUtils.BLOCK_COLOR_SUGGESTION_PROVIDER)
 				.executes(this::execute)
 				.then(argument("onlyColor", StringArgumentType.string()).suggests(ArgumentUtils.BLOCK_COLOR_SUGGESTION_PROVIDER)

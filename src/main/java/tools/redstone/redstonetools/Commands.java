@@ -65,4 +65,16 @@ public class Commands {
 			SelectionStackFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 		});
 	}
+
+	public static Predicate<CommandSourceStack> getPerm(String s) {
+		//? if fabric {
+		/*//? if <=1.21.10 {
+		/^return source -> source.hasPermission(2);
+		^///?} else {
+		return net.minecraft.commands.Commands.hasPermission(new PermissionCheck.Require(Permissions.COMMANDS_GAMEMASTER));
+		//?}
+		*///? } else {
+		return sender -> sender.getSender().hasPermission("redstonetools." + s);
+		//? }
+	}
 }

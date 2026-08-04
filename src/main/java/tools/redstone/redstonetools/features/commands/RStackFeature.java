@@ -44,7 +44,7 @@ public class RStackFeature {
 	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, net.minecraft.commands.Commands.CommandSelection registrationEnvironment) {
 			dispatcher.register(
 				literal("/rstack")
-					.requires(Commands.PERMISSION_LEVEL_2)
+					.requires(Commands.getPerm("rstack"))
 					.executes(getCommandForArgumentCount(0))
 					.then(argument("count", IntegerArgumentType.integer())
 						.executes(getCommandForArgumentCount(1))

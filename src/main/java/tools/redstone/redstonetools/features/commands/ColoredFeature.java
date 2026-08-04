@@ -24,7 +24,7 @@ public class ColoredFeature extends PickBlockFeature {
 
 	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, net.minecraft.commands.Commands.CommandSelection registrationEnvironment) {
 		dispatcher.register(net.minecraft.commands.Commands.literal("colored")
-			.requires(Commands.PERMISSION_LEVEL_2)
+			.requires(Commands.getPerm("colored"))
 			.executes(this::execute)
 			.then(net.minecraft.commands.Commands.argument("blockType", StringArgumentType.string()).suggests(ArgumentUtils.COLORED_BLOCK_TYPE_SUGGESTION_PROVIDER)
 				.executes(this::execute)));
