@@ -62,8 +62,6 @@ public class SignSearchFeature {
 			.then(argument("regex", StringArgumentType.greedyString())
 				.requires(Commands.getPerm("signsearch"))
 				.executes(this::execute)));
-
-		dispatcher.register(literal("/ss").redirect(node));
 	}
 
 	protected int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
