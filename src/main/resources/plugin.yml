@@ -60,6 +60,9 @@ permissions:
     redstonetools.signsearch:
         description: Search signs in a selection with a regular expression
         default: op
+    redstonetools.slab:
+        description: Give a top slab of your choice
+        default: op
     redstonetools.ssb:
         description: Give a container with a given signal strength
         default: op

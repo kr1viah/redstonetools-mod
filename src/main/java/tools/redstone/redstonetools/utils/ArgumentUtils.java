@@ -4,11 +4,17 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
 
 public class ArgumentUtils {
 	public static final String[] BLOCK_COLOR_SUGGESTIONS = EnumUtils.lowercaseNames(BlockColor.values());
@@ -56,6 +62,23 @@ public class ArgumentUtils {
 		SharedSuggestionProvider.suggest(WorldEditUtils.suggestMask(player, builder.getRemaining()), builder);
 		return builder.buildFuture();
 	};
+
+	public static final SuggestionProvider<CommandSourceStack> SLAB_SUGGESTION_PROVIDER = (context, builder) -> {
+		List<String> names = new ArrayList<>();
+
+		for (Block block : BuiltInRegistries.BLOCK) {
+			if (block instanceof SlabBlock) {
+				names.add(blockPath(block));
+			}
+		}
+
+		SharedSuggestionProvider.suggest(names, builder);
+		return builder.buildFuture();
+	};
+
+	public static String blockPath(Block block) {
+		return BuiltInRegistries.BLOCK.getKey(block).getPath();
+	}
 
 	public static SignalBlock parseSignalBlock(CommandContext<CommandSourceStack> context, final String name) throws CommandSyntaxException {
 		String result = context.getArgument(name, String.class);
