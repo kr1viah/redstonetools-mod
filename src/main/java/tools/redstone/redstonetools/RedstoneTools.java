@@ -71,9 +71,14 @@ public class RedstoneTools extends JavaPlugin {
 		//? }
 	}
 
-	/** Feature hooks. Paper only: Fabric registers its callbacks statically. */
+	/** Feature hooks. Paper goes through Bukkit events, Fabric through FAPI callbacks. */
 	private void registerListeners() {
-		//? if paper {
+		//? if fabric {
+		/*net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents.BEFORE.register(
+			(world, player, pos, state, blockEntity) ->
+				!(player instanceof net.minecraft.server.level.ServerPlayer serverPlayer)
+					|| !tools.redstone.redstonetools.utils.BlockBreakCapture.consume(serverPlayer, pos));
+		*///? } else {
 		getServer().getPluginManager().registerEvents(new RedstoneToolsListener(), this);
 		//? }
 	}
