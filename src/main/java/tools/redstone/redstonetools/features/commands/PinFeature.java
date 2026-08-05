@@ -1,7 +1,9 @@
 package tools.redstone.redstonetools.features.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
@@ -24,6 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import tools.redstone.redstonetools.Commands;
 import tools.redstone.redstonetools.utils.BlockBreakCapture;
+import tools.redstone.redstonetools.utils.TickScheduler;
 
 import java.util.LinkedHashMap;
 import java.util.HashMap;
@@ -81,8 +84,18 @@ public class PinFeature {
 				.then(argument("name", StringArgumentType.word())
 					.suggests(pinNames)
 					.executes(this::toggle)))
+			.then(literal("pulse")
+				.then(literal("on").then(pulseArguments(true)))
+				.then(literal("off").then(pulseArguments(false))))
 			.then(literal("list")
 				.executes(this::list)));
+	}
+
+	private RequiredArgumentBuilder<CommandSourceStack, String> pulseArguments(boolean powered) {
+		return argument("name", StringArgumentType.word())
+			.suggests(pinNames)
+			.then(argument("ticks", IntegerArgumentType.integer(1, 100))
+				.executes(context -> pulse(context, powered)));
 	}
 
 	private Map<String, Pin> pinsOf(ServerPlayer player) {
@@ -241,6 +254,35 @@ public class PinFeature {
 
 		context.getSource().sendSystemMessage(
 			Component.literal("Toggled " + name + (powered ? " on" : " off")));
+		return 1;
+	}
+
+	protected int pulse(CommandContext<CommandSourceStack> context, boolean powered) throws CommandSyntaxException {
+		MinecraftServer server = context.getSource().getServer();
+		ServerPlayer player = context.getSource().getPlayerOrException();
+		String name = StringArgumentType.getString(context, "name");
+		int redstoneTicks = IntegerArgumentType.getInteger(context, "ticks");
+		Pin pin = requirePin(player, name);
+		UUID owner = player.getUUID();
+
+		if (!applyState(server, pin, powered)) {
+			throw destroyed(name);
+		}
+
+		// A redstone tick is two game ticks.
+		TickScheduler.runLater(() -> {
+			if (applyState(server, pin, !powered)) {
+				return;
+			}
+
+			ServerPlayer stillOnline = server.getPlayerList().getPlayer(owner);
+			if (stillOnline != null) {
+				stillOnline.sendSystemMessage(Component.literal("Pin " + name + " was destroyed mid-pulse"));
+			}
+		}, redstoneTicks * 2L);
+
+		context.getSource().sendSystemMessage(Component.literal(
+			"Pulsed " + name + (powered ? " on" : " off") + " for " + redstoneTicks + " redstone ticks"));
 		return 1;
 	}
 }
