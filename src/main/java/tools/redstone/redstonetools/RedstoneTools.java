@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tools.redstone.redstonetools.config.ServerConfig;
 import tools.redstone.redstonetools.packets.RedstoneToolsPackets;
+import tools.redstone.redstonetools.utils.TickScheduler;
 
 //~ if paper 'implements ModInitializer' -> 'extends JavaPlugin'
 public class RedstoneTools extends JavaPlugin {
@@ -19,6 +20,7 @@ public class RedstoneTools extends JavaPlugin {
 		registerConfig();
 		registerNetworking();
 		registerGameRules();
+		registerScheduler();
 		registerCommands();
 		registerListeners();
 	}
@@ -57,6 +59,15 @@ public class RedstoneTools extends JavaPlugin {
 		/*Commands.registerCommands();
 		*///? } else {
 		Commands.registerCommands(this.getLifecycleManager());
+		//? }
+	}
+
+	/** Tick pump used by the incremental flood fill of //that. */
+	private void registerScheduler() {
+		//? if fabric {
+		/*TickScheduler.init();
+		 *///? } else {
+		TickScheduler.init(this);
 		//? }
 	}
 

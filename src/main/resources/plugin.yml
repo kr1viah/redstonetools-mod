@@ -66,3 +66,6 @@ permissions:
     redstonetools.ssb:
         description: Give a container with a given signal strength
         default: op
+    redstonetools.that:
+        description: Select the build you are looking at
+        default: op
