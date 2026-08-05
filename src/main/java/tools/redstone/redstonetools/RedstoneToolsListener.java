@@ -10,13 +10,16 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import tools.redstone.redstonetools.features.toggleable.AutoDustFeature;
 import tools.redstone.redstonetools.features.toggleable.AutoRotateFeature;
+import tools.redstone.redstonetools.utils.BlockBreakCapture;
 import tools.redstone.redstonetools.utils.ColoredBlock;
 import tools.redstone.redstonetools.features.toggleable.ClickContainerFeature;
 
@@ -43,6 +46,17 @@ public class RedstoneToolsListener implements Listener {
 			if (!rotated.matches(data)) {
 				block.setBlockData(rotated, false);
 			}
+		}
+	}
+
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void onBlockBreak(BlockBreakEvent event) {
+		ServerPlayer player = ((CraftPlayer) event.getPlayer()).getHandle();
+		Block broken = event.getBlock();
+		BlockPos pos = new BlockPos(broken.getX(), broken.getY(), broken.getZ());
+
+		if (BlockBreakCapture.consume(player, pos)) {
+			event.setCancelled(true);
 		}
 	}
 

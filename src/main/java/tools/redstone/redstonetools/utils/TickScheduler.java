@@ -1,26 +1,53 @@
 package tools.redstone.redstonetools.utils;
 
 /**
- * Runs work on the next server tick. The only platform-specific piece of the
- * incremental flood fill, and the first slice of a future platform layer.
+ * Runs work on a later server tick. The only platform-specific piece of the incremental
+ * flood fill and of pin pulses, and the first slice of a future platform layer.
  */
 public class TickScheduler {
-
 	//? if fabric {
-	/*private static final java.util.Queue<Runnable> PENDING = new java.util.ArrayDeque<>();
+	/*private static final java.util.List<Scheduled> SCHEDULED = new java.util.ArrayList<>();
+	private static final java.util.List<Scheduled> PENDING = new java.util.ArrayList<>();
+
+	private static final class Scheduled {
+		private final Runnable task;
+		private long remaining;
+
+		private Scheduled(Runnable task, long remaining) {
+			this.task = task;
+			this.remaining = remaining;
+		}
+	}
 
 	public static void init() {
 		net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_SERVER_TICK.register(server -> {
-			// Snapshot the size: a task that reschedules itself must not run twice in one tick.
-			int count = PENDING.size();
-			for (int i = 0; i < count; i++) {
-				PENDING.poll().run();
+			// Tasks scheduled during this tick only start counting down from the next one.
+			SCHEDULED.addAll(PENDING);
+			PENDING.clear();
+
+			java.util.List<Runnable> due = new java.util.ArrayList<>();
+			java.util.Iterator<Scheduled> iterator = SCHEDULED.iterator();
+
+			while (iterator.hasNext()) {
+				Scheduled scheduled = iterator.next();
+
+				if (--scheduled.remaining <= 0) {
+					due.add(scheduled.task);
+					iterator.remove();
+				}
 			}
+
+			due.forEach(Runnable::run);
+		});
+
+		net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents.SERVER_STOPPED.register(server -> {
+			SCHEDULED.clear();
+			PENDING.clear();
 		});
 	}
 
-	public static void runNextTick(Runnable task) {
-		PENDING.add(task);
+	public static void runLater(Runnable task, long ticks) {
+		PENDING.add(new Scheduled(task, Math.max(1L, ticks)));
 	}
 	*///? } else {
 	private static org.bukkit.plugin.Plugin plugin;
@@ -29,8 +56,12 @@ public class TickScheduler {
 		plugin = owner;
 	}
 
-	public static void runNextTick(Runnable task) {
-		org.bukkit.Bukkit.getScheduler().runTaskLater(plugin, task, 1L);
+	public static void runLater(Runnable task, long ticks) {
+		org.bukkit.Bukkit.getScheduler().runTaskLater(plugin, task, Math.max(1L, ticks));
 	}
 	//? }
+
+	public static void runNextTick(Runnable task) {
+		runLater(task, 1L);
+	}
 }
