@@ -22,6 +22,8 @@ import net.minecraft.world.level.block.Block;
 *///?} else if >=1.21.10 {
 import net.minecraft.world.level.block.entity.BlockEntityType;
 //?}
+import net.minecraft.world.level.block.Blocks;
+
 @FunctionalInterface
 public interface SignalBlockSupplier {
 
@@ -95,6 +97,50 @@ public interface SignalBlockSupplier {
 			);
 			//?}
 			return commandBlockStack;
+		};
+	}
+
+	static SignalBlockSupplier jukeBox() {
+		return (signalStrength) -> {
+			if (isInvalidSignalStrength(signalStrength, 15))
+				throw new IllegalArgumentException("Can't provide jukebox with signal strength " + signalStrength);
+			ItemStack stack = new ItemStack(Blocks.JUKEBOX);
+
+			CompoundTag blockEntityData = new CompoundTag();
+			blockEntityData.putString("id", "minecraft:jukebox");
+
+			String diskId = switch (signalStrength) {
+				case 1 -> "minecraft:music_disc_13";
+				case 2 -> "minecraft:music_disc_cat";
+				case 3 -> "minecraft:music_disc_blocks";
+				case 4 -> "minecraft:music_disc_chirp";
+				case 5 -> "minecraft:music_disc_far";
+				case 6 -> "minecraft:music_disc_mall";
+				case 7 -> "minecraft:music_disc_mellohi";
+				case 8 -> "minecraft:music_disc_stal";
+				case 9 -> "minecraft:music_disc_strad";
+				case 10 -> "minecraft:music_disc_ward";
+				case 11 -> "minecraft:music_disc_11";
+				case 12 -> "minecraft:music_disc_wait";
+				case 13 -> "minecraft:music_disc_pigstep";
+				case 14 -> "minecraft:music_disc_otherside";
+				case 15 -> "minecraft:music_disc_5";
+				default -> null;
+			};
+
+			if (diskId != null) {
+				CompoundTag record = new CompoundTag();
+				record.putString("id", diskId);
+				record.putByte("count", (byte) 1);
+
+				blockEntityData.put("RecordItem", record);
+
+				blockEntityData.putInt("ticks_since_song_started", 6 * 60 * 20);
+			}
+
+			stack.set(DataComponents.BLOCK_ENTITY_DATA, TypedEntityData.of(BlockEntityType.JUKEBOX, blockEntityData));
+
+			return stack;
 		};
 	}
 
