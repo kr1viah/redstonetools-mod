@@ -19,11 +19,16 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.bukkit.craftbukkit.event.CraftEventFactory;
+import org.bukkit.event.block.Action;
 import tools.redstone.redstonetools.Commands;
 import tools.redstone.redstonetools.utils.BlockBreakCapture;
 import tools.redstone.redstonetools.utils.TickScheduler;
@@ -179,7 +184,7 @@ public class PinFeature {
 		return state.getBlock() instanceof LeverBlock ? state : null;
 	}
 
-	private boolean applyState(MinecraftServer server, Pin pin, boolean powered) {
+	private boolean applyState(Player player, MinecraftServer server, Pin pin, boolean powered) {
 		BlockState state = leverState(server, pin);
 
 		if (state == null) {
@@ -190,8 +195,11 @@ public class PinFeature {
 			ServerLevel level = levelOf(server, pin);
 			BlockState updated = state.setValue(BlockStateProperties.POWERED, powered);
 
-			level.setBlock(pin.pos(), updated, Block.UPDATE_ALL);
-			updateAttachedBlock(level, pin.pos(), updated);
+			var event = CraftEventFactory.callPlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, pin.pos(), Direction.DOWN, ItemStack.EMPTY, InteractionHand.MAIN_HAND);
+			if (!event.isCancelled()) {
+				level.setBlock(pin.pos(), updated, Block.UPDATE_ALL);
+				updateAttachedBlock(level, pin.pos(), updated);
+			}
 		}
 
 		return true;
@@ -230,7 +238,7 @@ public class PinFeature {
 		ServerPlayer player = context.getSource().getPlayerOrException();
 		String name = StringArgumentType.getString(context, "name");
 
-		if (!applyState(context.getSource().getServer(), requirePin(player, name), powered)) {
+		if (!applyState(player, context.getSource().getServer(), requirePin(player, name), powered)) {
 			throw destroyed(name);
 		}
 
@@ -250,7 +258,7 @@ public class PinFeature {
 		}
 
 		boolean powered = !state.getValue(BlockStateProperties.POWERED);
-		applyState(context.getSource().getServer(), pin, powered);
+		applyState(player, context.getSource().getServer(), pin, powered);
 
 		context.getSource().sendSystemMessage(
 			Component.literal("Toggled " + name + (powered ? " on" : " off")));
@@ -265,13 +273,13 @@ public class PinFeature {
 		Pin pin = requirePin(player, name);
 		UUID owner = player.getUUID();
 
-		if (!applyState(server, pin, powered)) {
+		if (!applyState(player, server, pin, powered)) {
 			throw destroyed(name);
 		}
 
 		// A redstone tick is two game ticks.
 		TickScheduler.runLater(() -> {
-			if (applyState(server, pin, !powered)) {
+			if (applyState(player, server, pin, !powered)) {
 				return;
 			}
 
