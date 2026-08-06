@@ -195,8 +195,12 @@ public class PinFeature {
 			ServerLevel level = levelOf(server, pin);
 			BlockState updated = state.setValue(BlockStateProperties.POWERED, powered);
 
+			boolean canceled = false;
+			//? paper {
 			var event = CraftEventFactory.callPlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, pin.pos(), Direction.DOWN, ItemStack.EMPTY, InteractionHand.MAIN_HAND);
-			if (!event.isCancelled()) {
+			canceled = event.isCancelled();
+			//? }
+			if (!canceled) {
 				level.setBlock(pin.pos(), updated, Block.UPDATE_ALL);
 				updateAttachedBlock(level, pin.pos(), updated);
 			}
