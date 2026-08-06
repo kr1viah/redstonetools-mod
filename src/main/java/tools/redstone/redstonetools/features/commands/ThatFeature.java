@@ -1,5 +1,6 @@
 package tools.redstone.redstonetools.features.commands;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -26,7 +27,6 @@ import tools.redstone.redstonetools.utils.WorldEditUtils;
 
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
@@ -192,30 +192,31 @@ public class ThatFeature {
 	}
 
 	private static class Offsets {
-		private static BlockVector3 v(int x, int y, int z) {
-			return BlockVector3.at(x, y, z);
-		}
-
-		static final List<BlockVector3> DEFAULT = List.of(
+		public static final ImmutableList<BlockVector3> DEFAULT = ImmutableList.of(
 			v(1, 0, 0), v(-1, 0, 0),
 			v(0, 1, 0), v(0, -1, 0),
 			v(0, 0, 1), v(0, 0, -1));
 
-		static final List<BlockVector3> DIAG = concat(DEFAULT, List.of(
-			v(1, 1, 0), v(-1, 1, 0), v(0, 1, 1), v(0, 1, -1),
-			v(1, -1, 0), v(-1, -1, 0), v(0, -1, 1), v(0, -1, -1)));
+		public static final ImmutableList<BlockVector3> DIAG = concat(DEFAULT,
+			v(1, 1, 0),  v(-1, 1, 0),  v(0, 1, 1),  v(0, 1, -1),
+			v(1, -1, 0), v(-1, -1, 0), v(0, -1, 1), v(0, -1, -1));
 
-		static final List<BlockVector3> VERY_DIAG = concat(DIAG, List.of(
-			v(1, 0, 1), v(-1, 0, 1), v(1, 0, -1), v(-1, 0, -1)));
+		public static final ImmutableList<BlockVector3> VERY_DIAG = concat(DIAG,
+			v(1, 0, 1), v(-1, 0, 1), v(1, 0, -1), v(-1, 0, -1));
 
-		static final List<BlockVector3> VERY_VERY_DIAG = concat(VERY_DIAG, List.of(
-			v(1, 1, 1), v(-1, 1, 1), v(1, 1, -1), v(-1, 1, -1),
-			v(1, -1, 1), v(-1, -1, 1), v(1, -1, -1), v(-1, -1, -1)));
+		public static final ImmutableList<BlockVector3> VERY_VERY_DIAG = concat(VERY_DIAG,
+			v(1, 1, 1),  v(-1, 1, 1),  v(1, 1, -1),  v(-1, 1, -1),
+			v(1, -1, 1), v(-1, -1, 1), v(1, -1, -1), v(-1, -1, -1));
 
-		private static List<BlockVector3> concat(List<BlockVector3> base, List<BlockVector3> extra) {
-			var all = new ArrayList<BlockVector3>(base);
-			all.addAll(extra);
-			return List.copyOf(all);
+		private static BlockVector3 v(int x, int y, int z) {
+			return BlockVector3.at(x, y, z);
+		}
+
+		private static ImmutableList<BlockVector3> concat(List<BlockVector3> base, BlockVector3... extra) {
+			ImmutableList.Builder<BlockVector3> builder = ImmutableList.builder();
+			builder.add(extra);
+			builder.addAll(base);
+			return builder.build();
 		}
 	}
 }
