@@ -214,8 +214,8 @@ public class ThatFeature {
 
 		private static ImmutableList<BlockVector3> concat(List<BlockVector3> base, BlockVector3... extra) {
 			ImmutableList.Builder<BlockVector3> builder = ImmutableList.builder();
-			builder.add(extra);
 			builder.addAll(base);
+			builder.add(extra);
 			return builder.build();
 		}
 	}
