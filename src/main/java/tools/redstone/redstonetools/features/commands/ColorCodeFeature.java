@@ -43,9 +43,6 @@ public class ColorCodeFeature {
 					.executes(this::execute))));
 	}
 
-	public BlockColor color;
-	public BlockColor onlyColor;
-
 	private boolean shouldBeColored(World world, BlockVector3 pos, BlockColor onlyColor) {
 		var state = world.getBlock(pos);
 		var blockId = state.getBlockType().id();
@@ -73,10 +70,11 @@ public class ColorCodeFeature {
 	}
 
 	protected int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
-		color = ArgumentUtils.parseBlockColor(context, "color");
+		BlockColor color = ArgumentUtils.parseBlockColor(context, "color");
+		BlockColor onlyColor;
 		try {
 			onlyColor = ArgumentUtils.parseBlockColor(context, "onlyColor");
-		} catch (Exception ignored) {
+		} catch (CommandSyntaxException ignored) {
 			onlyColor = null;
 		}
 		var player = context.getSource().getPlayer();
@@ -105,12 +103,14 @@ public class ColorCodeFeature {
 		final World world = BukkitAdapter.adapt(PlayerUtils.getWorld(player).getWorld());
 		//? }
 		try (EditSession session = worldEdit.newEditSession(world)) {
+			BlockColor finalOnlyColor = onlyColor; // for some reason onlyColor isn't already final...
+
 			// create mask and pattern and execute block set
 			int blocksColored = session.replaceBlocks(selection,
 				new Mask() {
 					@Override
 					public boolean test(BlockVector3 vector) {
-						return shouldBeColored(world, vector, onlyColor);
+						return shouldBeColored(world, vector, finalOnlyColor);
 					}
 
 					@Nullable
