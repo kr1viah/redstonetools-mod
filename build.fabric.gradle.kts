@@ -95,6 +95,9 @@ dependencies {
 configurations.all {
 	resolutionStrategy {
 		force("com.google.code.gson:gson:2.13.2")
+		if (project.name == "26.1.2-fabric") {
+			force("com.sk89q.worldedit:worldedit-core:8.0.0-20260509.035034-8")
+		}
 	}
 }
 

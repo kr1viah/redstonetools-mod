@@ -109,7 +109,7 @@ public class ArgumentUtils {
 
 	public static DirectionArgument parseDirection(CommandContext<CommandSourceStack> context, final String name) throws CommandSyntaxException {
 		String result = context.getArgument(name, String.class);
-		DirectionArgument direction = EnumUtils.byNameOrNull(DirectionArgument.values(), result);
+		DirectionArgument direction = DirectionArgument.byNameOrAlias(result);
 		if (direction == null) {
 			throw new SimpleCommandExceptionType(Component.literal("Could not resolve direction!")).create();
 		}

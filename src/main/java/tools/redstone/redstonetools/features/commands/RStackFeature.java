@@ -8,20 +8,10 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import com.sk89q.worldedit.IncompleteRegionException;
-import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
-//~ if paper 'fabric.Fabric' -> 'bukkit.Bukkit'
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.function.mask.Mask;
-import com.sk89q.worldedit.function.mask.Mask2D;
-import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
-import com.sk89q.worldedit.function.operation.Operations;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.Direction;
-import org.jetbrains.annotations.Nullable;
 import tools.redstone.redstonetools.Commands;
+import tools.redstone.redstonetools.features.logic.RStackOperation;
 import tools.redstone.redstonetools.utils.ArgumentUtils;
 import tools.redstone.redstonetools.utils.DirectionArgument;
 
@@ -29,6 +19,7 @@ import java.util.Objects;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
+import tools.redstone.redstonetools.utils.WorldEditUtils;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
@@ -69,71 +60,31 @@ public class RStackFeature {
 	}
 
 	protected int execute(CommandContext<CommandSourceStack> context, int count, int offset, DirectionArgument direction, boolean moveSelection) throws CommandSyntaxException {
-		//? if <26.1 {
-		/*var actor = FabricAdapter.adaptPlayer(Objects.requireNonNull(context.getSource().getPlayer()));
-		 *///? } else if fabric {
-		/*var actor = FabricAdapter.get().fromNativePlayer(Objects.requireNonNull(context.getSource().getPlayer()));
-		*///? } else {
-		var actor = BukkitAdapter.adapt(context.getSource().getPlayer().getBukkitEntity());
-		//? }
+		var player = context.getSource().getPlayerOrException();
+		var actor = WorldEditUtils.getActor(player);
+		var localSession = WorldEditUtils.getSession(player);
+		var selection = WorldEditUtils.getSelection(player);
 
-
-		var localSession = WorldEdit.getInstance()
-				.getSessionManager()
-				.get(actor);
-
-		final var selectionWorld = localSession.getSelectionWorld();
-		assert selectionWorld != null;
-
-		final Region selection;
-		try {
-			selection = localSession.getSelection(selectionWorld);
-		} catch (IncompleteRegionException ex) {
-			throw new SimpleCommandExceptionType(Component.literal("Please make a selection with WorldEdit first.")).create();
-		}
-
-		final Mask airFilter = new Mask() {
-			@Override
-			public boolean test(BlockVector3 vector) {
-				return !"minecraft:air".equals(selectionWorld.getBlock(vector).getBlockType().id());
-			}
-
-			@Nullable
-			@Override
-			public Mask2D toMask2D() {
-				return null;
-			}
-		};
-
-		var playerFacing = actor.getLocation().getDirectionEnum();
 		Direction stackDirection;
 		try {
-			stackDirection = matchDirection(direction, playerFacing);
-		} catch (Exception e) {
-			throw new SimpleCommandExceptionType(Component.literal(e.getMessage().formatted(e))).create();
+			stackDirection = matchDirection(direction, actor.getLocation().getDirectionEnum());
+		} catch (Exception ex) {
+			throw new SimpleCommandExceptionType(Component.literal(ex.getMessage())).create();
 		}
-		var stackVector = directionToBlock(stackDirection);
 
+		var offsets = RStackOperation.offsets(
+			Objects.requireNonNull(directionToBlock(stackDirection)), offset, count);
 
 		try (var editSession = localSession.createEditSession(actor)) {
-			for (var i = 1; i <= count; i++) {
-				BlockVector3 offsetVector = Objects.requireNonNull(stackVector).multiply(i * offset);
-				var copy = new ForwardExtentCopy(
-						editSession,
-						selection,
-						editSession,
-						selection.getMinimumPoint().add(offsetVector)
-				);
-				copy.setSourceMask(airFilter);
-				copy.setSourceFunction(position -> false);
-				Operations.complete(copy);
-				if (i == count && moveSelection) {
-					selection.shift(offsetVector);
-				}
+			RStackOperation.apply(editSession, selection, offsets);
+
+			if (moveSelection && !offsets.isEmpty()) {
+				selection.shift(offsets.getLast());
 			}
+
 			localSession.remember(editSession);
-		} catch (WorldEditException e) {
-			throw new RuntimeException(e);
+		} catch (WorldEditException ex) {
+			throw new SimpleCommandExceptionType(Component.literal("Stack failed: " + ex.getMessage())).create();
 		}
 
 		context.getSource().sendSystemMessage(Component.literal("Stacked %s time(s).".formatted(count)));

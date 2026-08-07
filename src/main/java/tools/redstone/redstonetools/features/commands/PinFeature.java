@@ -27,8 +27,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import org.bukkit.craftbukkit.event.CraftEventFactory;
-import org.bukkit.event.block.Action;
 import tools.redstone.redstonetools.Commands;
 import tools.redstone.redstonetools.utils.BlockBreakCapture;
 import tools.redstone.redstonetools.utils.TickScheduler;
@@ -197,8 +195,13 @@ public class PinFeature {
 
 			boolean canceled = false;
 			//? paper {
-			var event = CraftEventFactory.callPlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, pin.pos(), Direction.DOWN, ItemStack.EMPTY, InteractionHand.MAIN_HAND);
-			canceled = event.isCancelled();
+			var event = org.bukkit.craftbukkit.event.CraftEventFactory.callPlayerInteractEvent(
+				player,
+				org.bukkit.event.block.Action.RIGHT_CLICK_BLOCK,
+				pin.pos(),
+				Direction.DOWN,
+				ItemStack.EMPTY,
+				InteractionHand.MAIN_HAND);
 			//? }
 			if (!canceled) {
 				level.setBlock(pin.pos(), updated, Block.UPDATE_ALL);

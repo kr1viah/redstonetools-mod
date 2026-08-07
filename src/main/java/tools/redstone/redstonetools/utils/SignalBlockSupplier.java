@@ -107,8 +107,7 @@ public interface SignalBlockSupplier {
 			ItemStack stack = new ItemStack(Blocks.JUKEBOX);
 
 			CompoundTag blockEntityData = new CompoundTag();
-			blockEntityData.putString("id", "minecraft:jukebox");
-
+			
 			String diskId = switch (signalStrength) {
 				case 1 -> "minecraft:music_disc_13";
 				case 2 -> "minecraft:music_disc_cat";
@@ -138,7 +137,19 @@ public interface SignalBlockSupplier {
 				blockEntityData.putInt("ticks_since_song_started", 6 * 60 * 20);
 			}
 
-			stack.set(DataComponents.BLOCK_ENTITY_DATA, TypedEntityData.of(BlockEntityType.JUKEBOX, blockEntityData));
+			//? if <1.21.10 {
+			/*blockEntityData.putString("id", "minecraft:jukebox");
+			stack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(blockEntityData));
+			*///?} else {
+			stack.set(
+				DataComponents.BLOCK_ENTITY_DATA,
+				//? if >=26.2 {
+				/*TypedEntityData.of(BlockEntityTypes.JUKEBOX, blockEntityData)
+				 *///?} else {
+				TypedEntityData.of(BlockEntityType.JUKEBOX, blockEntityData)
+				//?}
+			);
+			//?}
 
 			return stack;
 		};
