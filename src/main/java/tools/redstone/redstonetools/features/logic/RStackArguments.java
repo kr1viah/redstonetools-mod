@@ -1,19 +1,13 @@
 package tools.redstone.redstonetools.features.logic;
 
 import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.util.Direction;
 import tools.redstone.redstonetools.utils.DirectionArgument;
+import tools.redstone.redstonetools.utils.DirectionUtils;
 
-public record RStackArguments(int count, Step step, boolean expand, boolean withAir, boolean shiftSelection) {
+public record RStackArguments(int count, BlockVector3 vector, boolean expand, boolean withAir, boolean shiftSelection) {
 	public static final int DEFAULT_COUNT = 1;
 	public static final int DEFAULT_SPACING = 2;
-
-	public sealed interface Step {
-		record FromDirection(DirectionArgument direction, int spacing) implements Step {
-		}
-
-		record Explicit(BlockVector3 vector) implements Step {
-		}
-	}
 
 	public static class ParseException extends Exception {
 		public ParseException(String message) {
@@ -21,20 +15,16 @@ public record RStackArguments(int count, Step step, boolean expand, boolean with
 		}
 	}
 
-	public static RStackArguments parse(String input) throws ParseException {
+	public static RStackArguments parse(String input, Direction playerFacing) throws ParseException {
 		Integer count = null;
 		Integer spacing = null;
 		DirectionArgument direction = null;
-		BlockVector3 vector = null;
+		BlockVector3 explicitVector = null;
 		boolean expand = false;
 		boolean withAir = false;
 		boolean shiftSelection = false;
 
 		for (String token : input.trim().split("\\s+")) {
-			if (token.isEmpty()) {
-				continue;
-			}
-
 			if (isFlags(token)) {
 				for (char flag : token.substring(1).toCharArray()) {
 					switch (flag) {
@@ -48,10 +38,10 @@ public record RStackArguments(int count, Step step, boolean expand, boolean with
 			}
 
 			if (token.indexOf(',') >= 0) {
-				if (vector != null) {
+				if (explicitVector != null) {
 					throw new ParseException("Only one vector can be given");
 				}
-				vector = parseVector(token);
+				explicitVector = parseVector(token);
 				continue;
 			}
 
@@ -77,17 +67,34 @@ public record RStackArguments(int count, Step step, boolean expand, boolean with
 			direction = parsed;
 		}
 
-		if (vector != null && (direction != null || spacing != null)) {
+		if (explicitVector != null && (direction != null || spacing != null)) {
 			throw new ParseException("Give either a vector, or a direction and a spacing, not both");
 		}
 
-		Step step = vector != null
-			? new Step.Explicit(vector)
-			: new Step.FromDirection(
-			direction == null ? DirectionArgument.ME : direction,
-			spacing == null ? DEFAULT_SPACING : spacing);
+		return new RStackArguments(
+			count == null ? DEFAULT_COUNT : count,
+			explicitVector != null ? explicitVector : toVector(direction, spacing, playerFacing),
+			expand,
+			withAir,
+			shiftSelection);
+	}
 
-		return new RStackArguments(count == null ? DEFAULT_COUNT : count, step, expand, withAir, shiftSelection);
+	/** A direction and a spacing are just a way of writing the vector between two copies. */
+	private static BlockVector3 toVector(DirectionArgument direction, Integer spacing, Direction playerFacing) throws ParseException {
+		Direction resolved;
+
+		try {
+			resolved = DirectionUtils.matchDirection(direction == null ? DirectionArgument.ME : direction, playerFacing);
+		} catch (Exception ex) {
+			throw new ParseException(ex.getMessage());
+		}
+
+		BlockVector3 unit = DirectionUtils.directionToBlock(resolved);
+		if (unit == null) {
+			throw new ParseException("Unsupported direction: " + resolved);
+		}
+
+		return unit.multiply(spacing == null ? DEFAULT_SPACING : spacing);
 	}
 
 	private static boolean isFlags(String token) {
