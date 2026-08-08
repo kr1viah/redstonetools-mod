@@ -21,8 +21,6 @@ public class ArgumentUtils {
 
 	public static final String[] SIGNAL_BLOCK_SUGGESTIONS = EnumUtils.lowercaseNames(SignalBlock.values());
 
-	public static final String[] DIRECTION_SUGGESTIONS = EnumUtils.lowercaseNames(DirectionArgument.values());
-
 	public static final String[] COLORED_BLOCK_TYPE_SUGGESTIONS = EnumUtils.lowercaseNames(ColoredBlockType.values());
 
 	public static final SuggestionProvider<CommandSourceStack> BLOCK_COLOR_SUGGESTION_PROVIDER = (context, builder) -> {
@@ -34,13 +32,6 @@ public class ArgumentUtils {
 
 	public static final SuggestionProvider<CommandSourceStack> SIGNAL_BLOCK_SUGGESTION_PROVIDER = (context, builder) -> {
 		Stream<String> names = Arrays.stream(SIGNAL_BLOCK_SUGGESTIONS);
-
-		SharedSuggestionProvider.suggest(names, builder);
-		return builder.buildFuture();
-	};
-
-	public static final SuggestionProvider<CommandSourceStack> DIRECTION_SUGGESTION_PROVIDER = (context, builder) -> {
-		Stream<String> names = Arrays.stream(DIRECTION_SUGGESTIONS);
 
 		SharedSuggestionProvider.suggest(names, builder);
 		return builder.buildFuture();
@@ -105,14 +96,5 @@ public class ArgumentUtils {
 			throw new SimpleCommandExceptionType(Component.literal("Could not resolve colored block type!")).create();
 		}
 		return blockType;
-	}
-
-	public static DirectionArgument parseDirection(CommandContext<CommandSourceStack> context, final String name) throws CommandSyntaxException {
-		String result = context.getArgument(name, String.class);
-		DirectionArgument direction = DirectionArgument.byNameOrAlias(result);
-		if (direction == null) {
-			throw new SimpleCommandExceptionType(Component.literal("Could not resolve direction!")).create();
-		}
-		return direction;
 	}
 }

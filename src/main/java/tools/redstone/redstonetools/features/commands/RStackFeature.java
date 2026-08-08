@@ -1,9 +1,6 @@
 package tools.redstone.redstonetools.features.commands;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -15,11 +12,9 @@ import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldedit.util.Direction;
 import com.sk89q.worldedit.math.transform.AffineTransform;
 import tools.redstone.redstonetools.Commands;
-import tools.redstone.redstonetools.utils.ArgumentUtils;
-import tools.redstone.redstonetools.utils.DirectionArgument;
+import tools.redstone.redstonetools.features.logic.RStackArguments;
 
 import java.util.Objects;
 import net.minecraft.commands.CommandBuildContext;
@@ -29,8 +24,6 @@ import tools.redstone.redstonetools.utils.WorldEditUtils;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
-import static tools.redstone.redstonetools.utils.DirectionUtils.directionToBlock;
-import static tools.redstone.redstonetools.utils.DirectionUtils.matchDirection;
 
 public class RStackFeature {
 	public static final RStackFeature INSTANCE = new RStackFeature();
@@ -39,52 +32,37 @@ public class RStackFeature {
 	}
 
 	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, net.minecraft.commands.Commands.CommandSelection registrationEnvironment) {
-			dispatcher.register(
-				literal("/rstack")
-					.requires(Commands.getPerm("rstack"))
-					.executes(getCommandForArgumentCount(0))
-					.then(argument("count", IntegerArgumentType.integer())
-						.executes(getCommandForArgumentCount(1))
-						.then(argument("direction", StringArgumentType.string()).suggests(ArgumentUtils.DIRECTION_SUGGESTION_PROVIDER)
-							.executes(getCommandForArgumentCount(2))
-							.then(argument("offset", IntegerArgumentType.integer())
-								.executes(getCommandForArgumentCount(3))
-								.then(argument("moveSelection", BoolArgumentType.bool())
-									.executes(getCommandForArgumentCount(4)))))));
+		var node = dispatcher.register(literal("/rstack")
+			.requires(Commands.getPerm("rstack"))
+			.executes(context -> execute(context, ""))
+			.then(argument("arguments", StringArgumentType.greedyString())
+				.executes(context -> execute(context, StringArgumentType.getString(context, "arguments")))));
+
+		dispatcher.register(literal("/rs").redirect(node));
 	}
 
-	protected Command<CommandSourceStack> getCommandForArgumentCount(int argNum) {
-		return context -> execute(context, argNum);
-	}
-
-	protected int execute(CommandContext<CommandSourceStack> context, int argCount) throws CommandSyntaxException {
-		int count = argCount >= 1 ? IntegerArgumentType.getInteger(context, "count") : 1;
-		DirectionArgument direction = argCount >= 2 ? ArgumentUtils.parseDirection(context, "direction") : DirectionArgument.ME;
-		int offset = argCount >= 3 ? IntegerArgumentType.getInteger(context, "offset") : 2;
-		boolean moveSelection = argCount >= 4 && BoolArgumentType.getBool(context, "moveSelection");
-		return execute(context, count, offset, direction, moveSelection);
-	}
-
-	protected int execute(CommandContext<CommandSourceStack> context, int count, int offset, DirectionArgument direction, boolean moveSelection) throws CommandSyntaxException {
+	protected int execute(CommandContext<CommandSourceStack> context, String rawArguments) throws CommandSyntaxException {
 		var player = context.getSource().getPlayerOrException();
 		var actor = WorldEditUtils.getActor(player);
 		var localSession = WorldEditUtils.getSession(player);
 		var selection = WorldEditUtils.getSelection(player);
 
-		Direction stackDirection;
+		RStackArguments arguments;
 		try {
-			stackDirection = matchDirection(direction, actor.getLocation().getDirectionEnum());
-		} catch (Exception ex) {
+			arguments = RStackArguments.parse(rawArguments, actor);
+		} catch (RStackArguments.ParseException ex) {
 			throw new SimpleCommandExceptionType(Component.literal(ex.getMessage())).create();
 		}
 
-		BlockVector3 step = Objects.requireNonNull(directionToBlock(stackDirection)).multiply(offset);
+		BlockVector3 total = arguments.vector().multiply(arguments.count());
 
 		try (var editSession = localSession.createEditSession(actor)) {
-			stack(editSession, selection, step, count);
+			stack(editSession, selection, arguments);
 
-			if (moveSelection) {
-				selection.shift(step.multiply(count));
+			if (arguments.expand()) {
+				selection.expand(total);
+			} else if (arguments.shiftSelection()) {
+				selection.shift(total);
 			}
 
 			localSession.remember(editSession);
@@ -92,17 +70,33 @@ public class RStackFeature {
 			throw new SimpleCommandExceptionType(Component.literal("Stack failed: " + ex.getMessage())).create();
 		}
 
-		context.getSource().sendSystemMessage(Component.literal("Stacked %s time(s).".formatted(count)));
+		if (arguments.expand() || arguments.shiftSelection()) {
+			var selector = localSession.getRegionSelector(selection.getWorld());
+			selector.learnChanges();
+			selector.explainRegionAdjust(actor, localSession);
+		}
+
+		context.getSource().sendSystemMessage(
+			Component.literal("Stacked %s time(s).".formatted(arguments.count())));
 		return 1;
 	}
 
-	private void stack(EditSession editSession, Region selection, BlockVector3 step, int count) throws WorldEditException {
+	private void stack(EditSession editSession, Region selection, RStackArguments arguments) throws WorldEditException {
 		ForwardExtentCopy copy = new ForwardExtentCopy(
 			editSession, selection, editSession, selection.getMinimumPoint());
 
-		copy.setRepetitions(count);
-		copy.setTransform(new AffineTransform().translate(step.x(), step.y(), step.z()));
-		copy.setSourceMask(new ExistingBlockMask(selection.getWorld()));
+		copy.setCopyingEntities(false);
+		copy.setCopyingBiomes(false);
+		copy.setRemovingEntities(false);
+
+		copy.setRepetitions(arguments.count());
+		copy.setTransform(new AffineTransform()
+			.translate(arguments.vector().x(), arguments.vector().y(), arguments.vector().z()));
+
+		// Without -w, air in the source is skipped, so copies can overlap without erasing.
+		if (!arguments.withAir()) {
+			copy.setSourceMask(new ExistingBlockMask(selection.getWorld()));
+		}
 
 		Operations.complete(copy);
 	}

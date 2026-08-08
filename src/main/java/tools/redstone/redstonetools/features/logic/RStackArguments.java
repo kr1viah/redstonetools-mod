@@ -1,9 +1,11 @@
 package tools.redstone.redstonetools.features.logic;
 
+import com.sk89q.worldedit.UnknownDirectionException;
+import com.sk89q.worldedit.entity.Player;
 import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.util.Direction;
-import tools.redstone.redstonetools.utils.DirectionArgument;
-import tools.redstone.redstonetools.utils.DirectionUtils;
+import tools.redstone.redstonetools.utils.WorldEditUtils;
+
+import java.util.Objects;
 
 public record RStackArguments(int count, BlockVector3 vector, boolean expand, boolean withAir, boolean shiftSelection) {
 	public static final int DEFAULT_COUNT = 1;
@@ -15,10 +17,10 @@ public record RStackArguments(int count, BlockVector3 vector, boolean expand, bo
 		}
 	}
 
-	public static RStackArguments parse(String input, Direction playerFacing) throws ParseException {
+	public static RStackArguments parse(String input, Player actor) throws ParseException {
 		Integer count = null;
 		Integer spacing = null;
-		DirectionArgument direction = null;
+		BlockVector3 directionVector = null;
 		BlockVector3 explicitVector = null;
 		boolean expand = false;
 		boolean withAir = false;
@@ -57,44 +59,41 @@ public record RStackArguments(int count, BlockVector3 vector, boolean expand, bo
 				continue;
 			}
 
-			DirectionArgument parsed = DirectionArgument.byNameOrAlias(token);
-			if (parsed == null) {
+			BlockVector3 asDirection;
+			try {
+				asDirection = WorldEditUtils.directionVector(actor, token);
+			} catch (UnknownDirectionException ex) {
 				throw new ParseException("Unknown argument: " + token);
 			}
-			if (direction != null) {
+
+			if (asDirection == null) {
+				throw new ParseException("Unknown argument: " + token);
+			}
+			if (directionVector != null) {
 				throw new ParseException("Only one direction can be given");
 			}
-			direction = parsed;
+			directionVector = asDirection;
 		}
 
-		if (explicitVector != null && (direction != null || spacing != null)) {
+		if (explicitVector != null && (directionVector != null || spacing != null)) {
 			throw new ParseException("Give either a vector, or a direction and a spacing, not both");
 		}
 
-		return new RStackArguments(
-			count == null ? DEFAULT_COUNT : count,
-			explicitVector != null ? explicitVector : toVector(direction, spacing, playerFacing),
-			expand,
-			withAir,
-			shiftSelection);
-	}
-
-	/** A direction and a spacing are just a way of writing the vector between two copies. */
-	private static BlockVector3 toVector(DirectionArgument direction, Integer spacing, Direction playerFacing) throws ParseException {
-		Direction resolved;
-
-		try {
-			resolved = DirectionUtils.matchDirection(direction == null ? DirectionArgument.ME : direction, playerFacing);
-		} catch (Exception ex) {
-			throw new ParseException(ex.getMessage());
+		BlockVector3 vector;
+		if (explicitVector != null) {
+			vector = explicitVector;
+		} else {
+			if (directionVector == null) {
+				try {
+					directionVector = WorldEditUtils.directionVector(actor, "me");
+				} catch (UnknownDirectionException ex) {
+					throw new ParseException(ex.getMessage());
+				}
+			}
+			vector = Objects.requireNonNull(directionVector).multiply(spacing == null ? DEFAULT_SPACING : spacing);
 		}
 
-		BlockVector3 unit = DirectionUtils.directionToBlock(resolved);
-		if (unit == null) {
-			throw new ParseException("Unsupported direction: " + resolved);
-		}
-
-		return unit.multiply(spacing == null ? DEFAULT_SPACING : spacing);
+		return new RStackArguments(count == null ? DEFAULT_COUNT : count, vector, expand, withAir, shiftSelection);
 	}
 
 	private static boolean isFlags(String token) {
