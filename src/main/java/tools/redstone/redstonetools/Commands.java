@@ -1,14 +1,13 @@
 package tools.redstone.redstonetools;
 
-import com.mojang.brigadier.CommandDispatcher;
-//? fabric
-//import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+//? fabric {
+/*import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+*///? }
 //? if >=1.21.11 {
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.permissions.PermissionCheck;
-import net.minecraft.server.permissions.Permissions;
 //? }
 import tools.redstone.redstonetools.features.commands.*;
 import tools.redstone.redstonetools.features.toggleable.*;
@@ -19,18 +18,24 @@ import net.minecraft.commands.CommandSourceStack;
 import java.util.function.Predicate;
 
 public class Commands {
+	public static MinecraftServer server;
+
 	public static void registerCommands(/*? paper {*/io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager<org.bukkit.plugin.Plugin> events/*? }*/) {
 		//? if fabric {
-		/*CommandRegistrationCallback.EVENT.register((commandDispatcher, commandRegistryAccess, registrationEnvironment) -> {
+		/*ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+			Commands.server = server;
+		});
+		CommandRegistrationCallback.EVENT.register((commandDispatcher, commandRegistryAccess, registrationEnvironment) -> {
 		 *///? } else
 		events.registerEventHandler(io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents.COMMANDS, event -> {
 			//? paper {
 			MinecraftServer server = ((org.bukkit.craftbukkit.CraftServer) org.bukkit.Bukkit.getServer()).getServer();
-			net.minecraft.commands.Commands commands = server.getCommands();
+			Commands.server = server;
+			var commands = server.getCommands();
 
-			CommandDispatcher<CommandSourceStack> commandDispatcher = commands.getDispatcher();
-			CommandBuildContext commandRegistryAccess = CommandBuildContext.simple(VanillaRegistries.createLookup(), server.getWorldData().enabledFeatures());
-			net.minecraft.commands.Commands.CommandSelection registrationEnvironment = net.minecraft.commands.Commands.CommandSelection.DEDICATED;
+			var commandDispatcher = commands.getDispatcher();
+			var commandRegistryAccess = CommandBuildContext.simple(VanillaRegistries.createLookup(), server.getWorldData().enabledFeatures());
+			var registrationEnvironment = net.minecraft.commands.Commands.CommandSelection.DEDICATED;
 			//? }
 
 			if (DependencyLookup.WORLDEDIT_PRESENT) {
@@ -57,6 +62,7 @@ public class Commands {
 			CopyStateFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 			SlabFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 			PinFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
+			WorldEditHelperFeature.INSTANCE.registerCommand(commandDispatcher, commandRegistryAccess, registrationEnvironment);
 		});
 	}
 
@@ -65,7 +71,7 @@ public class Commands {
 		/*//? if <=1.21.10 {
 		/^return source -> source.hasPermission(2);
 		^///?} else {
-		return net.minecraft.commands.Commands.hasPermission(new PermissionCheck.Require(Permissions.COMMANDS_GAMEMASTER));
+		return net.minecraft.commands.Commands.hasPermission(new net.minecraft.server.permissions.PermissionCheck.Require(net.minecraft.server.permissions.Permissions.COMMANDS_GAMEMASTER));
 		//?}
 		*///? } else {
 		return sender -> sender.getSender().hasPermission("redstonetools." + s);
