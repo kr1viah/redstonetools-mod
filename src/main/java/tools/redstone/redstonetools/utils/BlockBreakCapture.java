@@ -13,7 +13,6 @@ import java.util.function.BiConsumer;
  * to the handler instead. Fed by the platform's block break hook.
  */
 public class BlockBreakCapture {
-	// TODO: entries are never removed when a player disconnects. See the Platform layer issue.
 	private static final Map<UUID, BiConsumer<ServerPlayer, BlockPos>> HANDLERS = new HashMap<>();
 
 	/** @return false when the player is already waiting to pick a block. */
@@ -21,8 +20,8 @@ public class BlockBreakCapture {
 		return HANDLERS.putIfAbsent(player.getUUID(), handler) == null;
 	}
 
-	public static void release(ServerPlayer player) {
-		HANDLERS.remove(player.getUUID());
+	public static void release(UUID uuid) {
+		HANDLERS.remove(uuid);
 	}
 
 	/** @return true when the break was consumed and must be cancelled. */

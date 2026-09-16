@@ -16,6 +16,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import tools.redstone.redstonetools.features.toggleable.AutoDustFeature;
 import tools.redstone.redstonetools.features.toggleable.AutoRotateFeature;
@@ -77,6 +78,12 @@ public class RedstoneToolsListener implements Listener {
 		if (ClickContainerFeature.handleUse(player, player.level(), hand, pos)) {
 			event.setCancelled(true);
 		}
+	}
+
+	@EventHandler
+	// TODO: implement this on fabric
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		BlockBreakCapture.release(event.getPlayer().getUniqueId());
 	}
 }
 //? }
