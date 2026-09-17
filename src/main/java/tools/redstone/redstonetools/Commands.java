@@ -7,8 +7,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 //? if >=1.21.11 {
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.data.registries.VanillaRegistries;
-import net.minecraft.server.MinecraftServer;
 //? }
+import net.minecraft.server.MinecraftServer;
 import tools.redstone.redstonetools.features.commands.*;
 import tools.redstone.redstonetools.features.toggleable.*;
 import tools.redstone.redstonetools.utils.DependencyLookup;

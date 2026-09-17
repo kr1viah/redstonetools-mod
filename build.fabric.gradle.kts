@@ -7,8 +7,6 @@ plugins {
 version = "${project.property("mod_version")}+${stonecutter.current.version}"
 group = project.property("maven_group")!!
 
-val lastTask: Task = (if (sc.current.parsed.matches("<26.1")) tasks.named<Task>("remapJar") else tasks.jar).get()
-
 base {
 	archivesName.set(project.property("archives_base_name") as String)
 }
@@ -131,7 +129,7 @@ tasks.processResources {
 tasks.register<Copy>("collectFile") {
 	group = "build"
 
-	from(lastTask)
+	from(loomx.modJar)
 	into(rootProject.layout.buildDirectory.dir("libs/${project.property("mod_version")}"))
 }
 
@@ -175,7 +173,7 @@ publishing {
 }
 
 publishMods {
-	file.set((lastTask as AbstractArchiveTask).archiveFile)
+	file.set(loomx.modJar.get().archiveFile)
 	type.set(STABLE)
 	modLoaders.add("fabric")
 

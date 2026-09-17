@@ -102,7 +102,7 @@ public class PinFeature {
 	}
 
 	private Map<String, Pin> pinsOf(ServerPlayer player) {
-		return pins.computeIfAbsent(player.getUUID(), _ -> new LinkedHashMap<>());
+		return pins.computeIfAbsent(player.getUUID(), uuid -> new LinkedHashMap<>());
 	}
 
 	protected int add(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {

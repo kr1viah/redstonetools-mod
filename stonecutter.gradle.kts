@@ -4,8 +4,6 @@ plugins {
 }
 stonecutter.active("26.1.2-paper")
 
-version = "${project.property("mod_version")}+${stonecutter.current?.version}"
-
 stonecutter parameters {
 	val (version, loader) = current.project.split('-', limit = 2)
 

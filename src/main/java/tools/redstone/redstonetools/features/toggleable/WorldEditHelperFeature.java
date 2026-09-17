@@ -45,7 +45,7 @@ public class WorldEditHelperFeature extends ToggleableFeature {
 		Region selection;
 		try {
 			selection = WorldEditUtils.getSelection(player);
-		} catch (CommandSyntaxException _) {
+		} catch (CommandSyntaxException ignored) {
 			return;
 		}
 		if (selection == null) {
