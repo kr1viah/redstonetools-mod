@@ -34,7 +34,7 @@ public class WorldEditHelperFeature extends ToggleableFeature {
 			checkPlayers();
 			TickScheduler.runLater(r, 20);
 		};
-		TickScheduler.runLater(r, 20);
+		r.run();
 	}
 
 	private void checkPlayers() {
