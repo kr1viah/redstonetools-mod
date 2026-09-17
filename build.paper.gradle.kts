@@ -17,7 +17,7 @@ repositories {
 dependencies {
 	paperweight.paperDevBundle("${project.property("minecraft_version")}.build.+")
 //	compileOnly("io.papermc.paper:paper-api:${project.property("minecraft_version")}.build.+")
-	implementation("com.sk89q.worldedit:worldedit-bukkit:${project.property("worldedit_version")}")
+	compileOnly("com.sk89q.worldedit:worldedit-bukkit:${project.property("worldedit_version")}")
 }
 
 java {
