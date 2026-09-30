@@ -1,6 +1,6 @@
 plugins {
 	id("maven-publish")
-	id("me.modmuss50.mod-publish-plugin") version "1.1.0"
+	id("me.modmuss50.mod-publish-plugin") version "2.2.1"
 	id("dev.kikugie.loom-back-compat")
 }
 
@@ -15,10 +15,10 @@ loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		create("redstonetools", Action {
+		create("redstonetools") {
 			sourceSet(sourceSets.main.get())
 			sourceSet("client")
-		})
+		}
 	}
 }
 
@@ -85,7 +85,9 @@ dependencies {
 		implementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")
 		implementation("com.sk89q.worldedit:worldedit-fabric-mc${project.property("worldedit_version")}")
 		implementation("fi.dy.masa.malilib:malilib-fabric-${project.property("malilib_version")}")
-		implementation("net.kr1v:malilib-api:${project.property("malilib_api_version")}")
+		implementation("net.kr1v:malilib-api:${project.property("malilib_api_version")}") {
+			exclude(group = "fi.dy.masa.malilib")
+		}
 	}
 	"clientAnnotationProcessor"("net.kr1v:malilib-api-processor:1.0.0")
 }
@@ -105,8 +107,8 @@ loom {
 	}
 
 	runConfigs.configureEach {
-		ideConfigGenerated(true)
-		runDir = "../../run"
+		generateRunConfig = true
+		runDirectory.dir("../../run")
 	}
 }
 
@@ -140,17 +142,11 @@ tasks.register<DefaultTask>("buildAndCollect") {
 
 tasks.withType<JavaCompile>().configureEach {
 	options.encoding = "UTF-8"
-	if (sc.current.parsed.matches("<26.1"))
-		options.release = 21
-	else
-		options.release = 25
+	options.release = 25
 }
 
 java {
-	if (sc.current.parsed.matches("<26.1"))
-		toolchain.languageVersion = JavaLanguageVersion.of(21)
-	else
-		toolchain.languageVersion = JavaLanguageVersion.of(25)
+	toolchain.languageVersion = JavaLanguageVersion.of(25)
 	withSourcesJar()
 }
 
