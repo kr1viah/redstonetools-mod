@@ -1,5 +1,6 @@
 package tools.redstone.redstonetools;
 //? paper {
+import com.destroystokyo.paper.event.server.ServerTickEndEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,11 +21,17 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import tools.redstone.redstonetools.features.toggleable.AutoDustFeature;
 import tools.redstone.redstonetools.features.toggleable.AutoRotateFeature;
+import tools.redstone.redstonetools.features.toggleable.WorldEditHelperFeature;
 import tools.redstone.redstonetools.utils.BlockBreakCapture;
 import tools.redstone.redstonetools.utils.ColoredBlock;
 import tools.redstone.redstonetools.features.toggleable.ClickContainerFeature;
 
 public class RedstoneToolsListener implements Listener {
+	@EventHandler
+	public void onTick(ServerTickEndEvent event) {
+		WorldEditHelperFeature.INSTANCE.checkPlayers(Commands.server);
+	}
+
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
 		if (AutoDustFeature.INSTANCE.isEnabled(event.getPlayer().getUniqueId())) {

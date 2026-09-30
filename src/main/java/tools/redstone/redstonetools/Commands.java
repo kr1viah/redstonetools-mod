@@ -2,13 +2,11 @@ package tools.redstone.redstonetools;
 
 //? fabric {
 /*import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-*///? }
-//? if >=1.21.11 {
+*///? } else {
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.data.registries.VanillaRegistries;
-//? }
 import net.minecraft.server.MinecraftServer;
+//? }
 import tools.redstone.redstonetools.features.commands.*;
 import tools.redstone.redstonetools.features.toggleable.*;
 import tools.redstone.redstonetools.utils.DependencyLookup;
@@ -18,14 +16,12 @@ import net.minecraft.commands.CommandSourceStack;
 import java.util.function.Predicate;
 
 public class Commands {
-	public static MinecraftServer server;
+	//? paper
+	public static MinecraftServer server; // do not use on fabric
 
 	public static void registerCommands(/*? paper {*/io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager<org.bukkit.plugin.Plugin> events/*? }*/) {
 		//? if fabric {
-		/*ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			Commands.server = server;
-		});
-		CommandRegistrationCallback.EVENT.register((commandDispatcher, commandRegistryAccess, registrationEnvironment) -> {
+		/*CommandRegistrationCallback.EVENT.register((commandDispatcher, commandRegistryAccess, registrationEnvironment) -> {
 		 *///? } else
 		events.registerEventHandler(io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents.COMMANDS, event -> {
 			//? paper {

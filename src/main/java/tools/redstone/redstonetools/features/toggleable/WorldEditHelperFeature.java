@@ -4,6 +4,8 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
+//? fabric
+//import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -11,10 +13,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetDisplayObjectivePacket;
 import net.minecraft.network.protocol.game.ClientboundSetObjectivePacket;
 import net.minecraft.network.protocol.game.ClientboundSetScorePacket;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.scores.*;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
-import tools.redstone.redstonetools.utils.TickScheduler;
 import tools.redstone.redstonetools.utils.WorldEditUtils;
 
 import java.util.ArrayList;
@@ -27,18 +29,11 @@ import static net.minecraft.commands.Commands.literal;
 
 public class WorldEditHelperFeature extends ToggleableFeature {
 	public static final WorldEditHelperFeature INSTANCE = new WorldEditHelperFeature();
-	private Runnable r = null;
 
-	protected WorldEditHelperFeature() {
-		r = () -> {
-			checkPlayers();
-			TickScheduler.runLater(r, 20);
-		};
-		r.run();
-	}
+	protected WorldEditHelperFeature() {}
 
-	private void checkPlayers() {
-		tools.redstone.redstonetools.Commands.server.getPlayerList().getPlayers().forEach(this::setPlayerSelection);
+	public void checkPlayers(MinecraftServer server) {
+		server.getPlayerList().getPlayers().forEach(this::setPlayerSelection);
 	}
 
 	private void setPlayerSelection(ServerPlayer player) {
@@ -60,12 +55,15 @@ public class WorldEditHelperFeature extends ToggleableFeature {
 
 		List<Component> lines = new ArrayList<>();
 
-		lines.add(Component.literal("Position 1:").withColor(/*NamedTextColor.DARK_GREEN.value()*/0x00aa00));
-		lines.add(Component.literal("   ").append(format(pos1)));
-
 		if (volume != 1L) {
+			lines.add(Component.literal("Position 1:").withColor(/*NamedTextColor.DARK_GREEN.value()*/0x00aa00));
+			lines.add(Component.literal("   ").append(format(pos1)));
+
 			lines.add(Component.literal("Position 2:").withColor(/*NamedTextColor.DARK_GREEN.value()*/0x00aa00));
 			lines.add(Component.literal("   ").append(format(pos2)));
+		} else {
+			lines.add(Component.literal("Position:").withColor(/*NamedTextColor.DARK_GREEN.value()*/0x00aa00));
+			lines.add(Component.literal("   ").append(format(pos1)));
 		}
 
 		lines.add(Component.literal("Volume:").withColor(/*NamedTextColor.DARK_GREEN.value()*/0x00aa00));
@@ -206,6 +204,13 @@ public class WorldEditHelperFeature extends ToggleableFeature {
 	public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection registrationEnvironment) {
 		dispatcher.register(literal("worldedithelper").requires(tools.redstone.redstonetools.Commands.getPerm("worldedithelper")).executes(this::toggle));
 	}
+
+	//? if fabric {
+	/*static {
+		ServerTickEvents.END_SERVER_TICK.register(WorldEditHelperFeature.INSTANCE::checkPlayers);
+		// paper handled in RedstoneToolsListener
+	}
+	*///? }
 
 	@Override
 	public String getName() {
