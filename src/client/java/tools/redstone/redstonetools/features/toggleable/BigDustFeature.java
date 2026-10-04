@@ -25,6 +25,10 @@ public class BigDustFeature extends ClientToggleableFeature {
 			dispatcher.register(literal("bigdust")
 				.executes(this::toggle)
 				.then(argument("heightInPixels", IntegerArgumentType.integer(1, 16))
-						.executes(this::toggle)));
+						.executes(context -> {
+							int heightInPixels = IntegerArgumentType.getInteger(context, "heightInPixels");
+							General.BIGDUST_HEIGHT_IN_PIXELS.setIntegerValue(heightInPixels);
+							return heightInPixels;
+						})));
 	}
 }
