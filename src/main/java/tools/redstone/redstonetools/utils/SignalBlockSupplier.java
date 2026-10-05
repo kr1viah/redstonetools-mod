@@ -4,8 +4,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.network.Filterable;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -16,6 +18,7 @@ import net.minecraft.world.item.component.TypedEntityData;
 //?} else {
 /*import net.minecraft.world.item.component.CustomData;
 *///?}
+import net.minecraft.world.item.component.WrittenBookContent;
 import net.minecraft.world.level.block.Block;
 //? if >=26.2 {
 /*import net.minecraft.world.level.block.entity.BlockEntityTypes;
@@ -24,8 +27,45 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 //?}
 import net.minecraft.world.level.block.Blocks;
 
+import java.util.Collections;
+
 @FunctionalInterface
 public interface SignalBlockSupplier {
+	static SignalBlockSupplier lectern() {
+		return signalStrength -> {
+			ItemStack book = Items.WRITTEN_BOOK.getDefaultInstance();
+			book.set(
+				DataComponents.WRITTEN_BOOK_CONTENT,
+				WrittenBookContent.EMPTY.withReplacedPages(
+					Collections.nCopies(15, Filterable.passThrough(Component.empty()))
+				)
+			);
+			CompoundTag blockEntityData = new CompoundTag();
+			blockEntityData.put("Book", ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, book).getOrThrow());
+			blockEntityData.putInt("Page", signalStrength-1);
+
+			CompoundTag blockState = new CompoundTag();
+			blockState.putBoolean("has_book", true);
+
+			ItemStack lectern = Items.LECTERN.getDefaultInstance();
+
+			//? if <1.21.10  {
+			/*blockEntityData.putString("id", "minecraft:lectern");
+			lectern.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(blockEntityData));
+			*///?} else {
+			lectern.set(
+				DataComponents.BLOCK_ENTITY_DATA,
+				TypedEntityData.of(
+					//~ if >=26.2 'BlockEntityType' -> 'BlockEntityTypes'
+					BlockEntityType.LECTERN,
+					blockEntityData
+				)
+			);
+			//?}
+
+			return lectern;
+		};
+	}
 
 	ItemStack createItem(int signalStrength);
 
@@ -89,11 +129,8 @@ public interface SignalBlockSupplier {
 			*///?} else {
 			commandBlockStack.set(
 				DataComponents.BLOCK_ENTITY_DATA,
-				//? if >=26.2 {
-				/*TypedEntityData.of(BlockEntityTypes.COMMAND_BLOCK, blockEntityNbt)
-				*///?} else {
+				//~ if >=26.2 'BlockEntityType' -> 'BlockEntityTypes'
 				TypedEntityData.of(BlockEntityType.COMMAND_BLOCK, blockEntityNbt)
-				//?}
 			);
 			//?}
 			return commandBlockStack;
