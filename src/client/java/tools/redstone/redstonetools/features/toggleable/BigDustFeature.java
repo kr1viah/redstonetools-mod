@@ -4,6 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.commands.CommandBuildContext;
+import tools.redstone.redstonetools.config.General;
 import tools.redstone.redstonetools.config.Toggles;
 
 //? if >=26.1 {
