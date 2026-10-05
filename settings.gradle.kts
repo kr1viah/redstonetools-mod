@@ -36,7 +36,7 @@ stonecutter {
 
 		match("1.21.4", "fabric")
 		match("1.21.5", "fabric")
-		match("1.21.8", "fabric")
+		match("1.21.8", "fabric", "paper")
 		match("1.21.10", "fabric")
 		match("1.21.11", "fabric")
 		match("26.1.2", "fabric", "paper")

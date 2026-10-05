@@ -14,7 +14,6 @@ import com.sk89q.worldedit.extension.input.ParserContext;
 import com.sk89q.worldedit.function.mask.Mask;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldedit.world.World;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -36,12 +35,13 @@ public class WorldEditUtils {
 			throw new IllegalStateException("WorldEdit is not loaded.");
 		}
 
-		//? if <26.1 {
-		/*return FabricAdapter.adaptPlayer(player);
-		 *///? } else if fabric {
-		/*return FabricAdapter.get().fromNativePlayer(player);
-		 *///? } else
+		//? paper {
 		return BukkitAdapter.adapt(player.getBukkitEntity());
+		//? } else if <26.1 {
+		/*return FabricAdapter.adaptPlayer(player);
+		*///? } else {
+		/*return FabricAdapter.get().fromNativePlayer(player);
+		*///? }
 	}
 
 	public static LocalSession getSession(ServerPlayer player) {

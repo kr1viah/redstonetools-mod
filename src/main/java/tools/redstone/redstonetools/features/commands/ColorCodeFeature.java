@@ -23,8 +23,6 @@ import org.jetbrains.annotations.Nullable;
 import tools.redstone.redstonetools.Commands;
 import tools.redstone.redstonetools.utils.*;
 
-import java.util.Objects;
-
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
@@ -72,7 +70,7 @@ public class ColorCodeFeature {
 	protected int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
 		BlockColor color = ArgumentUtils.parseBlockColor(context, "color");
 		BlockColor onlyColor;
-		try {
+		try { // TODO: method to abstract this... tryParseOrNull(() -> ...)
 			onlyColor = ArgumentUtils.parseBlockColor(context, "onlyColor");
 		} catch (CommandSyntaxException ignored) {
 			onlyColor = null;
@@ -84,24 +82,23 @@ public class ColorCodeFeature {
 		var worldEdit = WorldEdit.getInstance();
 		assert player != null;
 
-		//? if <26.1 {
-		/*var wePlayer = FabricAdapter.adaptPlayer(Objects.requireNonNull(context.getSource().getPlayer()));
-		 *///? } else if fabric {
-		/*var wePlayer = FabricAdapter.get().fromNativePlayer(Objects.requireNonNull(context.getSource().getPlayer()));
+		//? paper {
+		var wePlayer = BukkitAdapter.adapt(player.getBukkitEntity());
+		//? } else if <26.1 {
+		/*var wePlayer = FabricAdapter.adaptPlayer(player);
 		 *///? } else {
-		var wePlayer = BukkitAdapter.adapt(Objects.requireNonNull(context.getSource().getPlayer()).getBukkitEntity());
-		//? }
+		/*var wePlayer =  FabricAdapter.get().fromNativePlayer(player);
+		 *///? }
 
 		var playerSession = worldEdit.getSessionManager().get(wePlayer);
 
-		// for each block in the selection
-		//? if <26.1 {
-		/*final World world = FabricAdapter.adapt(PlayerUtils.getWorld(player));
-		*///? } else if fabric {
-		/*final World world = FabricAdapter.get().fromNativeWorld(PlayerUtils.getWorld(player));
-		*///? } else {
-		final World world = BukkitAdapter.adapt(PlayerUtils.getWorld(player).getWorld());
-		//? }
+		//? paper {
+		World world = BukkitAdapter.adapt(PlayerUtils.getWorld(player).getWorld());
+		//? } else if <26.1 {
+		/*World world = FabricAdapter.adaptPlayer(PlayerUtils.getWorld(player));
+		 *///? } else {
+		/*World world =  FabricAdapter.get().fromNativeWorld(PlayerUtils.getWorld(player));
+		 *///? }
 		try (EditSession session = worldEdit.newEditSession(world)) {
 			BlockColor finalOnlyColor = onlyColor; // for some reason onlyColor isn't already final...
 
