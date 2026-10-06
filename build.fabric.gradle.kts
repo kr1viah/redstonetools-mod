@@ -93,7 +93,7 @@ dependencies {
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")
 	modImplementation("com.sk89q.worldedit:worldedit-fabric-mc${project.property("worldedit_version")}")
 	modImplementation("fi.dy.masa.malilib:malilib-fabric-${project.property("malilib_version")}")
-	modImplementation("net.kr1v:malilib-api:${project.property("malilib_api_version")}") {
+	modImplementation("net.kr1v:malilib-api:${project.property("malilib_api_version")}-${project.property("malilib_api_mc_version")}") {
 		exclude(group = "net.fabricmc.fabric-api") // prevent 1.21.5 fabric api modules used by malilib from leaking into 1.21.4
 		exclude(group = "fi.dy.masa.malilib")
 	}
@@ -125,8 +125,6 @@ tasks.processResources {
 	val properties = mapOf(
 		"version" to project.version,
 		"minecraft_version" to project.property("minecraft_version"),
-		"minecraft_version_out" to project.property("minecraft_version_out"),
-		"malilib_version" to project.property("minecraft_version_out"),
 		"loader_version" to project.property("loader_version")
 	)
 	properties.forEach { inputs.property(it.key, it.value) }

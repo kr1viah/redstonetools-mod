@@ -15,7 +15,6 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.function.visitor.RegionVisitor;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.util.formatting.component.InvalidComponentException;
-import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.block.BlockCategories;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -145,8 +144,12 @@ public class SignSearchFeature {
 		}
 
 		var lines = new ArrayList<SignLine>();
+		//~ if >=26.3 'false)' -> 'false).toArray(Component[]::new)' {
+		//~ if >=26.3 'getFrontText()' -> 'getText(net.minecraft.world.level.block.entity.SignTextSlot.FRONT)'
 		appendSide(lines, "Front", sign.getFrontText().getMessages(false));
+		//~ if >=26.3 'getBackText()' -> 'getText(net.minecraft.world.level.block.entity.SignTextSlot.BACK)'
 		appendSide(lines, "Back", sign.getBackText().getMessages(false));
+		//~ }
 
 		return lines;
 	}
