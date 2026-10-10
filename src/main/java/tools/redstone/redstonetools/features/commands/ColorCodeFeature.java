@@ -7,8 +7,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
-//~ if paper 'fabric.Fabric' -> 'bukkit.Bukkit'
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.function.mask.Mask;
 import com.sk89q.worldedit.function.mask.Mask2D;
 import com.sk89q.worldedit.function.operation.Operations;
@@ -82,23 +80,11 @@ public class ColorCodeFeature {
 		var worldEdit = WorldEdit.getInstance();
 		assert player != null;
 
-		//? paper {
-		var wePlayer = BukkitAdapter.adapt(player.getBukkitEntity());
-		//? } else if <26.1 {
-		/*var wePlayer = FabricAdapter.adaptPlayer(player);
-		 *///? } else {
-		/*var wePlayer =  FabricAdapter.get().fromNativePlayer(player);
-		 *///? }
+		var wePlayer = PlatformAdapter.INSTANCE.adapt(player);
 
 		var playerSession = worldEdit.getSessionManager().get(wePlayer);
 
-		//? paper {
-		World world = BukkitAdapter.adapt(PlayerUtils.getWorld(player).getWorld());
-		//? } else if <26.1 {
-		/*World world = FabricAdapter.adaptPlayer(PlayerUtils.getWorld(player));
-		 *///? } else {
-		/*World world =  FabricAdapter.get().fromNativeWorld(PlayerUtils.getWorld(player));
-		 *///? }
+		World world = PlatformAdapter.INSTANCE.adapt(player.level());
 		try (EditSession session = worldEdit.newEditSession(world)) {
 			BlockColor finalOnlyColor = onlyColor; // for some reason onlyColor isn't already final...
 

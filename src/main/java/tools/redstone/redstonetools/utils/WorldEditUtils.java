@@ -5,8 +5,6 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.UnknownDirectionException;
 import com.sk89q.worldedit.WorldEdit;
-//~ if paper 'fabric.Fabric' -> 'bukkit.Bukkit'
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.entity.Player;
 import com.sk89q.worldedit.extension.input.InputParseException;
@@ -31,17 +29,7 @@ public class WorldEditUtils {
 	 * This is the only platform-specific part of the WorldEdit integration.
 	 */
 	public static Player getActor(ServerPlayer player) {
-		if (!DependencyLookup.WORLDEDIT_PRESENT) {
-			throw new IllegalStateException("WorldEdit is not loaded.");
-		}
-
-		//? paper {
-		return BukkitAdapter.adapt(player.getBukkitEntity());
-		//? } else if <26.1 {
-		/*return FabricAdapter.adaptPlayer(player);
-		*///? } else {
-		/*return FabricAdapter.get().fromNativePlayer(player);
-		*///? }
+		return PlatformAdapter.INSTANCE.adapt(player);
 	}
 
 	public static LocalSession getSession(ServerPlayer player) {
