@@ -12,6 +12,21 @@ stonecutter parameters {
 	}
 }
 
+stonecutter parameters {
+	replacements.string(current.parsed >= "26.1") {
+		replace(
+			"GuiGraphics",
+			"GuiGraphicsExtractor"
+		)
+	}
+	replacements.string(current.parsed >= "1.21.11") {
+		replace(
+			"ResourceLocation",
+			"Identifier"
+		)
+	}
+}
+
 publishMods {
 	if (providers.environmentVariable("RELEASE_MODRINTH").orNull?.toBoolean() ?: false) {
 		val modrinthToken = providers.environmentVariable("MODRINTH_TOKEN")
