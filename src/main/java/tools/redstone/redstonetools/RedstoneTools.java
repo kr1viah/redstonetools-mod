@@ -36,11 +36,7 @@ public class RedstoneTools extends JavaPlugin {
 
 	/** Feature toggle sync with the client mod. Fabric uses custom payloads, Paper plugin messaging. */
 	private void registerNetworking() {
-		//? if fabric {
-		/*RedstoneToolsPackets.registerPackets();
-		 *///? } else {
 		RedstoneToolsPackets.registerPackets(this);
-		//? }
 	}
 
 	/**
@@ -49,9 +45,8 @@ public class RedstoneTools extends JavaPlugin {
 	 * reimplementation, most likely through BlockDropItemEvent.
 	 */
 	private void registerGameRules() {
-		//? if fabric {
-		/*RedstoneToolsGameRules.register();
-		*///? }
+		//? if fabric
+		//RedstoneToolsGameRules.register();
 	}
 
 	private void registerCommands() {
@@ -64,11 +59,7 @@ public class RedstoneTools extends JavaPlugin {
 
 	/** Tick pump used by the incremental flood fill of //that. */
 	private void registerScheduler() {
-		//? if fabric {
-		/*TickScheduler.init();
-		 *///? } else {
 		TickScheduler.init(this);
-		//? }
 	}
 
 	/** Feature hooks. Paper goes through Bukkit events, Fabric through FAPI callbacks. */

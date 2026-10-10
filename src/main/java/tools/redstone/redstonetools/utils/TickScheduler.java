@@ -19,7 +19,7 @@ public class TickScheduler {
 		}
 	}
 
-	public static void init() {
+	public static void init(Object ignored) {
 		net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents.END_SERVER_TICK.register(server -> {
 			// Tasks scheduled during this tick only start counting down from the next one.
 			SCHEDULED.addAll(PENDING);

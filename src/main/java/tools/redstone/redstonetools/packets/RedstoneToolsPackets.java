@@ -19,7 +19,7 @@ import tools.redstone.redstonetools.features.toggleable.ClickContainerFeature;
 
 public class RedstoneToolsPackets {
 	//? if fabric {
-	/*public static void registerPackets() {
+	/*public static void registerPackets(Object ignored) {
 		//? if <26.1 {
 		/^PayloadTypeRegistry.playS2C().register(SetFeatureEnabledPayload.ID, SetFeatureEnabledPayload.CODEC);
 		PayloadTypeRegistry.playC2S().register(SetFeatureEnabledPayload.ID, SetFeatureEnabledPayload.CODEC);
@@ -36,8 +36,7 @@ public class RedstoneToolsPackets {
 		ServerPlayNetworking.send(player, payload);
 	}
 	*///? } else {
-	/** Bukkit plugin messaging channel. Must match the payload id used by the Fabric client. */
-	public static final String CHANNEL = "redstonetools:set_enabled";
+	public static final String CHANNEL = SetFeatureEnabledPayload.SET_ENABLED_PAYLOAD_ID.toString();
 
 	private static Plugin plugin;
 
@@ -65,9 +64,7 @@ public class RedstoneToolsPackets {
 		RegistryFriendlyByteBuf buf = new RegistryFriendlyByteBuf(Unpooled.buffer(), registries);
 		try {
 			SetFeatureEnabledPayload.CODEC.encode(buf, payload);
-			byte[] data = new byte[buf.readableBytes()];
-			buf.readBytes(data);
-			return data;
+			return buf.readByteArray();
 		} finally {
 			buf.release();
 		}
